@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Andeck · Học từ vựng đa ngôn ngữ</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="stylecss/base.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<style>
+  .shell {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .brand h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .brand .icon {
+    font-size: 2rem;
+    color: var(--gold);
+  }
+  .tagline {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+  }
+  .panel {
+    background: #fff;
+    border: 1px solid var(--paper-dark);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .panel h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .panel p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .lang-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .lang-pill {
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .status {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: var(--gray);
+  }
+  .status.ok { color: #5A9E7A; }
+  .status.err { color: #C06060; }
+</style>
+</head>
+<body>
+<noscript>Andeck cần bật JavaScript để hoạt động.</noscript>
+
+<div class="shell">
+  <div class="brand">
+    <span class="icon ti ti-cards"></span>
+    <h1>Andeck</h1>
+  </div>
+  <p class="tagline">Tạo deck từ vựng, import JSON, học với quiz &amp; flashcard — đa ngôn ngữ.</p>
+
+  <div class="panel">
+    <h2>Hub deck · Học từ · Import / Export</h2>
+    <p>
+      Giao diện chính sẽ được port từ My Project (Hanzi Learn) trong các phase tiếp theo.
+      Phase 0: scaffold server + lang profiles (<code>zh-vi</code>, <code>en-vi</code>, <code>ja-vi</code>).
+    </p>
+    <div class="lang-list" id="langList">
+      <span class="lang-pill">Đang tải…</span>
+    </div>
+    <p class="status" id="apiStatus"></p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var langList = document.getElementById('langList');
+  var apiStatus = document.getElementById('apiStatus');
+
+  fetch('/api/decks/lang-profiles')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      langList.innerHTML = (data.profiles || []).map(function (p) {
+        return '<span class="lang-pill">' + p.label + '</span>';
+      }).join('');
+      apiStatus.textContent = 'API lang-profiles OK (' + (data.pairs || []).length + ' cặp ngôn ngữ)';
+      apiStatus.className = 'status ok';
+    })
+    .catch(function () {
+      langList.innerHTML = '<span class="lang-pill">zh-vi</span><span class="lang-pill">en-vi</span><span class="lang-pill">ja-vi</span>';
+      apiStatus.textContent = 'Chưa kết nối API — chạy npm start';
+      apiStatus.className = 'status err';
+    });
+})();
+</script>
+</body>
+</html>

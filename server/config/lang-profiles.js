@@ -1,0 +1,70 @@
+// server/config/lang-profiles.js — cấu hình ngôn ngữ v1 (zh-vi, en-vi, ja-vi)
+
+const LANG_PROFILES = {
+  'zh-vi': {
+    langPair: 'zh-vi',
+    label: 'Trung → Việt',
+    primaryLabel: 'Chữ Hán',
+    readingLabel: 'Pinyin',
+    meaningLabel: 'Nghĩa',
+    requiredFields: ['primary', 'meaning'],
+    hasReading: true,
+    readingRequired: false,
+    ttsLang: 'zh-CN',
+    speechLang: 'zh-CN',
+    quizPrimaryMode: true,
+    importFields: ['primary', 'reading', 'meaning', 'exPrimary', 'exReading', 'exMeaning', 'pos', 'note']
+  },
+  'en-vi': {
+    langPair: 'en-vi',
+    label: 'Anh → Việt',
+    primaryLabel: 'Từ tiếng Anh',
+    readingLabel: 'Phiên âm (tuỳ chọn)',
+    meaningLabel: 'Nghĩa',
+    requiredFields: ['primary', 'meaning'],
+    hasReading: true,
+    readingRequired: false,
+    ttsLang: 'en-US',
+    speechLang: 'en-US',
+    quizPrimaryMode: true,
+    importFields: ['primary', 'reading', 'meaning', 'exPrimary', 'exReading', 'exMeaning', 'pos', 'note']
+  },
+  'ja-vi': {
+    langPair: 'ja-vi',
+    label: 'Nhật → Việt',
+    primaryLabel: 'Từ tiếng Nhật',
+    readingLabel: 'Furigana / Romaji',
+    meaningLabel: 'Nghĩa',
+    requiredFields: ['primary', 'meaning'],
+    hasReading: true,
+    readingRequired: false,
+    ttsLang: 'ja-JP',
+    speechLang: 'ja-JP',
+    quizPrimaryMode: true,
+    importFields: ['primary', 'reading', 'meaning', 'exPrimary', 'exReading', 'exMeaning', 'pos', 'note']
+  }
+};
+
+function getLangProfile(langPair) {
+  return LANG_PROFILES[langPair] || null;
+}
+
+function listLangProfiles() {
+  return Object.values(LANG_PROFILES);
+}
+
+function listLangPairs() {
+  return Object.keys(LANG_PROFILES);
+}
+
+function isValidLangPair(langPair) {
+  return Boolean(LANG_PROFILES[langPair]);
+}
+
+module.exports = {
+  LANG_PROFILES,
+  getLangProfile,
+  listLangProfiles,
+  listLangPairs,
+  isValidLangPair
+};

@@ -1,0 +1,24 @@
+/* base.css — Stone theme variables (Phase 0 shell) */
+:root {
+  --gold: #C4A882;
+  --gold-light: #D4BFA0;
+  --ink: #1C2B3A;
+  --paper: #F5F0E8;
+  --paper-dark: #EDE8DC;
+  --gray: #8A9BAC;
+  --text-secondary: #5A6A7A;
+  --shadow: 0 4px 24px rgba(28, 43, 58, 0.13);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
