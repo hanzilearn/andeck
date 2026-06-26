@@ -182,7 +182,13 @@ async function loadDeckStudy(deckId) {
     adApplyWordFormLabels(profile);
     adAnalyzeLayout(VOCAB);
     if (typeof adInitStudyToolbar === 'function') adInitStudyToolbar(profile);
-    if (typeof render === 'function') render();
+    if (typeof loadStars === 'function') {
+      loadStars().then(function () {
+        if (typeof render === 'function') render();
+      });
+    } else if (typeof render === 'function') {
+      render();
+    }
     window.scrollTo({ top: 0 });
   } catch (e) {
     console.error('loadDeckStudy:', e);

@@ -1,0 +1,297 @@
+/* ============================================================
+   EXAM-QUIZ.CSS — Setup thi, quiz trắc nghiệm, màn hình kết quả
+   Tương ứng: 08-exam-quiz.js
+   ============================================================ */
+
+/* ── Exam Setup ── */
+.exam-setup {
+  max-width: 520px;
+  margin: 60px auto;
+  background: var(--paper-dark);
+  border: 1.5px solid rgba(192,57,43,.18);
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: var(--shadow);
+}
+.exam-setup h2 {
+  font-family: 'Noto Serif SC', SimSun, 'Songti SC', serif;
+  font-size: 22px; color: var(--red-dark); margin-bottom: 6px;
+}
+.exam-setup p { color: var(--gray); font-size: 13px; margin-bottom: 28px; }
+
+.setup-section { margin-bottom: 22px; }
+.setup-label {
+  font-size: 11px; font-weight: 700; color: var(--red-dark);
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 10px; display: block;
+}
+
+.option-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.opt-btn {
+  padding: 8px 18px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(192,57,43,.22);
+  background: white;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  color: var(--ink);
+}
+.opt-btn.active { background: var(--red); color: white; border-color: var(--red); }
+.opt-btn:hover:not(.active) { border-color: var(--red); color: var(--red); }
+
+.num-input {
+  padding: 8px 12px;
+  border: 1.5px solid rgba(192,57,43,.2);
+  border-radius: 4px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px; width: 100px; outline: none;
+}
+.num-input:focus { border-color: var(--red); }
+
+.exam-warn { color: var(--wrong); font-size: 12px; margin-top: 8px; display: none; }
+
+.setup-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(192,57,43,.12);
+}
+.exam-setup .btn-back {
+  flex: 1;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--red-dark);
+  background: white;
+  border: 2px solid rgba(192,57,43,.4);
+  border-radius: 4px;
+  margin-right: 0;
+  box-shadow: 0 2px 8px rgba(26,10,0,.06);
+  transition: all .15s;
+}
+.exam-setup .btn-back:hover {
+  background: rgba(192,57,43,.06);
+  border-color: var(--red);
+  color: var(--red);
+}
+.exam-setup .btn-start {
+  flex: 1;
+  margin-top: 0;
+  padding: 12px 24px;
+}
+#exam-screen > .exam-setup,
+#fc-setup-screen > .exam-setup {
+  margin-top: 32px;
+}
+
+[data-theme="dark"] .exam-setup .btn-back {
+  background: #1E1E24;
+  color: #E8C4C0;
+  border-color: rgba(232,196,192,.45);
+}
+[data-theme="dark"] .exam-setup .btn-back:hover {
+  background: rgba(192,57,43,.15);
+  border-color: #E8C4C0;
+  color: #fff;
+}
+[data-theme="dark"] .setup-actions {
+  border-top-color: rgba(255,255,255,.1);
+}
+
+/* ── Quiz Header ── */
+.quiz-header {
+  background: var(--red-dark);
+  color: white;
+  padding: 0 32px;
+  height: 48px;
+  display: flex;
+  align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(26,10,0,.2);
+}
+.quiz-progress-text { font-size: 13px; color: rgba(255,255,255,.8); }
+.quiz-progress-bar-wrap {
+  width: 200px; height: 5px;
+  background: rgba(255,255,255,.2);
+  border-radius: 3px; overflow: hidden;
+}
+.quiz-progress-bar {
+  height: 100%;
+  background: var(--gold-light);
+  border-radius: 3px;
+  transition: width .3s;
+}
+
+/* ── Quiz Card ── */
+.quiz-body {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+.quiz-card {
+  background: white;
+  border: 1.5px solid rgba(192,57,43,.15);
+  border-radius: 10px;
+  padding: 36px 36px 28px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.quiz-q-label {
+  font-size: 11px; font-weight: 700; color: var(--gray);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+}
+.quiz-q-hanzi {
+  font-family: 'Noto Serif SC', SimSun, 'Songti SC', serif;
+  font-size: 52px; color: var(--red-dark);
+  margin-bottom: 8px; line-height: 1.2;
+}
+.quiz-q-pinyin { color: var(--gray); font-style: italic; font-size: 15px; margin-bottom: 4px; }
+.quiz-q-meaning { color: var(--ink); font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+.quiz-speak { background: none; border: none; cursor: pointer; font-size: 22px; margin-bottom: 8px; padding: 4px; }
+
+/* ── Choices ── */
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.choice-btn {
+   color: var(--red-dark);
+  padding: 14px 12px;
+  border: 1.5px solid rgba(192,57,43,.2);
+  border-radius: 6px;
+  background: var(--paper);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px; cursor: pointer;
+  transition: all .2s;
+  text-align: center; line-height: 1.4;
+}
+.choice-btn:hover:not(:disabled) {
+  border-color: var(--red);
+  background: rgba(192,57,43,.05);
+  transform: translateY(-1px);
+}
+.choice-btn.correct-choice {
+  background: rgba(39,174,96,.12); border-color: var(--correct);
+  color: var(--correct); font-weight: 700;
+}
+.choice-btn.wrong-choice {
+  background: rgba(231,76,60,.1); border-color: var(--wrong); color: var(--wrong);
+}
+.choice-btn:disabled { cursor: default; }
+
+.choice-hanzi {
+  font-family: 'Noto Serif SC', SimSun, 'Songti SC', serif;
+  font-size: 22px; display: block;
+}
+.choice-pinyin { font-size: 11px; color: var(--gray); font-style: italic; }
+
+/* ── Result Screen ── */
+.result-body { max-width: 520px; margin: 60px auto; padding: 0 20px; }
+.result-card {
+  background: white;
+  border: 1.5px solid rgba(192,57,43,.18);
+  border-radius: 10px;
+  padding: 44px 40px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.result-score {
+  font-family: 'Noto Serif SC', SimSun, 'Songti SC', serif;
+  font-size: 64px; color: var(--red-dark); line-height: 1; margin-bottom: 8px;
+}
+.result-sub { color: var(--gray); font-size: 14px; margin-bottom: 28px; }
+
+.result-stats { display: flex; justify-content: center; gap: 32px; margin-bottom: 32px; }
+.stat-box { text-align: center; }
+.stat-num { font-size: 28px; font-weight: 700; }
+.stat-num.c { color: var(--correct); }
+.stat-num.w { color: var(--wrong); }
+.stat-label { font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+.result-list {
+  text-align: left; margin-top: 20px;
+  max-height: 300px; overflow-y: auto;
+}
+.result-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 12px; border-radius: 4px;
+  margin-bottom: 4px; font-size: 13px;
+}
+.result-item.c { background: rgba(39,174,96,.07); }
+.result-item.w { background: rgba(231,76,60,.07); }
+.result-item .ri-hanzi {
+  font-family: 'Noto Serif SC', SimSun, 'Songti SC', serif;
+  font-size: 18px; width: 40px;
+}
+.result-item .ri-info { flex: 1; }
+.result-item .ri-icon { font-size: 16px; }
+
+/* Checkbox kết quả */
+.ri-check {
+  width: 22px; height: 22px;
+  border: 2px solid #ccc; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: all .15s; flex-shrink: 0; color: #fff;
+}
+.ri-check.checked { background: var(--gold); border-color: var(--gold); }
+
+/* Star save section */
+.star-save-section {
+  text-align: left; margin-top: 16px; padding: 14px;
+  background: rgba(212,160,23,.06); border: 1px solid rgba(212,160,23,.2);
+  border-radius: 8px;
+}
+.star-save-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.star-save-note  { font-size: 11px; color: var(--gray); }
+
+/* Buttons */
+.btn-retry, .btn-home {
+  padding: 11px 24px; border-radius: 4px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: background .2s;
+}
+.btn-retry {
+  background: var(--red); color: white; border: none;
+  margin-right: 10px;
+  box-shadow: 0 4px 14px rgba(192,57,43,.25);
+}
+.btn-retry:hover { background: var(--red-dark); }
+.btn-home {
+  background: transparent; color: var(--gray);
+  border: 1.5px solid rgba(0,0,0,.12);
+}
+.btn-home:hover { border-color: var(--red); color: var(--red); }
+
+.btn-save-star {
+  padding: 10px 24px;
+  background: var(--gold); color: #fff;
+  border: none; border-radius: 4px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(212,160,23,.3);
+  transition: all .2s;
+}
+.btn-save-star:hover    { opacity: .9; }
+.btn-save-star:disabled { opacity: .7; cursor: default; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .choices { grid-template-columns: 1fr 1fr; }
+  .quiz-body, .result-body, .exam-setup { margin: 24px auto; padding: 0 12px; }
+  .exam-setup { padding: 24px 20px; }
+  .quiz-card  { padding: 24px 16px 20px; }
+  .quiz-header { padding: 0 14px; }
+}
+[data-theme="dark"] .exam-setup-card,
+[data-theme="dark"] .fc-setup-card {
+  background: #25252D;
+  color: #C8D4E0;
+}
+[data-theme="dark"] .exam-setup-card h2,
+[data-theme="dark"] .fc-setup-card h2 {
+  color: #C8D4E0;
+}

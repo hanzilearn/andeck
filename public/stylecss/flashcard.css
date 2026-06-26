@@ -1,0 +1,244 @@
+/* ============================================================
+   FLASHCARD.CSS — Màn hình flashcard, flip card, điều hướng
+   Tương ứng: 09-flashcard.js
+   ============================================================ */
+
+/* ── Screens ── */
+#fc-setup-screen,
+#fc-play-screen,
+#fc-end-screen {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: var(--paper, #F0F2F5);
+}
+#fc-play-screen > *:not(.quiz-header):not(.fc-body),
+#fc-play-screen .fc-body {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* ── Body ── */
+.fc-body {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 16px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 48px);
+  border: none !important;
+  background: transparent !important;
+}
+
+/* ── Card Wrapper & Flip ── */
+.fc-card-wrap {
+  width: 100%; max-width: 400px; height: 440px;
+  perspective: 1200px;
+  cursor: pointer; margin-bottom: 24px; flex-shrink: 0;
+}
+.fc-card {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.4,0,.2,1);
+}
+.fc-card.flipped { transform: rotateY(180deg); }
+/* Slide trên wrapper — tách khỏi flip transform của .fc-card */
+.fc-card-wrap.anim-left  { animation: fcSlideL .35s ease; }
+.fc-card-wrap.anim-right { animation: fcSlideR .35s ease; }
+
+@keyframes fcSlideL {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fcSlideR {
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Card Faces ── */
+.fc-face {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 14px;
+  display: flex; flex-direction: column;
+  padding: 20px 24px;
+  box-shadow: 0 4px 24px rgba(26,10,0,.13);
+  overflow: hidden;
+  background: var(--paper-dark);
+  border: 1.5px solid rgba(192,57,43,.12);
+}
+.fc-back { transform: rotateY(180deg); }
+
+.fc-face-top   { width: 100%; display: flex; justify-content: flex-end; }
+.fc-face-center {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+}
+.fc-face-bottom { width: 100%; text-align: center; }
+
+/* ── Card Content ── */
+.fc-hanzi {
+  font-family: 'Noto Serif SC', SimSun, 'Songti SC', serif;
+  font-size: 84px; color: var(--red-dark, #3A4A5C ); line-height: 1.15;
+}
+.fc-pinyin   { font-size: 24px; color: var(--gray); font-style: italic; min-height: 32px; }
+
+.fc-speak-btn {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: none;
+  border: 2px solid rgba(192,57,43,.2);
+  cursor: pointer; font-size: 24px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; margin-top: 6px; padding: 0; line-height: 1;
+}
+.fc-speak-btn:hover { background: rgba(192,57,43,.08); border-color: #c0392b; }
+
+.fc-hint     { font-size: 13px; color: var(--gray); letter-spacing: .5px; opacity: .6; }
+.fc-tuloai   {
+  display: inline-block; font-size: 14px; font-weight: 700;
+  padding: 5px 16px; border-radius: 12px;
+  background: rgba(212,160,23,.15); color: #d4a017; letter-spacing: .5px;
+}
+.fc-meaning  { font-size: 36px; font-weight: 600; color: var(--ink); text-align: center; line-height: 1.3; }
+
+.fc-example {
+  width: 100%;
+  padding: 14px 16px;
+  background: #fff;
+  border-radius: 10px;
+  border-left: 3px solid var(--gold);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+.fc-ex-hanzi  { font-family: 'Noto Serif SC', serif; font-size: 17px; color: var(--red-dark); line-height: 1.6; }
+.fc-ex-pinyin { font-size: 14px; color: #95a5a6; font-style: italic; margin-top: 3px; }
+.fc-ex-viet   { font-size: 14px; color: var(--ink); margin-top: 4px; font-weight: 500; }
+
+/* ── Setup: Lưu vào nhãn ── */
+.fc-save-label-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+.fc-save-label-display {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(122, 143, 166, 0.35);
+  background: var(--paper-dark, #fff);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.fc-save-label-star {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.fc-save-label-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fc-save-label-change {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+[data-theme="dark"] .fc-save-label-display {
+  background: #25252D;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+[data-theme="dark"] .fc-save-label-name { color: #C8D4E0; }
+
+/* ── Star button ── */
+.fc-star {
+  width: 40px; height: 40px; font-size: 26px;
+  cursor: pointer; transition: transform .2s;
+  filter: grayscale(1) opacity(.3);
+  user-select: none;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: none; border: none; padding: 0; line-height: 1;
+}
+.fc-star.on { filter: none; transform: scale(1.15); }
+.fc-star:hover { transform: scale(1.2); }
+.fc-star svg { display: block; pointer-events: none; }
+
+/* ── Navigation ── */
+.fc-nav {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; width: 100%; max-width: 400px; flex-shrink: 0;
+}
+.fc-nav-btn {
+  width: 50px; height: 50px; border-radius: 50%;
+  border: 2px solid rgba(192,57,43,.2);
+  background: white; cursor: pointer; font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; color: #1a0a00;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  padding: 0; line-height: 1;
+}
+.fc-nav-btn:hover:not(:disabled) {
+  border-color: #c0392b; color: #c0392b;
+  background: rgba(192,57,43,.05); transform: scale(1.08);
+}
+.fc-nav-btn:disabled { opacity: .25; cursor: default; }
+.fc-nav-btn.fc-done {
+  background: rgba(39,174,96,.08); border-color: #27ae60; color: #27ae60; font-size: 22px;
+}
+.fc-nav-btn.fc-done:hover { background: rgba(39,174,96,.18); transform: scale(1.08); }
+
+.fc-nav-line { width: 20px; height: 1px; background: rgba(192,57,43,.1); }
+.fc-nav-counter { font-size: 15px; font-weight: 600; color: var(--gray); min-width: 60px; text-align: center; }
+.fc-nav-counter span { color: var(--red-dark); font-size: 22px; font-family: 'Noto Serif SC', serif; }
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .fc-card-wrap  { max-width: 340px; height: 380px; }
+  .fc-hanzi      { font-size: 64px; }
+  .fc-pinyin     { font-size: 20px; }
+  .fc-meaning    { font-size: 28px; }
+  .fc-tuloai     { font-size: 12px; padding: 4px 12px; }
+  .fc-ex-hanzi   { font-size: 15px; }
+  .fc-ex-pinyin  { font-size: 12px; }
+  .fc-ex-viet    { font-size: 13px; }
+}
+[data-theme="dark"] .fc-header {
+  background: #25252D;
+}
+[data-theme="dark"] .fc-setup-card {
+  background: #25252D;
+  color: #C8D4E0;
+}
+/* ── Dark mode: Flashcard faces ── */
+[data-theme="dark"] .fc-face {
+  background: #25252D;
+  border-color: rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .fc-nav-btn {
+  background: #25252D;
+  border-color: rgba(255,255,255,0.12);
+  color: #C8D4E0;
+}
+[data-theme="dark"] .fc-nav-btn:hover:not(:disabled) {
+  border-color: #9AAFC4;
+  color: #9AAFC4;
+  background: rgba(154,175,196,0.08);
+}
+[data-theme="dark"] .fc-example {
+  background: var(--color-background-secondary);
+  border-left-color: var(--gold);
+  box-shadow: none;
+}
+[data-theme="dark"] .fc-ex-hanzi  { color: var(--gold-light); }
+[data-theme="dark"] .fc-ex-pinyin { color: var(--color-text-secondary); }
+[data-theme="dark"] .fc-ex-viet   { color: var(--ink); }

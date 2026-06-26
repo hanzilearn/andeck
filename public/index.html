@@ -12,6 +12,10 @@
 <link rel="stylesheet" href="stylecss/deck-import.css">
 <link rel="stylesheet" href="stylecss/main-table.css">
 <link rel="stylesheet" href="stylecss/speech-sound.css">
+<link rel="stylesheet" href="stylecss/label-system.css">
+<link rel="stylesheet" href="stylecss/exam-quiz.css">
+<link rel="stylesheet" href="stylecss/flashcard.css">
+<link rel="stylesheet" href="stylecss/timer.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
 </head>
 <body>
@@ -140,6 +144,9 @@
       <button type="button" id="deleteModeBtn" class="delete-mode-btn" style="display:none" title="Xóa từ">
         <i class="ti ti-trash-filled"></i>
       </button>
+      <button type="button" class="tmr-icon-btn" id="tmr-icon-btn-app" title="Đồng hồ" onclick="tmrOpenModal()" aria-label="Đồng hồ" style="display:none;margin-left:auto;margin-right:12px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
+      </button>
     </div>
   </header>
   <div class="toolbar">
@@ -150,7 +157,16 @@
     <span class="toolbar-sep"></span>
     <button class="icon-toggle" id="shuffle-btn" onclick="toggleShuffle()" title="Xáo trộn">🔀</button>
     <button class="icon-toggle" id="reading-btn" onclick="toggleReading()" title="Ẩn reading"><span class="eye-open"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span class="eye-slash"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg></span></button>
+    <button class="icon-toggle" id="hide-starred-btn" onclick="toggleHideStarred()" title="Lọc theo nhãn">⭐<span class="star-slash"></span></button>
     <button class="icon-toggle icon-reset" id="reset-btn" onclick="resetAll()" title="Reset">↺</button>
+    <div class="toolbar-actions">
+      <button type="button" class="exam-btn fc-btn" onclick="showFlashcard()" title="Flashcard">
+        <span class="btn-icon">🃏</span><span class="btn-label"> Flashcard</span>
+      </button>
+      <button type="button" class="exam-btn" onclick="showExamSetup()" title="Kiểm tra">
+        <span class="btn-icon">📝</span><span class="btn-label"> Kiểm tra</span>
+      </button>
+    </div>
   </div>
   <div class="search-bar-wrap">
     <input type="text" class="search-input" id="search-input" placeholder="🔍 Tìm từ..." oninput="handleSearch(this)">
@@ -166,6 +182,342 @@
     </table>
     <div class="empty-state" id="empty-state" style="display:none">
       <p>Chưa có từ nào. Nhấn <strong>Thêm từ</strong> hoặc <strong>upfile</strong> để bắt đầu.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== EXAM SETUP ==================== -->
+<div id="exam-screen" class="screen">
+  <div class="quiz-header">
+    <div>
+      <div style="font-size:16px;font-weight:700;color:var(--gold-light)">Andeck</div>
+      <div class="quiz-progress-text">📝 Bài kiểm tra</div>
+    </div>
+  </div>
+  <div class="exam-setup">
+    <h2>📝 Bài kiểm tra</h2>
+    <p>Chọn cài đặt và bắt đầu kiểm tra từ vựng của bạn</p>
+    <div class="setup-section">
+      <span class="setup-label">Loại từ</span>
+      <div class="option-group">
+        <button type="button" class="opt-btn active" onclick="setExamOpt('pool','all',this)">Tất cả (<span id="exam-total">0</span>)</button>
+        <button type="button" class="opt-btn" id="starred-opt" onclick="setExamPoolLabeled(this)"><span class="opt-btn-dot" id="exam-opt-dot"></span><span id="exam-opt-text">Đã nhớ</span> (<span id="star-count">0</span>)</button>
+      </div>
+    </div>
+    <div class="setup-section">
+      <span class="setup-label">Loại kiểm tra <small style="color:#888">(chọn 1 hoặc nhiều)</small></span>
+      <div class="option-group" id="exam-type-group">
+        <button type="button" class="opt-btn active" onclick="toggleExamType('meaning',this)">KT nghĩa</button>
+        <button type="button" class="opt-btn" onclick="toggleExamType('primary',this)">KT từ gốc</button>
+        <button type="button" class="opt-btn" onclick="toggleExamType('reading',this)">KT reading</button>
+      </div>
+    </div>
+    <div class="setup-section">
+      <span class="setup-label">Số từ</span>
+      <div class="option-group">
+        <button type="button" class="opt-btn active" onclick="setExamOpt('count',10,this)">10</button>
+        <button type="button" class="opt-btn" onclick="setExamOpt('count',50,this)">50</button>
+        <button type="button" class="opt-btn" id="exam-all-btn" onclick="setExamOpt('count',0,this)">Tất cả</button>
+        <input class="num-input" type="number" id="custom-count" placeholder="Tự nhập..." min="1" oninput="setExamOpt('count',parseInt(this.value)||0,null)">
+      </div>
+      <div class="exam-warn" id="exam-warn"></div>
+    </div>
+    <div class="toggle-row" id="skip-starred-row" onclick="toggleSkipStarred()">
+      <div class="toggle-label">Bỏ qua các từ đã đánh dấu<br><small>Chỉ kiểm tra từ chưa có nhãn</small></div>
+      <div class="toggle-switch on" id="skip-starred-toggle"></div>
+    </div>
+    <div class="toggle-row" id="hide-reading-row" onclick="toggleHideReadingExam()">
+      <div class="toggle-label">Ẩn reading trong bài kiểm tra<br><small>Chỉ hiện từ gốc, rèn nhớ phát âm</small></div>
+      <div class="toggle-switch" id="hide-reading-toggle"></div>
+    </div>
+    <div class="progress-wrap" id="exam-progress-wrap">
+      <div class="progress-label">
+        <span>Tiến độ</span>
+        <span><b id="prog-starred">0</b> / <span id="prog-total">0</span> từ đã nhớ ⭐</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="progress-note" id="prog-note">Còn <b>0</b> từ chưa đánh dấu</div>
+    </div>
+    <button type="button" class="btn-reset-progress" onclick="resetStarProgress()">↺ Đặt lại tiến độ (xóa hết ⭐)</button>
+    <div class="setup-actions">
+      <button type="button" class="btn-back" onclick="backToApp()">← Quay lại</button>
+      <button type="button" class="btn-start" onclick="startExam()">Bắt đầu →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div id="quiz-screen" class="screen">
+  <div class="quiz-header">
+    <div>
+      <div style="font-size:16px;font-weight:700;color:var(--gold-light)">Andeck</div>
+      <div class="quiz-progress-text" id="quiz-prog-text">Câu 1 / 10</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="quiz-progress-bar-wrap"><div class="quiz-progress-bar" id="quiz-bar" style="width:0%"></div></div>
+      <button type="button" class="btn-nav" onclick="quitQuiz()">✕ Thoát</button>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-card" id="quiz-card"></div>
+  </div>
+</div>
+
+<!-- ==================== RESULT ==================== -->
+<div id="result-screen" class="screen">
+  <div class="result-body">
+    <div class="result-card">
+      <div class="result-score" id="res-score">0/0</div>
+      <div class="result-sub" id="res-sub"></div>
+      <div class="result-stats">
+        <div class="stat-box"><div class="stat-num c" id="res-correct">0</div><div class="stat-label">Đúng</div></div>
+        <div class="stat-box"><div class="stat-num w" id="res-wrong">0</div><div class="stat-label">Sai</div></div>
+      </div>
+      <div class="star-save-section" id="star-save-section">
+        <div class="star-save-title">⭐ Đánh dấu "đã nhớ"</div>
+        <div class="star-save-note">Tick từ nào đã thuộc → lần KT sau bỏ qua. Từ đúng được tick sẵn. Bấm Lưu để chọn nhãn.</div>
+      </div>
+      <div class="result-list" id="res-list"></div>
+      <div style="margin-top:20px">
+        <button type="button" class="btn-save-star" id="btn-save-star" onclick="saveQuizStars()">⭐ Lưu từ đã nhớ</button>
+      </div>
+      <div style="margin-top:16px">
+        <button type="button" class="btn-retry" onclick="startExam()">🔄 Làm tiếp từ mới</button>
+        <button type="button" class="btn-home" onclick="backToApp()">← Về trang học</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== QUIT QUIZ POPUP ==================== -->
+<div class="modal-overlay" id="quit-modal">
+  <div class="modal-box" style="text-align:center">
+    <div style="font-size:32px;margin-bottom:10px">⏸️</div>
+    <h3 style="margin-bottom:8px">Thoát bài kiểm tra?</h3>
+    <p id="quit-summary" style="color:var(--gray);font-size:13px;margin-bottom:20px"></p>
+    <button type="button" class="btn-save-star" onclick="quitAndSave()" style="width:100%;margin-bottom:10px" id="quit-save-btn">⭐ Lưu từ đúng & thoát</button>
+    <button type="button" class="btn-home" onclick="quitNoSave()" style="width:100%;margin-bottom:8px">Thoát không lưu</button>
+    <button type="button" class="btn-back" onclick="closeQuitModal()" style="width:100%">← Tiếp tục làm</button>
+  </div>
+</div>
+
+<!-- ==================== FLASHCARD SETUP ==================== -->
+<div id="fc-setup-screen" class="screen">
+  <div class="quiz-header">
+    <div>
+      <div style="font-size:16px;font-weight:700;color:var(--gold-light)">Andeck</div>
+      <div class="quiz-progress-text">🃏 Flashcard</div>
+    </div>
+  </div>
+  <div class="exam-setup">
+    <h2>🃏 Flashcard</h2>
+    <p>Luyện nhớ từ vựng bằng thẻ ghi nhớ</p>
+    <div class="setup-section">
+      <span class="setup-label">Loại từ</span>
+      <div class="option-group">
+        <button type="button" class="opt-btn active" onclick="setFcOpt('pool','all',this)">Tất cả (<span id="fc-total">0</span>)</button>
+        <button type="button" class="opt-btn" id="fc-starred-opt" onclick="setFcPoolLabeled(this)"><span class="opt-btn-dot" id="fc-opt-dot"></span><span id="fc-opt-text">Đã nhớ</span> (<span id="fc-starred">0</span>)</button>
+        <button type="button" class="opt-btn" onclick="setFcOpt('pool','unstarred',this)">Chưa nhớ (<span id="fc-unstarred">0</span>)</button>
+      </div>
+    </div>
+    <div class="setup-section">
+      <span class="setup-label">Thứ tự</span>
+      <div class="option-group">
+        <button type="button" class="opt-btn active" onclick="setFcOpt('order','seq',this)">Theo thứ tự</button>
+        <button type="button" class="opt-btn" onclick="setFcOpt('order','rand',this)">Ngẫu nhiên</button>
+      </div>
+    </div>
+    <div class="setup-section">
+      <span class="setup-label">Số từ</span>
+      <div class="option-group">
+        <button type="button" class="opt-btn active" onclick="setFcOpt('count',10,this)">10</button>
+        <button type="button" class="opt-btn" onclick="setFcOpt('count',50,this)">50</button>
+        <button type="button" class="opt-btn" onclick="setFcOpt('count',0,this)">Tất cả</button>
+        <input class="num-input" type="number" id="fc-custom-count" placeholder="Tự nhập..." min="1" oninput="setFcOpt('count',parseInt(this.value)||0,null)">
+      </div>
+    </div>
+    <div class="setup-section">
+      <span class="setup-label">Lưu vào</span>
+      <div class="fc-save-label-row">
+        <div class="fc-save-label-display" id="fc-save-label-display" aria-live="polite">
+          <span class="fc-save-label-star" id="fc-save-label-star">★</span>
+          <span class="fc-save-label-name" id="fc-save-label-name">Đã nhớ</span>
+        </div>
+        <button type="button" class="opt-btn fc-save-label-change" onclick="openFcSaveLabelPicker()">Đổi nhãn ›</button>
+      </div>
+    </div>
+    <div class="toggle-row" onclick="toggleFcReading()">
+      <div class="toggle-label">Ẩn reading<br><small>Chỉ hiện từ gốc, rèn nhớ phát âm</small></div>
+      <div class="toggle-switch" id="fc-reading-toggle"></div>
+    </div>
+    <div class="setup-actions">
+      <button type="button" class="btn-back" onclick="backToApp()">← Quay lại</button>
+      <button type="button" class="btn-start" onclick="startFc()">Bắt đầu →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FLASHCARD PLAY ==================== -->
+<div id="fc-play-screen" class="screen">
+  <div class="quiz-header">
+    <div>
+      <div style="font-size:16px;font-weight:700;color:var(--gold-light)">Flashcard</div>
+      <div class="quiz-progress-text" id="fc-prog-text">1/10</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="quiz-progress-bar-wrap"><div class="quiz-progress-bar" id="fc-prog-bar" style="width:10%"></div></div>
+      <button type="button" class="btn-nav" onclick="showFcQuit()">✕ Thoát</button>
+    </div>
+  </div>
+  <div class="fc-body">
+    <div class="fc-card-wrap" onclick="fcFlip(event)">
+      <div class="fc-card" id="fc-card">
+        <div class="fc-face fc-front">
+          <div class="fc-face-top"><button type="button" class="fc-star" id="fc-sf" onclick="event.stopPropagation();fcToggleStar()" aria-label="Đánh dấu đã nhớ"></button></div>
+          <div class="fc-face-center">
+            <div class="fc-hanzi" id="fc-primary">—</div>
+            <div class="fc-pinyin" id="fc-reading">—</div>
+            <button type="button" class="fc-speak-btn" onclick="event.stopPropagation();fcSpeak()">🔊</button>
+          </div>
+          <div class="fc-face-bottom"><span class="fc-hint">👆 Nhấp để xem nghĩa</span></div>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="fc-face-top"><button type="button" class="fc-star" id="fc-sb" onclick="event.stopPropagation();fcToggleStar()" aria-label="Đánh dấu đã nhớ"></button></div>
+          <div class="fc-face-center">
+            <div class="fc-tuloai" id="fc-pos"></div>
+            <div class="fc-meaning" id="fc-meaning">—</div>
+            <div class="fc-example" id="fc-example">
+              <div class="fc-ex-hanzi" id="fc-ex-primary"></div>
+              <div class="fc-ex-pinyin" id="fc-ex-reading"></div>
+              <div class="fc-ex-viet" id="fc-ex-meaning"></div>
+            </div>
+          </div>
+          <div class="fc-face-bottom"><span class="fc-hint">👆 Nhấp để xem mặt trước</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-nav">
+      <button type="button" class="fc-nav-btn" id="fc-prev" onclick="fcPrev()">◀</button>
+      <div class="fc-nav-line"></div>
+      <div class="fc-nav-counter"><span id="fc-cur">1</span>/<span id="fc-tot">10</span></div>
+      <div class="fc-nav-line"></div>
+      <button type="button" class="fc-nav-btn" id="fc-next" onclick="fcNext()">▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FLASHCARD QUIT MODAL ==================== -->
+<div class="modal-overlay" id="fc-quit-modal">
+  <div class="modal-box" style="text-align:center">
+    <div style="font-size:32px;margin-bottom:10px">⏸️</div>
+    <h3 style="margin-bottom:8px">Thoát Flashcard?</h3>
+    <p id="fc-quit-summary" style="color:var(--gray);font-size:13px;margin-bottom:20px"></p>
+    <button type="button" class="btn-save-star" id="fc-quit-save" onclick="fcQuitSave()" style="width:100%;margin-bottom:10px"></button>
+    <button type="button" class="btn-home" onclick="fcQuitNoSave()" style="width:100%;margin-bottom:8px">Thoát không lưu</button>
+    <button type="button" class="btn-back" onclick="closeFcQuit()" style="width:100%">← Tiếp tục học</button>
+  </div>
+</div>
+
+<!-- ==================== FLASHCARD END ==================== -->
+<div id="fc-end-screen" class="screen">
+  <div class="quiz-header">
+    <div>
+      <div style="font-size:16px;font-weight:700;color:var(--gold-light)">Andeck</div>
+    </div>
+  </div>
+  <div class="result-body">
+    <div class="result-card" style="text-align:center">
+      <div style="font-size:48px;margin-bottom:12px">🎉</div>
+      <div class="result-score">Hoàn thành!</div>
+      <div class="result-sub">Bạn đã lướt qua tất cả từ vựng</div>
+      <div class="result-stats">
+        <div class="stat-box"><div class="stat-num c" id="fc-end-total">10</div><div class="stat-label">Tổng từ</div></div>
+        <div class="stat-box"><div class="stat-num" id="fc-end-starred" style="color:var(--gold)">5</div><div class="stat-label">Đã nhớ ⭐</div></div>
+      </div>
+      <div style="margin-top:20px">
+        <button type="button" class="btn-save-star" id="fc-end-save" onclick="fcEndSave()">⭐ Lưu từ đã nhớ</button>
+      </div>
+      <div style="margin-top:16px">
+        <button type="button" class="btn-retry" onclick="startFc()">🔄 Học lại</button>
+        <button type="button" class="btn-home" onclick="backToApp()">← Về trang học</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TIMER ==================== -->
+<div class="tmr-modal" id="tmr-modal">
+  <div class="tmr-modal-card">
+    <h2>Đồng hồ</h2>
+    <p class="tmr-subtitle">Chọn chế độ và thời gian</p>
+    <div class="tmr-mode-tabs">
+      <button type="button" class="tmr-mode-tab active" data-mode="countdown" onclick="tmrSelectMode('countdown')">Đếm ngược</button>
+      <button type="button" class="tmr-mode-tab" data-mode="countup" onclick="tmrSelectMode('countup')">Đếm xuôi</button>
+    </div>
+    <div id="tmr-countdown-inputs">
+      <div class="tmr-time-inputs">
+        <div class="tmr-time-input-group">
+          <label for="tmr-input-h">Giờ</label>
+          <input type="number" class="tmr-time-input" id="tmr-input-h" min="0" max="23" value="0">
+        </div>
+        <div class="tmr-time-input-group">
+          <label for="tmr-input-m">Phút</label>
+          <input type="number" class="tmr-time-input" id="tmr-input-m" min="0" max="59" value="25">
+        </div>
+        <div class="tmr-time-input-group">
+          <label for="tmr-input-s">Giây</label>
+          <input type="number" class="tmr-time-input" id="tmr-input-s" min="0" max="59" value="0">
+        </div>
+      </div>
+    </div>
+    <div class="tmr-modal-actions">
+      <button type="button" class="tmr-btn tmr-btn-secondary" onclick="tmrCloseModal()">Hủy</button>
+      <button type="button" class="tmr-btn tmr-btn-primary" onclick="tmrStart()">Bắt đầu</button>
+    </div>
+  </div>
+</div>
+
+<div class="tmr-window" id="tmr-window" style="top:100px;right:24px">
+  <span class="tmr-mode-label" id="tmr-mode-label">Đếm ngược</span>
+  <div class="tmr-controls">
+    <button type="button" class="tmr-ctrl" id="tmr-playpause-btn" title="Tạm dừng / Tiếp tục" onclick="tmrTogglePlayPause(event)">
+      <svg id="tmr-play-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"></polygon></svg>
+      <svg id="tmr-pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+    </button>
+    <button type="button" class="tmr-ctrl" title="Reset" onclick="tmrReset(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+    </button>
+    <button type="button" class="tmr-ctrl tmr-close" title="Đóng" onclick="tmrCloseWindow(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+  <div class="tmr-digits" id="tmr-digits" data-ghost="88:88">25:00</div>
+  <div class="tmr-resize tl" data-corner="tl"></div>
+  <div class="tmr-resize tr" data-corner="tr"></div>
+  <div class="tmr-resize bl" data-corner="bl"></div>
+  <div class="tmr-resize br" data-corner="br"></div>
+</div>
+
+<!-- ── LABEL EDIT MODAL ── -->
+<div class="label-modal-overlay" id="label-edit-modal">
+  <div class="label-modal-box" onclick="event.stopPropagation()">
+    <div class="label-modal-title" id="lem-title">Tạo nhãn mới</div>
+    <input class="label-modal-input" id="lem-name" type="text" placeholder="Tên nhãn..." maxlength="20">
+    <div class="label-modal-colors" id="lem-color-wrap"></div>
+    <div class="label-modal-actions">
+      <button type="button" class="label-modal-btn cancel" onclick="closeLabelEditModal()">Hủy</button>
+      <button type="button" class="label-modal-btn save" onclick="saveLabelEdit()">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── LABEL MANAGE MODAL ── -->
+<div class="label-modal-overlay" id="label-manage-modal">
+  <div class="label-modal-box" onclick="event.stopPropagation()">
+    <div class="label-modal-title">Quản lý nhãn</div>
+    <div id="lmm-list"></div>
+    <div class="label-modal-actions">
+      <button type="button" class="label-modal-btn cancel" onclick="closeManageLabelsModal()">Đóng</button>
     </div>
   </div>
 </div>
@@ -385,6 +737,10 @@
 <script src="modules/03-auth.js"></script>
 <script src="modules/04-main-table.js"></script>
 <script src="modules/05-speech-sound.js"></script>
+<script src="modules/06-label-system.js"></script>
+<script src="modules/07-exam-quiz.js"></script>
+<script src="modules/08-flashcard.js"></script>
+<script src="modules/09-timer.js"></script>
 <script src="modules/deck-features/core.js"></script>
 <script src="modules/deck-features/editor.js"></script>
 <script src="modules/deck-features/import.js"></script>

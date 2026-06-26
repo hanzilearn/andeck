@@ -4,6 +4,7 @@
    ===================================================================== */
 
 var readingHidden = false;
+var starFilter = 'all';
 var searchQuery = '';
 
 function adGetStudyProfile() {
@@ -57,6 +58,77 @@ function toggleReading() {
   render();
 }
 
+function toggleHideStarred() {
+  const lblFilter = getCurrentFilterState();
+  const btn = document.getElementById('hide-starred-btn');
+  if (lblFilter.state === 'all') {
+    openFilterMenu('table');
+    return;
+  }
+  if (lblFilter.state === 'labels') {
+    setCurrentFilterState('unlabeled', []);
+    starFilter = 'all';
+    if (btn) {
+      btn.classList.remove('on-red');
+      btn.classList.add('on-red-slash');
+    }
+  } else {
+    setCurrentFilterState('all', []);
+    starFilter = 'all';
+    if (btn) btn.classList.remove('on-red', 'on-red-slash');
+  }
+  render();
+}
+
+function toggleStar(idx) {
+  if (isFreeLocked(idx)) return;
+  const cur = itemLabels[idx];
+  if (!cur) {
+    if (!activeLabelId) {
+      openAssignMenu();
+      return;
+    }
+    itemLabels[idx] = activeLabelId;
+    starred.add(idx);
+  } else if (cur === activeLabelId) {
+    delete itemLabels[idx];
+    starred.delete(idx);
+  } else {
+    itemLabels[idx] = activeLabelId;
+  }
+  render();
+  updateStarCount();
+  saveStars();
+}
+
+function updateStarCount() {
+  const el = document.getElementById('star-count');
+  if (el) el.textContent = starred.size;
+}
+
+function saveStars() {
+  const token = getAuthToken();
+  if (!token || !currentLevel) return;
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + token
+  };
+  fetch(window.location.origin + '/api/stars', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ level: currentLevel, stars: [...starred] })
+  }).catch(function (e) {
+    console.error('saveStars error:', e);
+  });
+  fetch(window.location.origin + '/api/items', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ level: currentLevel, items: itemLabels })
+  }).catch(function (e) {
+    console.error('saveItems error:', e);
+  });
+}
+
 function handleSearch(input) {
   searchQuery = input.value.trim().toLowerCase();
   render();
@@ -92,6 +164,10 @@ function resetAll() {
   searchQuery = '';
   const si = document.getElementById('search-input');
   if (si) si.value = '';
+  starFilter = 'all';
+  const hsBtn = document.getElementById('hide-starred-btn');
+  if (hsBtn) hsBtn.classList.remove('on-red', 'on-red-slash');
+  setCurrentFilterState('all', []);
   readingHidden = false;
   const rb = document.getElementById('reading-btn');
   if (rb) rb.classList.remove('on-red');
@@ -166,6 +242,21 @@ function render() {
           .toLowerCase()
           .indexOf(searchQuery) !== -1
       );
+    });
+  }
+
+  if (starFilter === 'only') filteredOrder = filteredOrder.filter(function (idx) { return starred.has(idx); });
+  else if (starFilter === 'hide') filteredOrder = filteredOrder.filter(function (idx) { return !starred.has(idx); });
+
+  const labelFilter = getCurrentFilterState();
+  if (labelFilter.state === 'labels' && labelFilter.ids.length > 0) {
+    filteredOrder = filteredOrder.filter(function (idx) {
+      const lid = itemLabels[idx];
+      return lid && labelFilter.ids.includes(lid);
+    });
+  } else if (labelFilter.state === 'unlabeled') {
+    filteredOrder = filteredOrder.filter(function (idx) {
+      return !itemLabels[idx];
     });
   }
 
@@ -276,6 +367,26 @@ function render() {
       meaningLbl +
       '</th><th style="width:200px">B\u1ea5m \u0111\u1ec3 \u0111\u1ecdc</th><th style="width:36px"></th></tr>';
   } else {
+    const actLbl = activeLabelId
+      ? userLabels.find(function (l) {
+          return l.id === activeLabelId;
+        })
+      : null;
+    const dotC = actLbl ? actLbl.color : '#d4a017';
+    const lblTxt = actLbl ? esc(actLbl.name) : 'Đã nhớ';
+    const lblHdr =
+      inDeck && !dmOn && !emOn
+        ? '<th class="th-label-header" style="width:140px" onclick="openAssignMenu()" title="Click để đổi nhãn">' +
+          '<div class="th-label-inner">' +
+          '<span class="th-label-dot" style="background:' +
+          dotC +
+          '"></span>' +
+          '<span class="th-label-text">' +
+          lblTxt +
+          '</span>' +
+          '<span class="th-label-arrow">▼</span>' +
+          '</div></th>'
+        : '';
     const readHdr = deckProfile.showReading ? '<th>' + readingLbl + '</th>' : '';
     const exHdr = deckProfile.showExample ? '<th class="th-example-pc">V\u00ed d\u1ee5</th>' : '';
     thead.innerHTML =
@@ -290,6 +401,7 @@ function render() {
       meaningLbl +
       '</th>' +
       exHdr +
+      lblHdr +
       '</tr>';
   }
 
@@ -519,6 +631,16 @@ function render() {
     const readCell = deckProfile.showReading
       ? '<td class="td-pinyin"><div class="td-pinyin-inner">' + speakBtn + readingText + '</div></td>'
       : '';
+    const lid = itemLabels[idx];
+    const lbl = lid
+      ? userLabels.find(function (l) {
+          return l.id === lid;
+        })
+      : null;
+    const starCell =
+      inDeck && !dmOn && !emOn
+        ? '<td class="td-star">' + (locked ? '🔒' : renderStarSVG(idx, lbl)) + '</td>'
+        : '';
     const allCls = deckRowClass(locked ? 'row-locked' : '');
     return (
       '<tr class="' +
@@ -538,6 +660,7 @@ function render() {
       esc(w.meaning) +
       '</td>' +
       exPC +
+      starCell +
       '</tr>'
     );
   }

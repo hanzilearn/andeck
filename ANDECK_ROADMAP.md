@@ -227,7 +227,7 @@ API: `GET /api/decks/lang-profiles` → frontend render form, cột bảng, impo
 - [x] Bảng: 4 mode (Tất cả, KT từ gốc, KT nghĩa, KT phát âm*)
 - [x] Tìm kiếm, shuffle, ẩn reading (nếu profile có reading)
 - [x] TTS + mic theo `langPair`
-- [ ] Nhãn màu (max 8), sao, quiz (≥4 từ), flashcard, timer (≥768px)
+- [x] Nhãn màu (max 8), sao, quiz (≥4 từ), flashcard, timer (≥768px)
 - [x] Header: upfile append → Thêm từ → Sửa → Xóa
 
 ### Import
@@ -300,7 +300,7 @@ Tất cả (trừ login): `Authorization: Bearer <token>`.
 | **2** | Frontend: auth + hub deck | C | ✅ |
 | **3** | Editor từ + import AI (create/append) | D | ✅ |
 | **4** | Bảng học + TTS/mic generic | E | ✅ |
-| **5** | Quiz, flashcard, labels, stars, timer | F | ⬜ |
+| **5** | Quiz, flashcard, labels, stars, timer | F | ✅ |
 | **6** | Admin + export JSON + Hanzi legacy import | G | ⬜ |
 | **7** | Deploy Render + QA + ANDECK_OVERVIEW.md | H | ⬜ |
 
@@ -449,9 +449,9 @@ Cập nhật Phase 4.
 
 **Deliverables:**
 
-- [ ] Port `06-label-system.js`, `07-exam-quiz.js`, `08-flashcard.js`, `09-timer.js`
-- [ ] `currentLevel = 'deck_<deckId>'`
-- [ ] CSS tương ứng
+- [x] Port `06-label-system.js`, `07-exam-quiz.js`, `08-flashcard.js`, `09-timer.js`
+- [x] `currentLevel = 'deck_<deckId>'`
+- [x] CSS tương ứng
 
 **Prompt:**
 
@@ -582,4 +582,4 @@ A → B → C → D → E → F → G → H
 | 2026-06-25 | Phase 0 (Chat A): scaffold repo — package, server skeleton, lang-profiles, models draft, HTML shell, seed admin |
 | 2026-06-25 | Phase 1 (Chat B): backend auth, decks CRUD/import/bulk/export, quota, labels/stars, admin skeleton |
 | 2026-06-25 | Phase 2 (Chat C): frontend auth + hub deck — login/register, CRUD deck, langPair, quota pills, study shell |
-| 2026-06-26 | Phase 4 (Chat E): bảng học 4 mode, search/shuffle/ẩn reading, TTS/mic generic, tách CSS deck-editor/import |
+| 2026-06-26 | Phase 5 (Chat F): quiz, flashcard, nhãn/sao, timer — port modules + CSS, tích hợp bảng học |
