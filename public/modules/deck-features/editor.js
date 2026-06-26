@@ -93,7 +93,7 @@ function adSetAppHeaderLabel(deckName, wordCount) {
   const el = document.getElementById('app-deck-label');
   if (!el) return;
   const n = wordCount != null ? wordCount : 0;
-  el.textContent = deckName + ' (' + n + ' t\u00f2)';
+  el.textContent = deckName + ' (' + n + ' t\u1eeb)';
 }
 
 function adIsDeckWordAtQuota() {

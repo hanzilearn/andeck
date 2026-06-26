@@ -23,12 +23,12 @@
 .table-loading-text { font-size: 14px; }
 @keyframes table-load-spin { to { transform: rotate(360deg); } }
 
-/* ── App Header ── */
-.app-header {
+/* ── App Header (#app-screen — compact, gần Hanzi) ── */
+#app-screen .app-header {
   background: var(--red-dark);
   color: white;
   padding: 0 32px;
-  height: 48px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,10 +54,10 @@
   letter-spacing: 0;
 }
 #app-deck-label {
-  color: rgba(255,255,255,.92);
-  font-size: 14px;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-weight: 600;
+  color: rgba(255,255,255,.6);
+  font-size: 12px;
+  font-family: 'Be Vietnam Pro';
+  font-weight: 300;
   letter-spacing: 0;
   min-width: 0;
   overflow: hidden;
@@ -65,19 +65,19 @@
   white-space: nowrap;
 }
 
-.btn-back-arrow {
+#app-screen .btn-back-arrow {
   background: none;
   border: none;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
   transition: background .15s;
   display: flex;
   align-items: center;
 }
-.btn-back-arrow:hover { background: rgba(255,255,255,.15); }
+#app-screen .btn-back-arrow:hover { background: rgba(255,255,255,.15); }
 
 .app-header-actions {
   margin-left: auto;
@@ -87,50 +87,50 @@
   gap: 8px;
 }
 
-.delete-mode-btn {
+#app-screen .delete-mode-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 7px 10px;
+  padding: 6px 8px;
   border: none;
   border-radius: 8px;
   background: #fff;
   color: #C93030;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(226, 75, 74, 0.2);
   transition: background .15s, box-shadow .15s, transform .15s;
 }
-.delete-mode-btn i {
-  font-size: 18px;
+#app-screen .delete-mode-btn i {
+  font-size: 16px;
   line-height: 1;
 }
-.delete-mode-btn:hover {
+#app-screen .delete-mode-btn:hover {
   background: #FFF5F5;
   box-shadow: 0 4px 12px rgba(226, 75, 74, 0.3);
   transform: translateY(-1px);
 }
-.delete-mode-btn.is-active {
+#app-screen .delete-mode-btn.is-active {
   background: #E24B4A;
   color: #fff;
   box-shadow: 0 2px 8px rgba(226, 75, 74, 0.45);
 }
-.delete-mode-btn.is-active:hover {
+#app-screen .delete-mode-btn.is-active:hover {
   background: #C93030;
   box-shadow: 0 4px 12px rgba(226, 75, 74, 0.55);
 }
 
-.edit-mode-btn {
+#app-screen .edit-mode-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 7px 12px;
+  gap: 5px;
+  padding: 6px 10px;
   border: none;
   border-radius: 8px;
   background: #fff;
   color: #3d6b8e;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   font-family: 'Be Vietnam Pro', sans-serif;
   cursor: pointer;
@@ -138,21 +138,21 @@
   transition: background .15s, box-shadow .15s, transform .15s;
   white-space: nowrap;
 }
-.edit-mode-btn i {
-  font-size: 17px;
+#app-screen .edit-mode-btn i {
+  font-size: 14px;
   line-height: 1;
 }
-.edit-mode-btn:hover {
+#app-screen .edit-mode-btn:hover {
   background: #f0f6fc;
   box-shadow: 0 4px 12px rgba(61, 107, 142, 0.28);
   transform: translateY(-1px);
 }
-.edit-mode-btn.is-active {
+#app-screen .edit-mode-btn.is-active {
   background: #4a7a9e;
   color: #fff;
   box-shadow: 0 2px 8px rgba(61, 107, 142, 0.45);
 }
-.edit-mode-btn.is-active:hover {
+#app-screen .edit-mode-btn.is-active:hover {
   background: #3d6b8e;
   box-shadow: 0 4px 12px rgba(61, 107, 142, 0.55);
 }
@@ -188,11 +188,11 @@ tr.em-row-edit:hover {
   background: rgba(74, 122, 158, 0.06);
 }
 
-.add-word-btn {
+#app-screen .add-word-btn {
   margin-left: 0;
   margin-right: 0;
-  padding: 7px 14px;
-  font-size: 15px;
+  padding: 6px 10px;
+  font-size: 12px;
   font-weight: 600;
   font-family: 'Be Vietnam Pro', sans-serif;
   color: #fff;
@@ -208,26 +208,26 @@ tr.em-row-edit:hover {
   box-shadow: 0 2px 8px rgba(42, 69, 99, 0.45);
   transition: background .15s, box-shadow .15s, transform .15s;
 }
-.add-word-btn:hover {
+#app-screen .add-word-btn:hover {
   background: linear-gradient(90deg, #1f374f 0%, #3d7ec4 100%);
   box-shadow: 0 4px 12px rgba(42, 69, 99, 0.55);
   transform: translateY(-1px);
 }
-.add-word-icon {
-  font-size: 18px;
+#app-screen .add-word-icon {
+  font-size: 15px;
   font-weight: 700;
   line-height: 1;
 }
 
 /* Nút upfile header app-screen — đồng bộ hàng Thêm từ / Chỉnh sửa (không dùng pill hub) */
-.mp-upfile-btn.mp-upfile-btn--header {
+#app-screen .mp-upfile-btn.mp-upfile-btn--header {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 5px;
   margin: 0;
-  padding: 7px 12px;
-  font-size: 14px;
+  padding: 6px 10px;
+  font-size: 12px;
   font-weight: 600;
   font-family: 'Be Vietnam Pro', sans-serif;
   color: #fff;
@@ -240,7 +240,7 @@ tr.em-row-edit:hover {
   box-shadow: 0 2px 8px rgba(26, 92, 74, 0.45);
   transition: background .15s, box-shadow .15s, transform .15s;
 }
-.mp-upfile-btn.mp-upfile-btn--header:hover {
+#app-screen .mp-upfile-btn.mp-upfile-btn--header:hover {
   background: linear-gradient(90deg, #144a3b 0%, #268a6c 100%);
   box-shadow: 0 4px 12px rgba(26, 92, 74, 0.55);
   transform: translateY(-1px);
@@ -276,10 +276,10 @@ tr.em-row-edit:hover {
   align-items: center;
 }
 
-.mp-upfile-btn.mp-upfile-btn--header span[aria-hidden="true"] {
+#app-screen .mp-upfile-btn.mp-upfile-btn--header span[aria-hidden="true"] {
   display: inline-flex;
   align-items: center;
-  font-size: 17px;
+  font-size: 14px;
   line-height: 1;
 }
 .mp-upfile-btn.mp-upfile-btn--header .mp-upfile-label {
@@ -306,27 +306,27 @@ tr.em-row-edit:hover {
 .tmr-avatar-group { display: flex; align-items: center; gap: 10px; }
 
 /* ── Toolbar ── */
-.toolbar {
+#app-screen .toolbar {
   background: var(--paper-dark);
   border-bottom: 1px solid rgba(192,57,43,.1);
-  padding: 10px 32px;
+  padding: 8px 24px;
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
   position: sticky;
-  top: 48px;
+  top: 44px;
   z-index: 99;
   box-shadow: 0 2px 8px rgba(26,10,0,.07);
 }
 
-.mode-btn, .shuffle-btn, .reset-btn, .exam-btn {
-  padding: 7px 15px;
+#app-screen .mode-btn, #app-screen .shuffle-btn, #app-screen .reset-btn, #app-screen .exam-btn {
+  padding: 6px 12px;
   border-radius: 4px;
   border: 1.5px solid rgba(192,57,43,.22);
   background: white;
   font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all .15s;
@@ -358,8 +358,8 @@ tr.em-row-edit:hover {
 }
 
 /* Icon toggle tròn trong toolbar */
-.icon-toggle {
-  width: 32px; height: 32px;
+#app-screen .icon-toggle {
+  width: 28px; height: 28px;
   border-radius: 50%;
   border: 1.5px solid rgba(0,0,0,.08);
   background: white;
@@ -426,26 +426,26 @@ tr.em-row-edit:hover {
 }
 
 /* ── Search Bar ── */
-.search-bar-wrap {
-  padding: 6px 20px 0;
+#app-screen .search-bar-wrap {
+  padding: 4px 20px 0;
   background: var(--paper-dark);
 }
-.search-input {
+#app-screen .search-input {
   width: 100%;
-  padding: 9px 14px;
+  padding: 7px 12px;
   border: 1.5px solid rgba(192,57,43,.18);
   border-radius: 6px;
   font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   outline: none;
   background: white;
   transition: border-color .2s;
 }
-.search-input:focus {
+#app-screen .search-input:focus {
   border-color: var(--red);
   box-shadow: 0 0 0 3px rgba(192,57,43,.08);
 }
-.search-input::placeholder { color: #aaa; }
+#app-screen .search-input::placeholder { color: #aaa; }
 
 /* ── Score Bar ── */
 .score-bar {
@@ -458,17 +458,17 @@ tr.em-row-edit:hover {
 }
 
 /* ── Table ── */
-.table-wrap { padding: 20px 32px 60px; overflow-x: auto; }
+#app-screen .table-wrap { padding: 16px 24px 60px; overflow-x: auto; }
 
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+#app-screen table { width: 100%; border-collapse: collapse; font-size: 14px; }
 
-thead th {
+#app-screen thead th {
   background: #2C3E50;
   color: white;
-  padding: 11px 14px;
+  padding: 8px 12px;
   text-align: left;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
@@ -740,7 +740,7 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   .td-example-pc, .th-example-pc { display: none !important; }
 }
 @media (max-width: 600px) {
-  .app-header { padding: 0 14px; }
+  #app-screen .app-header { padding: 0 14px; }
   .app-logo {
     min-width: 0;
     flex: 1;
@@ -759,30 +759,30 @@ tr.row-locked .td-meaning { filter: blur(2px); }
     gap: 6px;
     flex-shrink: 0;
   }
-  .add-word-btn .add-word-label { display: none; }
-  .mp-upfile-btn--header .mp-upfile-label { display: none; }
-  .edit-mode-btn .edit-mode-label { display: none; }
-  .add-word-btn {
-    padding: 7px 10px;
-    min-width: 36px;
+  #app-screen .add-word-btn .add-word-label { display: none; }
+  #app-screen .mp-upfile-btn--header .mp-upfile-label { display: none; }
+  #app-screen .edit-mode-btn .edit-mode-label { display: none; }
+  #app-screen .add-word-btn {
+    padding: 6px 8px;
+    min-width: 32px;
     justify-content: center;
   }
-  .mp-upfile-btn.mp-upfile-btn--header {
-    padding: 7px 10px;
-    min-width: 36px;
+  #app-screen .mp-upfile-btn.mp-upfile-btn--header {
+    padding: 6px 8px;
+    min-width: 32px;
     justify-content: center;
   }
-  .edit-mode-btn {
-    padding: 7px 9px;
-    min-width: 36px;
+  #app-screen .edit-mode-btn {
+    padding: 6px 8px;
+    min-width: 32px;
     gap: 0;
   }
-  .delete-mode-btn { padding: 7px 9px; }
-  .toolbar { padding: 8px 14px; gap: 6px; }
-  .table-wrap { padding: 10px 8px 40px; }
+  #app-screen .delete-mode-btn { padding: 6px 8px; }
+  #app-screen .toolbar { padding: 6px 14px; gap: 6px; }
+  #app-screen .table-wrap { padding: 10px 8px 40px; }
   .td-input { width: 120px; }
   .vocab-input { font-size: 14px; }
-  .search-bar-wrap { padding: 6px 8px 0; }
+  #app-screen .search-bar-wrap { padding: 4px 8px 0; }
   .score-bar { padding: 6px 8px; font-size: 12px; }
 }
 /* ============================================================
@@ -806,8 +806,8 @@ tr.row-locked .td-meaning { filter: blur(2px); }
     align-items: center;
     justify-content: center;
     gap: 4px;
-    width: 44px;
-    height: 36px;
+    width: 40px;
+    height: 32px;
     border-radius: 8px;
     background: var(--red-dark);
     border: none;
@@ -839,7 +839,7 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   .mode-dropdown-menu {
     display: none;
     position: fixed;
-    top: 96px; /* header 48px + toolbar ~48px */
+    top: 88px; /* header 44px + toolbar ~44px */
     left: 14px;
     z-index: 201;
     background: white;
@@ -884,18 +884,18 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   .mode-dropdown-overlay,
   .mode-dropdown-menu { display: none !important; }
 }
-[data-theme="dark"] .app-header {
+[data-theme="dark"] #app-screen .app-header {
   background: #25252D;
   border-bottom-color: rgba(255,255,255,0.06);
 }
-[data-theme="dark"] .toolbar {
+[data-theme="dark"] #app-screen .toolbar {
   background: #1E1E24;
   border-bottom-color: rgba(255,255,255,0.06);
 }
-[data-theme="dark"] .search-bar-wrap {
+[data-theme="dark"] #app-screen .search-bar-wrap {
   background: #1E1E24;
 }
-[data-theme="dark"] .search-input {
+[data-theme="dark"] #app-screen .search-input {
   background: #25252D;
   color: #C8D4E0;
   border-color: rgba(255,255,255,0.08);
@@ -909,15 +909,15 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   background: #7A8FA6;
   color: #fff;
 }
-[data-theme="dark"] .app-header {
+[data-theme="dark"] #app-screen .app-header {
   background: #25252D !important;
 }
-[data-theme="dark"] .mp-upfile-btn.mp-upfile-btn--header {
+[data-theme="dark"] #app-screen .mp-upfile-btn.mp-upfile-btn--header {
   color: #fff;
   background: linear-gradient(90deg, #1a5c4a 0%, #2f9b7a 100%);
   box-shadow: 0 2px 10px rgba(47, 155, 122, 0.35);
 }
-[data-theme="dark"] .mp-upfile-btn.mp-upfile-btn--header:hover {
+[data-theme="dark"] #app-screen .mp-upfile-btn.mp-upfile-btn--header:hover {
   background: linear-gradient(90deg, #144a3b 0%, #268a6c 100%);
   box-shadow: 0 4px 12px rgba(47, 155, 122, 0.45);
 }
@@ -950,10 +950,9 @@ tr.row-locked .td-meaning { filter: blur(2px); }
 }
 
 /* Dark mode: tiêu đề deck trên header bảng từ */
-[data-theme="dark"] .app-logo #app-deck-label {
-  color: #e8dcc8;
-  font-weight: 500;
-  opacity: 1;
+[data-theme="dark"] #app-deck-label {
+  color: rgba(255,255,255,.6);
+  font-weight: 300;
 }
 [data-theme="dark"] .app-logo #app-level-label {
   color: #e8dcc8;

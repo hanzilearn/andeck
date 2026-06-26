@@ -18,7 +18,7 @@ const LANG_PROFILES = {
   'en-vi': {
     langPair: 'en-vi',
     label: 'Anh → Việt',
-    primaryLabel: 'Từ tiếng Anh',
+    primaryLabel: 'Từ',
     readingLabel: 'Phiên âm',
     meaningLabel: 'Nghĩa',
     requiredFields: ['primary', 'meaning'],
@@ -32,7 +32,7 @@ const LANG_PROFILES = {
   'ja-vi': {
     langPair: 'ja-vi',
     label: 'Nhật → Việt',
-    primaryLabel: 'Từ tiếng Nhật',
+    primaryLabel: 'Từ',
     readingLabel: 'Furigana / Romaji',
     meaningLabel: 'Nghĩa',
     requiredFields: ['primary', 'meaning'],
