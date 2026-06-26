@@ -160,7 +160,7 @@ function adSyncFcSetupLabels() {
   }
 }
 
-function showFlashcard() {
+function _openFlashcardSetup() {
   const t = VOCAB.length,
     s = starred.size;
   document.getElementById('fc-total').textContent = t;
@@ -179,6 +179,17 @@ function showFlashcard() {
   renderFcSaveLabelBtn();
   if (typeof updateFcPoolDisplay === 'function') updateFcPoolDisplay();
   showOnly('fc-setup-screen');
+}
+
+function showFlashcard() {
+  if (window._currentDeckId) {
+    const n = Array.isArray(VOCAB) ? VOCAB.length : 0;
+    if (n < 1) {
+      showLabelToast('Deck chưa có từ để học flashcard', '#95a5a6');
+      return;
+    }
+  }
+  _openFlashcardSetup();
 }
 
 function startFc() {

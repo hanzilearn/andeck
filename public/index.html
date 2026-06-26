@@ -29,8 +29,8 @@
         <div class="theme-toggle-thumb" id="login-thumb"></div>
       </div>
     </div>
-    <div class="login-title">Andeck</div>
-    <div class="login-sub">Học từ vựng đa ngôn ngữ</div>
+    <div class="login-title">Đăng nhập</div>
+    <div class="login-sub">Truy cập tài khoản của bạn</div>
     <div class="login-success" id="login-success"></div>
     <div class="field-wrap">
       <label class="field-label">Email</label>
@@ -55,7 +55,7 @@
         <div class="theme-toggle-thumb" id="register-thumb"></div>
       </div>
     </div>
-    <div class="login-title">Andeck</div>
+    <div class="login-title">Đăng ký</div>
     <div class="login-sub">Tạo tài khoản miễn phí</div>
     <div class="field-wrap">
       <label class="field-label">Email</label>
@@ -85,18 +85,23 @@
     <i class="ti ti-cards" aria-hidden="true"></i>
     <span>Andeck</span>
   </div>
-  <div class="avatar-wrap">
-    <button type="button" class="avatar-btn" id="avatar-btn" onclick="toggleAvatar()"></button>
-    <div class="avatar-dropdown" id="avatar-dropdown">
-      <div class="avatar-dd-email" id="dd-email"></div>
-      <div class="dd-theme-row">
-        <div class="dd-theme-label">Giao diện</div>
-        <div class="theme-toggle-track sm" id="dd-toggle" onclick="toggleTheme(event)" ontouchstart="event.stopPropagation()">
-          <div class="theme-toggle-thumb" id="dd-thumb"></div>
+  <div class="tmr-avatar-group">
+    <button type="button" class="tmr-icon-btn" id="tmr-icon-btn-select" title="Đồng hồ" onclick="tmrOpenModal()" aria-label="Đồng hồ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
+    </button>
+    <div class="avatar-wrap">
+      <button type="button" class="avatar-btn" id="avatar-btn" onclick="toggleAvatar()"></button>
+      <div class="avatar-dropdown" id="avatar-dropdown">
+        <div class="avatar-dd-email" id="dd-email"></div>
+        <div class="dd-theme-row">
+          <div class="dd-theme-label">Giao diện</div>
+          <div class="theme-toggle-track sm" id="dd-toggle" onclick="toggleTheme(event)" ontouchstart="event.stopPropagation()">
+            <div class="theme-toggle-thumb" id="dd-thumb"></div>
+          </div>
         </div>
+        <div class="avatar-dd-item" onclick="showChangePassword()">🔑 Đổi mật khẩu</div>
+        <div class="avatar-dd-item danger" onclick="logout()">↪ Đăng xuất</div>
       </div>
-      <div class="avatar-dd-item" onclick="showChangePassword()">🔑 Đổi mật khẩu</div>
-      <div class="avatar-dd-item danger" onclick="logout()">↪ Đăng xuất</div>
     </div>
   </div>
 </header>
@@ -147,9 +152,6 @@
       </button>
       <button type="button" id="deleteModeBtn" class="delete-mode-btn" style="display:none" title="Xóa từ">
         <i class="ti ti-trash-filled"></i>
-      </button>
-      <button type="button" class="tmr-icon-btn" id="tmr-icon-btn-app" title="Đồng hồ" onclick="tmrOpenModal()" aria-label="Đồng hồ" style="display:none;margin-left:auto;margin-right:12px">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
       </button>
     </div>
   </header>

@@ -816,6 +816,7 @@ function adResetStudyUiState() {
   shuffled = false;
   readingHidden = false;
   searchQuery = '';
+  starFilter = 'all';
   answers = {};
   _answersCache = {};
   document.querySelectorAll('.mode-btn').forEach(function (b, i) {
@@ -827,6 +828,8 @@ function adResetStudyUiState() {
   if (rb) rb.classList.remove('on-red');
   const sb = document.getElementById('shuffle-btn');
   if (sb) sb.classList.remove('on');
+  const hsBtn = document.getElementById('hide-starred-btn');
+  if (hsBtn) hsBtn.classList.remove('on-red', 'on-red-slash');
 }
 
 /* ─── MOBILE MODE DROPDOWN ─── */

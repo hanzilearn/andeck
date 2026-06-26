@@ -117,7 +117,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--gold-light);
@@ -125,6 +125,12 @@ body {
 .select-logo i {
   font-size: 22px;
   color: var(--gold);
+}
+
+#app-select-header .avatar-btn {
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
 }
 
 .field-wrap { margin-bottom: 14px; }

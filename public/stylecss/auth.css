@@ -13,32 +13,10 @@
   background: white;
   border: 1.5px solid rgba(122, 143, 166, 0.22);
   border-radius: 10px;
-  padding: 72px 44px 40px;
+  padding: 48px 44px 40px;
   width: 360px;
   box-shadow: var(--shadow), 0 0 0 8px rgba(196, 168, 130, 0.06);
   position: relative;
-  margin-top: 28px;
-}
-
-.login-card::before {
-  content: 'AD';
-  position: absolute;
-  top: -28px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--gold);
-  color: #1c2b3a;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 56px;
-  text-align: center;
-  letter-spacing: 1px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18), 0 0 0 4px var(--paper);
-  transition: background 0.3s, box-shadow 0.3s;
 }
 
 .login-title {
@@ -261,11 +239,6 @@
   background: #25252d;
   border-color: rgba(255, 255, 255, 0.08);
 }
-[data-theme="dark"] .login-card::before {
-  background: var(--gold);
-  color: #1a1a1f;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), 0 0 0 4px var(--paper);
-}
 [data-theme="dark"] .login-success {
   background: rgba(46, 204, 113, 0.08);
   color: #2ecc71;
@@ -284,6 +257,6 @@
 @media (max-width: 600px) {
   .login-card {
     width: calc(100vw - 32px);
-    padding: 64px 24px 32px;
+    padding: 44px 24px 32px;
   }
 }

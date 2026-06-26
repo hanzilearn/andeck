@@ -39,6 +39,20 @@ function adClearLayoutProfile() {
   window._adLayoutProfile = null;
 }
 
+function adClearDeckWords() {
+  adDeckWords = [];
+}
+
+function adSyncFilterButtonUi() {
+  const lblFilter = getCurrentFilterState();
+  const hsBtn = document.getElementById('hide-starred-btn');
+  if (!hsBtn) return;
+  hsBtn.classList.remove('on-red', 'on-red-slash');
+  if (lblFilter.state === 'labels') hsBtn.classList.add('on-red');
+  else if (lblFilter.state === 'unlabeled') hsBtn.classList.add('on-red-slash');
+  if (typeof starFilter !== 'undefined') starFilter = 'all';
+}
+
 function adGetLangProfile(langPair) {
   const pair = langPair || window._currentLangPair;
   return (
@@ -184,8 +198,10 @@ async function loadDeckStudy(deckId) {
     adApplyWordFormLabels(profile);
     adAnalyzeLayout(VOCAB);
     if (typeof adInitStudyToolbar === 'function') adInitStudyToolbar(profile);
+    adSyncFilterButtonUi();
     if (typeof loadStars === 'function') {
       loadStars().then(function () {
+        adSyncFilterButtonUi();
         if (typeof render === 'function') render();
       });
     } else if (typeof render === 'function') {

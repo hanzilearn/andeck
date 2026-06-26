@@ -29,6 +29,8 @@ function adResetSessionState() {
   adDecksLoadedOnce = false;
   adSessionEmail = null;
   adEditingId = null;
+  window._currentDeckId = null;
+  if (typeof adResetStudySession === 'function') adResetStudySession();
   renderAdHeaderQuota();
   renderAdGrid();
 }
@@ -479,6 +481,7 @@ async function confirmAdDelete(id) {
     }
     if (window._currentDeckId === id) {
       window._currentDeckId = null;
+      if (typeof adResetStudySession === 'function') adResetStudySession();
       showOnly('deck-hub-screen');
     }
     adNotify('Đã xóa deck', 'ok');

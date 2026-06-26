@@ -78,6 +78,22 @@ const SCREENS = [
   'fc-end-screen'
 ];
 
+function adResetStudySession() {
+  currentLevel = null;
+  VOCAB = [];
+  order = [];
+  answers = {};
+  _answersCache = {};
+  starred = new Set();
+  shuffled = false;
+  mode = 'all';
+  if (typeof adClearDeckWords === 'function') adClearDeckWords();
+  if (typeof adClearLayoutProfile === 'function') adClearLayoutProfile();
+  if (typeof adResetStudyUiState === 'function') adResetStudyUiState();
+  const sb = document.getElementById('shuffle-btn');
+  if (sb) sb.classList.remove('on');
+}
+
 function showOnly(id) {
   SCREENS.forEach(function (s) {
     const el = document.getElementById(s);
@@ -91,11 +107,26 @@ function showOnly(id) {
 
   if (id === 'deck-hub-screen' || id === 'login-screen' || id === 'register-screen') {
     window._currentDeckId = null;
+    if (typeof adClearLayoutProfile === 'function') adClearLayoutProfile();
   }
 
-  const tmrApp = document.getElementById('tmr-icon-btn-app');
-  if (tmrApp) {
-    tmrApp.style.display = id === 'app-screen' && window._currentDeckId ? '' : 'none';
+  const inDeckStudy = id === 'app-screen' && window._currentDeckId;
+  ['addWordBtn', 'adUpfileHeaderBtn', 'adExportBtn', 'editModeBtn', 'deleteModeBtn'].forEach(function (btnId) {
+    const el = document.getElementById(btnId);
+    if (el) el.style.display = inDeckStudy ? '' : 'none';
+  });
+
+  if (id !== 'app-screen' || !window._currentDeckId) {
+    if (typeof dmExit === 'function') dmExit();
+    if (typeof emExit === 'function') emExit();
+  }
+
+  // Timer: chỉ trên hub header (#tmr-icon-btn-select)
+  const tmrSelect = document.getElementById('tmr-icon-btn-select');
+  const showTmr = id === 'deck-hub-screen';
+  if (tmrSelect) {
+    tmrSelect.style.visibility = showTmr ? 'visible' : 'hidden';
+    tmrSelect.style.pointerEvents = showTmr ? '' : 'none';
   }
 }
 
@@ -109,8 +140,7 @@ function esc(str) {
 
 function backFromDeckStudy() {
   window._currentDeckId = null;
-  currentLevel = null;
-  adClearLayoutProfile();
+  adResetStudySession();
   if (typeof emExit === 'function') emExit();
   if (typeof dmExit === 'function') dmExit();
   showOnly('deck-hub-screen');
