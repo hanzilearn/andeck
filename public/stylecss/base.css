@@ -132,9 +132,6 @@ body {
   align-items: center;
   flex-shrink: 0;
 }
-#app-screen .app-logo .header-theme-wrap {
-  flex-shrink: 0;
-}
 
 #app-select-header .avatar-btn {
   width: 32px;

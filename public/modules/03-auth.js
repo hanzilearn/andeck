@@ -29,8 +29,7 @@ function applyTheme(theme) {
   [
     ['login-toggle', 'login-thumb', 16],
     ['register-toggle', 'register-thumb', 16],
-    ['header-toggle', 'header-thumb', 16],
-    ['study-toggle', 'study-thumb', 13]
+    ['header-toggle', 'header-thumb', 16]
   ].forEach(function (pair) {
     const track = document.getElementById(pair[0]);
     const thumb = document.getElementById(pair[1]);

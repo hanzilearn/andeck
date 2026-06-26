@@ -182,8 +182,7 @@
   top: 14px;
   left: 14px;
 }
-#app-select-header .header-theme-wrap,
-#app-screen .header-theme-wrap {
+#app-select-header .header-theme-wrap {
   position: static;
 }
 
