@@ -1,0 +1,289 @@
+/* ============================================================
+   AUTH.CSS — Login, đổi mật khẩu, avatar dropdown (Andeck)
+   ============================================================ */
+
+#login-screen {
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+#login-screen.active { display: flex !important; }
+
+.login-card {
+  background: white;
+  border: 1.5px solid rgba(122, 143, 166, 0.22);
+  border-radius: 10px;
+  padding: 72px 44px 40px;
+  width: 360px;
+  box-shadow: var(--shadow), 0 0 0 8px rgba(196, 168, 130, 0.06);
+  position: relative;
+  margin-top: 28px;
+}
+
+.login-card::before {
+  content: 'AD';
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #1c2b3a;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 56px;
+  text-align: center;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18), 0 0 0 4px var(--paper);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--red-dark);
+  text-align: center;
+  margin-bottom: 4px;
+  letter-spacing: 2px;
+}
+.login-sub {
+  text-align: center;
+  color: var(--gray);
+  font-size: 12px;
+  margin-bottom: 30px;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  margin-top: 8px;
+  box-shadow: 0 4px 14px rgba(58, 74, 92, 0.25);
+  transition: background 0.2s;
+}
+.btn-login:hover { background: var(--red-dark); }
+
+.login-error {
+  background: #fdecea;
+  color: var(--wrong);
+  border: 1px solid rgba(192, 96, 96, 0.25);
+  border-radius: 4px;
+  padding: 9px 13px;
+  font-size: 12px;
+  margin-top: 10px;
+  display: none;
+}
+
+.forgot-link,
+.register-link {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--gray);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.forgot-link { margin-top: 14px; }
+.forgot-link:hover,
+.register-link:hover { color: var(--red-dark); }
+
+.login-success {
+  background: #eafaf1;
+  color: #1e8449;
+  border: 1px solid rgba(39, 174, 96, 0.25);
+  border-radius: 4px;
+  padding: 9px 13px;
+  font-size: 12px;
+  margin-bottom: 12px;
+  display: none;
+}
+
+#register-screen {
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+#register-screen.active { display: flex !important; }
+
+.register-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--gray);
+  margin: 12px 0 4px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.register-consent input {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.register-consent a {
+  color: var(--red-dark);
+  text-decoration: underline;
+}
+
+.avatar-wrap { position: relative; }
+
+.avatar-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.avatar-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.avatar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border: 1.5px solid rgba(122, 143, 166, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(28, 43, 58, 0.15);
+  min-width: 260px;
+  z-index: 200;
+  display: none;
+  overflow: hidden;
+}
+.avatar-dropdown.show {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.avatar-dd-email {
+  padding: 14px 16px;
+  background: var(--paper-dark);
+  font-size: 12px;
+  color: var(--gray);
+  border-bottom: 1px solid rgba(122, 143, 166, 0.12);
+  word-break: break-all;
+}
+.avatar-dd-item {
+  padding: 11px 16px;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.avatar-dd-item:hover { background: rgba(122, 143, 166, 0.08); }
+.avatar-dd-item.danger { color: var(--wrong); }
+
+.theme-toggle-wrap {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+}
+
+.theme-toggle-track {
+  width: 56px;
+  height: 30px;
+  border-radius: 999px;
+  background: #2a3b4d;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.theme-toggle-track.is-light {
+  background: #f4d9a6;
+  box-shadow: inset 0 1px 3px rgba(180, 120, 40, 0.25);
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  top: 3px;
+  left: 3px;
+  transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.theme-toggle-track.is-light .theme-toggle-thumb { left: 29px; }
+
+.theme-toggle-track.sm { width: 46px; height: 24px; }
+.theme-toggle-track.sm .theme-toggle-thumb {
+  width: 18px;
+  height: 18px;
+  top: 3px;
+  left: 3px;
+}
+.theme-toggle-track.sm.is-light .theme-toggle-thumb { left: 25px; }
+
+.dd-theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 16px;
+  border-bottom: 1px solid rgba(122, 143, 166, 0.1);
+}
+.dd-theme-label {
+  font-size: 13px;
+  color: var(--ink);
+}
+
+[data-theme="dark"] .login-card {
+  background: #25252d;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .login-card::before {
+  background: var(--gold);
+  color: #1a1a1f;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), 0 0 0 4px var(--paper);
+}
+[data-theme="dark"] .login-success {
+  background: rgba(46, 204, 113, 0.08);
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, 0.2);
+}
+[data-theme="dark"] .avatar-dropdown {
+  background: #25252d;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] .avatar-dd-email {
+  background: #1e1e24;
+  color: var(--color-text-secondary);
+}
+[data-theme="dark"] .avatar-dd-item { color: var(--ink); }
+
+@media (max-width: 600px) {
+  .login-card {
+    width: calc(100vw - 32px);
+    padding: 64px 24px 32px;
+  }
+}

@@ -18,7 +18,7 @@ const registerLimiter = rateLimit({
   legacyHeaders: false
 });
 
-const loginAttempts = {};
+let loginAttempts = {};
 
 function checkRateLimit(ip) {
   const now = Date.now();

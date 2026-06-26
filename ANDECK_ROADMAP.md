@@ -216,9 +216,9 @@ API: `GET /api/decks/lang-profiles` → frontend render form, cột bảng, impo
 
 ### Hub deck (port My Project hub)
 
-- [ ] Grid deck, pill quota `{totalWords}/{deckQuota×wordQuota} từ`
-- [ ] Tạo deck (chọn `langPair` + tên)
-- [ ] Đổi tên / reset từ / xóa deck
+- [x] Grid deck, pill quota `{totalWords}/{deckQuota×wordQuota} từ`
+- [x] Tạo deck (chọn `langPair` + tên)
+- [x] Đổi tên / reset từ / xóa deck
 - [ ] Nút **upfile** hub → import mode **create**
 - [ ] “Bắt đầu học” → màn bảng từ
 
@@ -243,7 +243,7 @@ API: `GET /api/decks/lang-profiles` → frontend render form, cột bảng, impo
 
 ### Auth & Admin
 
-- [ ] Login / đổi MK / JWT
+- [x] Login / đổi MK / JWT
 - [ ] `admin.html`: danh sách user, quota deck/từ, xem/xóa deck user, seed admin
 
 ### Deploy
@@ -297,7 +297,7 @@ Tất cả (trừ login): `Authorization: Bearer <token>`.
 |-------|----------|------|------------|
 | **0** | Scaffold repo, package, env, lang-profiles, model draft | A | ✅ |
 | **1** | Backend: auth + decks API + quota | B | ✅ |
-| **2** | Frontend: auth + hub deck | C | ⬜ |
+| **2** | Frontend: auth + hub deck | C | ✅ |
 | **3** | Editor từ + import AI (create/append) | D | ⬜ |
 | **4** | Bảng học + TTS/mic generic | E | ⬜ |
 | **5** | Quiz, flashcard, labels, stars, timer | F | ⬜ |
@@ -377,11 +377,11 @@ Cập nhật Phase 1 trong roadmap.
 
 **Deliverables:**
 
-- [ ] `03-auth.js`, `deck-features/core.js`, `bootstrap.js`
-- [ ] `deck-hub.css` — UI giống My Project hub Hanzi (theme Stone)
-- [ ] Grid deck, create/rename/delete/reset, quota pills
-- [ ] Chọn `langPair` khi tạo deck
-- [ ] Flow: login → hub → click “Bắt đầu học” (shell tới Chat D)
+- [x] `03-auth.js`, `deck-features/core.js`, `bootstrap.js`
+- [x] `deck-hub.css` — UI giống My Project hub Hanzi (theme Stone)
+- [x] Grid deck, create/rename/delete/reset, quota pills
+- [x] Chọn `langPair` khi tạo deck
+- [x] Flow: login → hub → click “Bắt đầu học” (shell tới Chat D)
 
 **Prompt:**
 
@@ -580,3 +580,4 @@ A → B → C → D → E → F → G → H
 | 2025-06-25 | Tạo roadmap Andeck — repo riêng, auth riêng, subdomain, admin mới, quota 3×50, lang v1 zh/en/ja, JSON import/export (no API sync v1) |
 | 2026-06-25 | Phase 0 (Chat A): scaffold repo — package, server skeleton, lang-profiles, models draft, HTML shell, seed admin |
 | 2026-06-25 | Phase 1 (Chat B): backend auth, decks CRUD/import/bulk/export, quota, labels/stars, admin skeleton |
+| 2026-06-25 | Phase 2 (Chat C): frontend auth + hub deck — login/register, CRUD deck, langPair, quota pills, study shell |
