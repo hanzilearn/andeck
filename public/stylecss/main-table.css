@@ -28,7 +28,7 @@
   background: var(--red-dark);
   color: white;
   padding: 0 32px;
-  height: 44px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -315,7 +315,7 @@ tr.em-row-edit:hover {
   gap: 8px;
   flex-wrap: wrap;
   position: sticky;
-  top: 44px;
+  top: 48px;
   z-index: 99;
   box-shadow: 0 2px 8px rgba(26,10,0,.07);
 }
@@ -747,7 +747,7 @@ tr.row-locked .td-meaning { filter: blur(2px); }
     overflow: hidden;
   }
   #app-deck-label {
-    max-width: 160px;
+    max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -839,7 +839,7 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   .mode-dropdown-menu {
     display: none;
     position: fixed;
-    top: 88px; /* header 44px + toolbar ~44px */
+    top: 92px; /* header 48px + toolbar ~44px */
     left: 14px;
     z-index: 201;
     background: white;

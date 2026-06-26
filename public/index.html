@@ -81,9 +81,10 @@
 
 <!-- Header hub -->
 <header id="app-select-header" class="select-header">
-  <div class="select-logo">
-    <i class="ti ti-cards" aria-hidden="true"></i>
-    <span>Andeck</span>
+  <div class="header-theme-wrap">
+    <div class="theme-toggle-track" id="header-toggle" onclick="toggleTheme(event)" title="Giao diện sáng/tối" aria-label="Giao diện sáng/tối">
+      <div class="theme-toggle-thumb" id="header-thumb"></div>
+    </div>
   </div>
   <div class="tmr-avatar-group">
     <button type="button" class="tmr-icon-btn" id="tmr-icon-btn-select" title="Đồng hồ" onclick="tmrOpenModal()" aria-label="Đồng hồ">
@@ -93,12 +94,6 @@
       <button type="button" class="avatar-btn" id="avatar-btn" onclick="toggleAvatar()"></button>
       <div class="avatar-dropdown" id="avatar-dropdown">
         <div class="avatar-dd-email" id="dd-email"></div>
-        <div class="dd-theme-row">
-          <div class="dd-theme-label">Giao diện</div>
-          <div class="theme-toggle-track sm" id="dd-toggle" onclick="toggleTheme(event)" ontouchstart="event.stopPropagation()">
-            <div class="theme-toggle-thumb" id="dd-thumb"></div>
-          </div>
-        </div>
         <div class="avatar-dd-item" onclick="showChangePassword()">🔑 Đổi mật khẩu</div>
         <div class="avatar-dd-item danger" onclick="logout()">↪ Đăng xuất</div>
       </div>
@@ -135,6 +130,11 @@
 <div id="app-screen" class="screen">
   <header class="app-header">
     <div class="app-logo">
+      <div class="header-theme-wrap">
+        <div class="theme-toggle-track sm" id="study-toggle" onclick="toggleTheme(event)" title="Giao diện sáng/tối" aria-label="Giao diện sáng/tối">
+          <div class="theme-toggle-thumb" id="study-thumb"></div>
+        </div>
+      </div>
       <button type="button" class="btn-back-arrow" onclick="backFromDeckStudy()" title="Quay lại hub">←</button>
       <span id="app-deck-label">Deck</span>
     </div>

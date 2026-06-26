@@ -26,31 +26,24 @@ function applyTheme(theme) {
     );
   };
 
-  const lt = document.getElementById('login-toggle');
-  const lth = document.getElementById('login-thumb');
-  if (lt) lt.classList.toggle('is-light', isLight);
-  if (lth) lth.innerHTML = svg(isLight ? sunPath : moonPath, 16);
-
-  const rt = document.getElementById('register-toggle');
-  const rth = document.getElementById('register-thumb');
-  if (rt) rt.classList.toggle('is-light', isLight);
-  if (rth) rth.innerHTML = svg(isLight ? sunPath : moonPath, 16);
-
-  const dt = document.getElementById('dd-toggle');
-  const dth = document.getElementById('dd-thumb');
-  if (dt) dt.classList.toggle('is-light', isLight);
-  if (dth) dth.innerHTML = svg(isLight ? sunPath : moonPath, 13);
+  [
+    ['login-toggle', 'login-thumb', 16],
+    ['register-toggle', 'register-thumb', 16],
+    ['header-toggle', 'header-thumb', 16],
+    ['study-toggle', 'study-thumb', 13]
+  ].forEach(function (pair) {
+    const track = document.getElementById(pair[0]);
+    const thumb = document.getElementById(pair[1]);
+    if (track) track.classList.toggle('is-light', isLight);
+    if (thumb) thumb.innerHTML = svg(isLight ? sunPath : moonPath, pair[2]);
+  });
 }
-
-let _avatarCloseLock = 0;
 
 function toggleTheme(e) {
   if (e) {
     e.stopPropagation();
     e.preventDefault();
   }
-  const fromAvatarMenu = !!(e && e.target && e.target.closest && e.target.closest('#avatar-dropdown'));
-  if (fromAvatarMenu) _avatarCloseLock = Date.now() + 400;
 
   const current = document.documentElement.getAttribute('data-theme') || 'light';
   const next = current === 'light' ? 'dark' : 'light';
@@ -58,11 +51,6 @@ function toggleTheme(e) {
     localStorage.setItem('andeck_theme', next);
   } catch (err) {}
   applyTheme(next);
-
-  if (fromAvatarMenu) {
-    const dd = document.getElementById('avatar-dropdown');
-    if (dd) dd.classList.add('show');
-  }
 }
 
 (function initTheme() {
@@ -343,7 +331,6 @@ function closeAllDropdowns() {
 }
 
 document.addEventListener('click', function (e) {
-  if (Date.now() < _avatarCloseLock) return;
   const dd = document.getElementById('avatar-dropdown');
   if (dd && dd.classList.contains('show') && !e.target.closest('.avatar-wrap')) {
     dd.classList.remove('show');
