@@ -134,17 +134,14 @@
 <!-- ==================== STUDY / EDITOR ==================== -->
 <div id="app-screen" class="screen">
   <header class="app-header">
-    <button type="button" class="btn-back-arrow" onclick="backFromDeckStudy()" title="Quay lại hub">←</button>
-    <div class="app-deck-title" id="app-deck-label">Deck</div>
-    <div class="app-deck-lang" id="app-deck-lang"></div>
+    <div class="app-logo">
+      <button type="button" class="btn-back-arrow" onclick="backFromDeckStudy()" title="Quay lại hub">←</button>
+      <span id="app-deck-label">Deck</span>
+    </div>
     <div class="app-header-actions">
       <button type="button" class="mp-upfile-btn mp-upfile-btn--header" id="adUpfileHeaderBtn" style="display:none" title="Import từ" aria-label="Import từ">
         <span aria-hidden="true"><i class="ti ti-upload"></i></span>
         <span class="mp-upfile-label">upfile</span>
-      </button>
-      <button type="button" class="mp-export-btn mp-export-btn--header" id="adExportBtn" style="display:none" title="Tải JSON deck" aria-label="Tải JSON">
-        <span aria-hidden="true"><i class="ti ti-download"></i></span>
-        <span class="mp-export-label">Tải JSON</span>
       </button>
       <button type="button" class="add-word-btn" id="addWordBtn" style="display:none"><span class="add-word-icon">+</span><span class="add-word-label">Thêm từ</span></button>
       <button type="button" id="editModeBtn" class="edit-mode-btn" style="display:none" title="Chỉnh sửa từ">
@@ -157,9 +154,8 @@
   </header>
   <div class="toolbar">
     <button class="mode-btn active" data-mode="all" onclick="setMode('all',this)">Tất cả</button>
-    <button class="mode-btn" id="mode-primary-btn" data-mode="primary" onclick="setMode('primary',this)">KT từ gốc</button>
+    <button class="mode-btn" id="mode-primary-btn" data-mode="primary" onclick="setMode('primary',this)">KT từ</button>
     <button class="mode-btn" data-mode="meaning" onclick="setMode('meaning',this)">KT nghĩa</button>
-    <button class="mode-btn" id="mode-pron-btn" data-mode="pron" onclick="setMode('pron',this)">KT phát âm</button>
     <span class="toolbar-sep"></span>
     <button class="icon-toggle" id="shuffle-btn" onclick="toggleShuffle()" title="Xáo trộn">🔀</button>
     <button class="icon-toggle" id="reading-btn" onclick="toggleReading()" title="Ẩn reading"><span class="eye-open"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span class="eye-slash"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg></span></button>
@@ -187,7 +183,8 @@
       <tbody id="tbody"></tbody>
     </table>
     <div class="empty-state" id="empty-state" style="display:none">
-      <p>Chưa có từ nào. Nhấn <strong>Thêm từ</strong> hoặc <strong>upfile</strong> để bắt đầu.</p>
+      <div class="empty-big">—</div>
+      <div>Không có dữ liệu</div>
     </div>
   </div>
 </div>
@@ -214,7 +211,7 @@
       <span class="setup-label">Loại kiểm tra <small style="color:#888">(chọn 1 hoặc nhiều)</small></span>
       <div class="option-group" id="exam-type-group">
         <button type="button" class="opt-btn active" onclick="toggleExamType('meaning',this)">KT nghĩa</button>
-        <button type="button" class="opt-btn" onclick="toggleExamType('primary',this)">KT từ gốc</button>
+        <button type="button" class="opt-btn" onclick="toggleExamType('primary',this)">KT từ</button>
         <button type="button" class="opt-btn" onclick="toggleExamType('reading',this)">KT reading</button>
       </div>
     </div>

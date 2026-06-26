@@ -169,9 +169,6 @@ async function loadDeckStudy(deckId) {
     adSyncDeckWordCount(deckId, adDeckWords.length);
     adSetAppHeaderLabel(deck.name, adDeckWords.length);
 
-    const langEl = document.getElementById('app-deck-lang');
-    if (langEl) langEl.textContent = adLangLabel(deck.langPair);
-
     showOnly('app-screen');
 
     const addBtn = document.getElementById('addWordBtn');
@@ -191,8 +188,6 @@ async function loadDeckStudy(deckId) {
     }
     const upfileHdr = document.getElementById('adUpfileHeaderBtn');
     if (upfileHdr) upfileHdr.style.display = '';
-    const exportBtn = document.getElementById('adExportBtn');
-    if (exportBtn) exportBtn.style.display = '';
 
     const profile = adGetLangProfile(deck.langPair);
     adApplyWordFormLabels(profile);
@@ -544,8 +539,6 @@ async function adExportDeckJson() {
 function initEditorModals() {
   if (adEditorInited) return;
   adEditorInited = true;
-
-  document.getElementById('adExportBtn')?.addEventListener('click', adExportDeckJson);
 
   document.getElementById('addWordOverlay')?.addEventListener('click', function (e) {
     if (e.target.id === 'addWordOverlay') awClose();

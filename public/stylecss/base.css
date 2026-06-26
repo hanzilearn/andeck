@@ -245,6 +245,13 @@ select:focus {
   background: #25252d;
   color: var(--ink);
 }
+/* ── Empty state ── */
+.empty-state { text-align: center; padding: 60px; color: var(--gray); }
+.empty-big {
+  font-size: 48px;
+  color: rgba(58, 74, 92, 0.15);
+}
+
 [data-theme="dark"] input,
 [data-theme="dark"] select {
   background: var(--paper-dark);

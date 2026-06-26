@@ -33,6 +33,10 @@ function adHasReadingColumn() {
 
 /* ─── MODE ─── */
 function setMode(m, btn) {
+  if (m === 'pron') {
+    m = 'all';
+    btn = document.querySelector('.mode-btn[data-mode="all"]') || btn;
+  }
   _answersCache[mode] = answers;
   answers = _answersCache[m] || {};
   if (_pronCurrentIdx !== -1 && _pronRecognition) {
@@ -227,6 +231,8 @@ function render() {
   const tbody = document.getElementById('tbody');
   if (!thead || !tbody) return;
 
+  if (mode === 'pron') mode = 'all';
+
   let filteredOrder = order;
   if (searchQuery) {
     filteredOrder = order.filter(function (idx) {
@@ -354,18 +360,6 @@ function render() {
       meaningLbl +
       soundBtn('sound-btn-inline2') +
       '</th><th></th></tr>';
-  } else if (mode === 'pron') {
-    thead.innerHTML =
-      '<tr>' +
-      dmHdr +
-      sttHdr +
-      '<th style="width:90px">' +
-      primaryLbl +
-      '</th><th style="width:140px">' +
-      readingLbl +
-      '</th><th>' +
-      meaningLbl +
-      '</th><th style="width:200px">B\u1ea5m \u0111\u1ec3 \u0111\u1ecdc</th><th style="width:36px"></th></tr>';
   } else {
     const actLbl = activeLabelId
       ? userLabels.find(function (l) {
@@ -527,82 +521,6 @@ function render() {
         (a && !a.correct && !locked
           ? '<div class="hint-answer">\u2192 ' + esc(w.meaning) + '</div>'
           : '') +
-        '</td><td class="td-result"><span class="result-icon" id="ic-' +
-        idx +
-        '">' +
-        icon +
-        '</span></td></tr>'
-      );
-    }
-
-    if (mode === 'pron') {
-      let resultHtml = '';
-      if (a && !locked) {
-        const heardText = esc(a.heard || '');
-        const langPair = window._currentLangPair || '';
-        const hasPrimaryScript = langPair.startsWith('zh') || langPair.startsWith('ja');
-        const heardClass = hasPrimaryScript && /[\u4e00-\u9fff\u3040-\u30ff]/.test(a.heard || '')
-          ? 'pron-heard-text is-hanzi'
-          : 'pron-heard-text';
-        if (a.heard && a.heard.indexOf('\u26a0\ufe0f') === 0) {
-          resultHtml =
-            '<div class="pron-result"><span class="pron-line pron-status wrong">' + heardText + '</span></div>';
-        } else if (a.correct) {
-          resultHtml =
-            '<div class="pron-result"><span class="pron-line"><span class="pron-label">B\u1ea1n \u0111\u1ecdc:</span> <span class="' +
-            heardClass +
-            '">' +
-            heardText +
-            '</span></span><span class="pron-line pron-status correct">\u2705 ' +
-            (a.matchType === 'primary' ? '\u0110\u00fang (' + esc(adPrimaryLabel()) + ')' : '\u0110\u00fang (reading)') +
-            '</span></div>';
-        } else {
-          const feedbackText =
-            !a.heard || a.heard === '' ? 'Kh\u00f4ng nghe \u0111\u01b0\u1ee3c, h\u00e3y th\u1eed l\u1ea1i' : 'Ph\u00e1t \u00e2m ch\u01b0a kh\u1edbp';
-          resultHtml =
-            '<div class="pron-result">' +
-            (a.heard
-              ? '<span class="pron-line"><span class="pron-label">B\u1ea1n \u0111\u1ecdc:</span> <span class="' +
-                heardClass +
-                '">' +
-                heardText +
-                '</span></span>'
-              : '') +
-            '<span class="pron-line pron-feedback">Nh\u1eadn x\u00e9t: ' +
-            feedbackText +
-            '</span><span class="pron-line pron-status wrong">\u274c Sai \u00b7 <span class="pron-answer">\u0110\u00e1p \u00e1n:</span><span class="pron-answer-hanzi">' +
-            esc(w.primary) +
-            '</span></span></div>';
-        }
-      }
-      return (
-        '<tr class="' +
-        rowCls +
-        '" id="row-' +
-        idx +
-        '"' +
-        rowOn +
-        '>' +
-        dmCell(w) +
-        sttCell(idx, w) +
-        '<td class="td-hanzi">' +
-        esc(w.primary) +
-        '</td><td class="td-pinyin"><div class="td-pinyin-inner">' +
-        speakBtn +
-        readingText +
-        '</div></td><td class="td-meaning">' +
-        esc(w.meaning) +
-        '</td><td>' +
-        (locked
-          ? '<span style="color:#999;font-size:12px">\uD83D\uDD12</span>'
-          : '<button class="pron-mic-btn" id="mic-' +
-            idx +
-            '" onclick="startPronRecording(' +
-            idx +
-            ')">' +
-            (a ? '\u0110\u1ecdc l\u1ea1i' : '\u0110\u1ecdc') +
-            '</button>') +
-        resultHtml +
         '</td><td class="td-result"><span class="result-icon" id="ic-' +
         idx +
         '">' +
@@ -779,25 +697,14 @@ function check(idx, input, type) {
   }, 200);
 }
 
-function adSpeechRecognitionSupported() {
-  return !!(window.SpeechRecognition || window.webkitSpeechRecognition);
-}
-
 function adInitStudyToolbar(profile) {
   profile = profile || adGetStudyProfile() || {};
-  const primaryBtn = document.getElementById('mode-primary-btn');
-  if (primaryBtn) primaryBtn.textContent = 'KT ' + (profile.primaryLabel || 't\u1eeb g\u1ed1c');
 
   const readingBtn = document.getElementById('reading-btn');
   if (readingBtn) {
     const show = profile.hasReading !== false;
     readingBtn.style.display = show ? '' : 'none';
     readingBtn.title = '\u1ea8n ' + (profile.readingLabel || 'reading');
-  }
-
-  const pronBtn = document.getElementById('mode-pron-btn');
-  if (pronBtn) {
-    pronBtn.style.display = adSpeechRecognitionSupported() ? '' : 'none';
   }
 
   const searchInput = document.getElementById('search-input');
@@ -835,9 +742,8 @@ function adResetStudyUiState() {
 /* ─── MOBILE MODE DROPDOWN ─── */
 var _modeIcons = {
   all: { icon: '\uD83D\uDC41', label: 'T\u1ea5t c\u1ea3' },
-  primary: { icon: '\u270d\ufe0f', label: 'KT t\u1eeb g\u1ed1c' },
-  meaning: { icon: '\uD83D\uDCD6', label: 'KT ngh\u0129a' },
-  pron: { icon: '\uD83C\uDFA4', label: 'KT ph\u00e1t \u00e2m' }
+  primary: { icon: '\u270d\ufe0f', label: 'KT t\u1eeb' },
+  meaning: { icon: '\uD83D\uDCD6', label: 'KT ngh\u0129a' }
 };
 
 function _updateDropdownIcon() {
@@ -869,6 +775,7 @@ function closeModeDropdown() {
 }
 
 function selectModeFromDropdown(m) {
+  if (m === 'pron') m = 'all';
   _answersCache[mode] = answers;
   answers = _answersCache[m] || {};
   closeModeDropdown();
@@ -908,13 +815,11 @@ function initModeDropdown() {
 
   var modes = [
     { key: 'all', icon: '\uD83D\uDC41', label: 'T\u1ea5t c\u1ea3' },
-    { key: 'primary', icon: '\u270d\ufe0f', label: 'KT t\u1eeb g\u1ed1c' },
-    { key: 'meaning', icon: '\uD83D\uDCD6', label: 'KT ngh\u0129a' },
-    { key: 'pron', icon: '\uD83C\uDFA4', label: 'KT ph\u00e1t \u00e2m' }
+    { key: 'primary', icon: '\u270d\ufe0f', label: 'KT t\u1eeb' },
+    { key: 'meaning', icon: '\uD83D\uDCD6', label: 'KT ngh\u0129a' }
   ];
 
   modes.forEach(function (m) {
-    if (m.key === 'pron' && !adSpeechRecognitionSupported()) return;
     var item = document.createElement('div');
     item.className = 'mode-dropdown-item' + (mode === m.key ? ' selected' : '');
     item.dataset.mode = m.key;

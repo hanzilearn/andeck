@@ -50,7 +50,7 @@ function adBuildImportPrompt(profile) {
     'Tr\u01b0\u1eddng b\u1eaft bu\u1ed9c: ' +
     pLabel +
     ' (primary), Ngh\u0129a (meaning).' +
-    (profile.hasReading !== false ? ' ' + rLabel + ' (reading) tu\u1ef3 ch\u1ecdn.' : '') +
+    (profile.hasReading !== false ? ' ' + rLabel + ' (reading).' : '') +
     '\nN\u1ebfu thi\u1ebfu tr\u01b0\u1eddng n\u00e0o th\u00ec \u0111\u1ec3 chu\u1ed7i r\u1ed7ng "".\n' +
     'Ch\u1ec9 tr\u1ea3 v\u1ec1 JSON array thu\u1ea7n, kh\u00f4ng gi\u1ea3i th\u00edch, kh\u00f4ng markdown, kh\u00f4ng ```json.' +
     extra +

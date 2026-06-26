@@ -19,7 +19,7 @@ const LANG_PROFILES = {
     langPair: 'en-vi',
     label: 'Anh → Việt',
     primaryLabel: 'Từ tiếng Anh',
-    readingLabel: 'Phiên âm (tuỳ chọn)',
+    readingLabel: 'Phiên âm',
     meaningLabel: 'Nghĩa',
     requiredFields: ['primary', 'meaning'],
     hasReading: true,

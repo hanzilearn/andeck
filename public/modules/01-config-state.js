@@ -111,7 +111,7 @@ function showOnly(id) {
   }
 
   const inDeckStudy = id === 'app-screen' && window._currentDeckId;
-  ['addWordBtn', 'adUpfileHeaderBtn', 'adExportBtn', 'editModeBtn', 'deleteModeBtn'].forEach(function (btnId) {
+  ['addWordBtn', 'adUpfileHeaderBtn', 'editModeBtn', 'deleteModeBtn'].forEach(function (btnId) {
     const el = document.getElementById(btnId);
     if (el) el.style.display = inDeckStudy ? '' : 'none';
   });

@@ -224,7 +224,7 @@ API: `GET /api/decks/lang-profiles` → frontend render form, cột bảng, impo
 
 ### Học deck
 
-- [x] Bảng: 4 mode (Tất cả, KT từ gốc, KT nghĩa, KT phát âm*)
+- [x] Bảng: 3 mode (Tất cả, KT từ, KT nghĩa)
 - [x] Tìm kiếm, shuffle, ẩn reading (nếu profile có reading)
 - [x] TTS + mic theo `langPair`
 - [x] Nhãn màu (max 8), sao, quiz (≥4 từ), flashcard, timer (≥768px)
@@ -250,8 +250,6 @@ API: `GET /api/decks/lang-profiles` → frontend render form, cột bảng, impo
 
 - [x] Render service `andeck`, env riêng, MongoDB database `andeck`
 - [x] QA checklist (mục 10)
-
-\*Mode phát âm: ẩn nếu trình duyệt/lang không hỗ trợ (hiếm với zh/en/ja).
 
 ---
 
@@ -584,4 +582,4 @@ A → B → C → D → E → F → G → H
 | 2026-06-25 | Phase 2 (Chat C): frontend auth + hub deck — login/register, CRUD deck, langPair, quota pills, study shell |
 | 2026-06-26 | Phase 5 (Chat F): quiz, flashcard, nhãn/sao, timer — port modules + CSS, tích hợp bảng học |
 | 2026-06-26 | Phase 6 (Chat G): admin.html (no HSK), export JSON UI, Hanzi legacy import parser zh-vi |
-| 2026-06-26 | Phase 7 (Chat H): `.env.example`, ANDECK_OVERVIEW.md, QA 12/12 pass production, deploy Render andeck.onrender.com |
+| 2026-06-26 | Chat M: Study UI parity Hanzi — header app-logo, 3 mode bảng (bỏ KT phát âm), KT từ gốc → KT từ |

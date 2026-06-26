@@ -53,6 +53,17 @@
   font-weight: 300;
   letter-spacing: 0;
 }
+#app-deck-label {
+  color: rgba(255,255,255,.92);
+  font-size: 14px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .btn-back-arrow {
   background: none;
@@ -735,8 +746,8 @@ tr.row-locked .td-meaning { filter: blur(2px); }
     flex: 1;
     overflow: hidden;
   }
-  #app-level-label {
-    max-width: 130px;
+  #app-deck-label {
+    max-width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -938,7 +949,12 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   border-color: rgba(255,255,255,0.2) !important;
 }
 
-/* Dark mode: tiêu đề project trên header bảng từ */
+/* Dark mode: tiêu đề deck trên header bảng từ */
+[data-theme="dark"] .app-logo #app-deck-label {
+  color: #e8dcc8;
+  font-weight: 500;
+  opacity: 1;
+}
 [data-theme="dark"] .app-logo #app-level-label {
   color: #e8dcc8;
   font-weight: 500;
