@@ -552,39 +552,6 @@ function initDeckHub() {
   loadAdDecks();
 }
 
-async function loadDeckData(deckId) {
-  if (!getToken()) return;
-  try {
-    const res = await fetch('/api/decks/' + deckId, { headers: adAuthHeaders() });
-    if (!res.ok) {
-      const err = await res.json().catch(function () {
-        return {};
-      });
-      adNotify(err.error || 'Không tải được deck.', 'err');
-      return;
-    }
-    const data = await res.json();
-    const deck = data.deck;
-    if (!deck) return;
-
-    window._currentDeckId = deckId;
-    window._currentLangPair = deck.langPair;
-
-    const labelEl = document.getElementById('app-deck-label');
-    if (labelEl) {
-      labelEl.textContent = deck.name + ' (' + (deck.words || []).length + ' từ)';
-    }
-    const langEl = document.getElementById('app-deck-lang');
-    if (langEl) langEl.textContent = adLangLabel(deck.langPair);
-
-    showOnly('app-screen');
-    window.scrollTo({ top: 0 });
-  } catch (err) {
-    console.error('loadDeckData:', err);
-    adNotify('Không thể kết nối server.', 'err');
-  }
-}
-
 function initAdModals() {
   if (adModalsInited) return;
   adModalsInited = true;

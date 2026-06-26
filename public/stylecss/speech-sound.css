@@ -1,0 +1,62 @@
+/* ============================================================
+   SPEECH-SOUND.CSS — Chế độ KT phát âm, nút mic, kết quả
+   Tương ứng: 06-speech-sound.js
+   ============================================================ */
+
+/* ── Mic Button ── */
+.pron-mic-btn {
+  background: var(--red);
+  border: 1.5px solid var(--red);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 7px 18px;
+  border-radius: 6px;
+  color: white;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all .15s;
+  letter-spacing: .3px;
+}
+.pron-mic-btn:hover { background: var(--red-dark); border-color: var(--red-dark); }
+.pron-mic-btn:disabled { opacity: .6; cursor: not-allowed; }
+.pron-mic-btn.recording {
+  background: #27ae60;
+  border-color: #27ae60;
+  animation: micPulse 1.2s infinite;
+}
+
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(39,174,96,.6); }
+  50%       { box-shadow: 0 0 0 8px rgba(39,174,96,0); }
+}
+
+/* ── Pronunciation Result Area ── */
+.pron-result { margin-top: 6px; line-height: 1.5; }
+.pron-result .pron-line  { font-size: 12px; display: block; margin-bottom: 1px; }
+.pron-result .pron-label { color: #8a7666; font-weight: 500; }
+.pron-result .pron-heard-text {
+  color: var(--ink); font-weight: 600; font-size: 13px;
+}
+.pron-result .pron-heard-text.is-hanzi {
+  font-family: 'Noto Serif SC', serif; font-size: 15px;
+}
+.pron-result .pron-feedback { color: #a0826d; font-style: italic; font-size: 12px; }
+.pron-result .pron-status  { font-weight: 700; font-size: 12px; margin-top: 2px; }
+.pron-result .pron-status.correct { color: var(--correct); }
+.pron-result .pron-status.wrong   { color: var(--wrong); }
+.pron-result .pron-answer  { color: #8a7666; font-weight: 500; }
+.pron-result .pron-answer-hanzi {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px; color: var(--gold); font-weight: 700; margin-left: 3px;
+}
+
+/* ── Row đang ghi âm ── */
+tr.row-pron-recording {
+  background: rgba(212,160,23,.18) !important;
+  animation: rowPulse 1.5s infinite;
+}
+
+@keyframes rowPulse {
+  0%, 100% { background: rgba(212,160,23,.18) !important; }
+  50%       { background: rgba(212,160,23,.32) !important; }
+}

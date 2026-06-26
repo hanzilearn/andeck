@@ -219,23 +219,23 @@ API: `GET /api/decks/lang-profiles` → frontend render form, cột bảng, impo
 - [x] Grid deck, pill quota `{totalWords}/{deckQuota×wordQuota} từ`
 - [x] Tạo deck (chọn `langPair` + tên)
 - [x] Đổi tên / reset từ / xóa deck
-- [ ] Nút **upfile** hub → import mode **create**
-- [ ] “Bắt đầu học” → màn bảng từ
+- [x] Nút **upfile** hub → import mode **create**
+- [x] “Bắt đầu học” → màn bảng từ (shell + CRUD từ — Chat D)
 
 ### Học deck
 
-- [ ] Bảng: 4 mode (Tất cả, KT từ gốc, KT nghĩa, KT phát âm*)
-- [ ] Tìm kiếm, shuffle, ẩn reading (nếu profile có reading)
-- [ ] TTS + mic theo `langPair`
+- [x] Bảng: 4 mode (Tất cả, KT từ gốc, KT nghĩa, KT phát âm*)
+- [x] Tìm kiếm, shuffle, ẩn reading (nếu profile có reading)
+- [x] TTS + mic theo `langPair`
 - [ ] Nhãn màu (max 8), sao, quiz (≥4 từ), flashcard, timer (≥768px)
-- [ ] Header: upfile append → Thêm từ → Sửa → Xóa
+- [x] Header: upfile append → Thêm từ → Sửa → Xóa
 
 ### Import
 
-- [ ] Modal import AI JSON — mode create / append
-- [ ] Prompt động theo `langPair`
-- [ ] Parse + validate + quota slice (max 500/request)
-- [ ] Import file JSON format **Hanzi legacy** (`zh-vi` only)
+- [x] Modal import AI JSON — mode create / append
+- [x] Prompt động theo `langPair`
+- [x] Parse + validate + quota slice (max 500/request)
+- [ ] Import file JSON format **Hanzi legacy** (`zh-vi` only) — parser frontend (Chat G)
 
 ### Export
 
@@ -298,8 +298,8 @@ Tất cả (trừ login): `Authorization: Bearer <token>`.
 | **0** | Scaffold repo, package, env, lang-profiles, model draft | A | ✅ |
 | **1** | Backend: auth + decks API + quota | B | ✅ |
 | **2** | Frontend: auth + hub deck | C | ✅ |
-| **3** | Editor từ + import AI (create/append) | D | ⬜ |
-| **4** | Bảng học + TTS/mic generic | E | ⬜ |
+| **3** | Editor từ + import AI (create/append) | D | ✅ |
+| **4** | Bảng học + TTS/mic generic | E | ✅ |
 | **5** | Quiz, flashcard, labels, stars, timer | F | ⬜ |
 | **6** | Admin + export JSON + Hanzi legacy import | G | ⬜ |
 | **7** | Deploy Render + QA + ANDECK_OVERVIEW.md | H | ⬜ |
@@ -401,11 +401,11 @@ Branding: Andeck. Cập nhật Phase 2.
 
 **Deliverables:**
 
-- [ ] `deck-features/editor.js` — load deck, bảng shell, thêm/sửa/xóa từ
-- [ ] `deck-features/import.js` — modal create/append, prompt theo lang
-- [ ] Modal `#addWordOverlay`, `#importWordOverlay` trong index.html
-- [ ] Form field động theo lang profile
-- [ ] Port logic quota/import từ Hanzi `import.js`
+- [x] `deck-features/editor.js` — load deck, bảng shell, thêm/sửa/xóa từ
+- [x] `deck-features/import.js` — modal create/append, prompt theo lang
+- [x] Modal `#addWordOverlay`, `#importWordOverlay` trong index.html
+- [x] Form field động theo lang profile
+- [x] Port logic quota/import từ Hanzi `import.js`
 
 **Prompt:**
 
@@ -425,10 +425,11 @@ Field generic primary/reading/meaning. Cập nhật Phase 3.
 
 **Deliverables:**
 
-- [ ] `04-main-table.js` — port `05-main-table.js`, field generic
-- [ ] `05-speech-sound.js` — TTS/mic map từ lang profile
-- [ ] 4 chế độ học, search, shuffle, ẩn reading
-- [ ] `main-table.css`, `speech-sound.css`
+- [x] `04-main-table.js` — port `05-main-table.js`, field generic
+- [x] `05-speech-sound.js` — TTS/mic map từ lang profile
+- [x] 4 chế độ học, search, shuffle, ẩn reading
+- [x] `main-table.css`, `speech-sound.css`
+- [x] Tách `deck-hub.css` → `deck-editor.css`, `deck-import.css`
 
 **Prompt:**
 
@@ -581,3 +582,4 @@ A → B → C → D → E → F → G → H
 | 2026-06-25 | Phase 0 (Chat A): scaffold repo — package, server skeleton, lang-profiles, models draft, HTML shell, seed admin |
 | 2026-06-25 | Phase 1 (Chat B): backend auth, decks CRUD/import/bulk/export, quota, labels/stars, admin skeleton |
 | 2026-06-25 | Phase 2 (Chat C): frontend auth + hub deck — login/register, CRUD deck, langPair, quota pills, study shell |
+| 2026-06-26 | Phase 4 (Chat E): bảng học 4 mode, search/shuffle/ẩn reading, TTS/mic generic, tách CSS deck-editor/import |

@@ -8,6 +8,10 @@
 <link rel="stylesheet" href="stylecss/base.css">
 <link rel="stylesheet" href="stylecss/auth.css">
 <link rel="stylesheet" href="stylecss/deck-hub.css">
+<link rel="stylesheet" href="stylecss/deck-editor.css">
+<link rel="stylesheet" href="stylecss/deck-import.css">
+<link rel="stylesheet" href="stylecss/main-table.css">
+<link rel="stylesheet" href="stylecss/speech-sound.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
 </head>
 <body>
@@ -108,22 +112,196 @@
           <span class="mp-quota-icon" aria-hidden="true"><i class="ti ti-book-2"></i></span>
           <span class="mp-quota-text" id="adQuotaWords">0/150 từ</span>
         </div>
+        <button type="button" class="mp-upfile-btn" id="adUpfileBtn" title="Import từ vựng" aria-label="Import từ vựng">
+          <span class="mp-upfile-icon" aria-hidden="true"><i class="ti ti-upload"></i></span>
+          <span class="mp-upfile-label">upfile</span>
+        </button>
       </div>
     </div>
     <div class="mp-grid" id="adGrid"></div>
   </div>
 </div>
 
-<!-- ==================== STUDY SHELL (Chat D) ==================== -->
+<!-- ==================== STUDY / EDITOR ==================== -->
 <div id="app-screen" class="screen">
   <header class="app-header">
     <button type="button" class="btn-back-arrow" onclick="backFromDeckStudy()" title="Quay lại hub">←</button>
     <div class="app-deck-title" id="app-deck-label">Deck</div>
     <div class="app-deck-lang" id="app-deck-lang"></div>
+    <div class="app-header-actions">
+      <button type="button" class="mp-upfile-btn mp-upfile-btn--header" id="adUpfileHeaderBtn" style="display:none" title="Import từ" aria-label="Import từ">
+        <span aria-hidden="true"><i class="ti ti-upload"></i></span>
+        <span class="mp-upfile-label">upfile</span>
+      </button>
+      <button type="button" class="add-word-btn" id="addWordBtn" style="display:none"><span class="add-word-icon">+</span><span class="add-word-label">Thêm từ</span></button>
+      <button type="button" id="editModeBtn" class="edit-mode-btn" style="display:none" title="Chỉnh sửa từ">
+        <i class="ti ti-pencil"></i><span class="edit-mode-label">Chỉnh sửa</span>
+      </button>
+      <button type="button" id="deleteModeBtn" class="delete-mode-btn" style="display:none" title="Xóa từ">
+        <i class="ti ti-trash-filled"></i>
+      </button>
+    </div>
   </header>
-  <div class="deck-study-shell">
-    <h2>Màn học deck</h2>
-    <p>Bảng từ, thêm/sửa từ và import JSON sẽ được triển khai ở phase tiếp theo (Chat D).</p>
+  <div class="toolbar">
+    <button class="mode-btn active" data-mode="all" onclick="setMode('all',this)">Tất cả</button>
+    <button class="mode-btn" id="mode-primary-btn" data-mode="primary" onclick="setMode('primary',this)">KT từ gốc</button>
+    <button class="mode-btn" data-mode="meaning" onclick="setMode('meaning',this)">KT nghĩa</button>
+    <button class="mode-btn" id="mode-pron-btn" data-mode="pron" onclick="setMode('pron',this)">KT phát âm</button>
+    <span class="toolbar-sep"></span>
+    <button class="icon-toggle" id="shuffle-btn" onclick="toggleShuffle()" title="Xáo trộn">🔀</button>
+    <button class="icon-toggle" id="reading-btn" onclick="toggleReading()" title="Ẩn reading"><span class="eye-open"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span class="eye-slash"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg></span></button>
+    <button class="icon-toggle icon-reset" id="reset-btn" onclick="resetAll()" title="Reset">↺</button>
+  </div>
+  <div class="search-bar-wrap">
+    <input type="text" class="search-input" id="search-input" placeholder="🔍 Tìm từ..." oninput="handleSearch(this)">
+  </div>
+  <div class="table-wrap">
+    <div id="table-loading" class="table-loading" style="display:none" aria-live="polite">
+      <div class="table-loading-spinner"></div>
+      <div id="table-loading-text" class="table-loading-text">Đang tải từ vựng…</div>
+    </div>
+    <table id="tbl" style="display:none">
+      <thead id="thead-row"></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty-state" id="empty-state" style="display:none">
+      <p>Chưa có từ nào. Nhấn <strong>Thêm từ</strong> hoặc <strong>upfile</strong> để bắt đầu.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADD WORD MODAL ── -->
+<div id="addWordOverlay" class="aw-overlay" style="display:none;">
+  <div id="addWordModal" class="aw-modal" onclick="event.stopPropagation()">
+    <div class="aw-title" id="awTitle">Thêm từ mới</div>
+    <div class="aw-row">
+      <div class="aw-field">
+        <label class="aw-label"><span id="awLabelPrimary">Từ</span> <span class="aw-required">*</span></label>
+        <input id="aw-primary" type="text" class="aw-input aw-input--primary">
+      </div>
+      <div class="aw-field">
+        <label class="aw-label"><span id="awLabelMeaning">Nghĩa</span> <span class="aw-required">*</span></label>
+        <input id="aw-meaning" type="text" class="aw-input">
+      </div>
+    </div>
+    <button id="awAccordionBtn" type="button" class="aw-accordion-btn" onclick="awToggleOptional()">
+      <i class="ti ti-chevron-down aw-chevron" id="awChevron"></i>
+      <span>Thêm chi tiết (reading, ví dụ, từ loại...)</span>
+    </button>
+    <div id="awOptional" class="aw-optional">
+      <div class="aw-row" id="awReadingRow">
+        <div class="aw-field">
+          <label class="aw-label" id="awLabelReading">Reading</label>
+          <input id="aw-reading" type="text" class="aw-input">
+        </div>
+        <div class="aw-field">
+          <label class="aw-label" id="awLabelPos">Từ loại</label>
+          <input id="aw-pos" type="text" class="aw-input">
+        </div>
+      </div>
+      <div class="aw-row">
+        <div class="aw-field">
+          <label class="aw-label" id="awLabelExPrimary">Ví dụ</label>
+          <input id="aw-exprimary" type="text" class="aw-input">
+        </div>
+        <div class="aw-field">
+          <label class="aw-label" id="awLabelExReading">Reading ví dụ</label>
+          <input id="aw-exreading" type="text" class="aw-input">
+        </div>
+      </div>
+      <div class="aw-field aw-field--full">
+        <label class="aw-label" id="awLabelExMeaning">Nghĩa ví dụ</label>
+        <input id="aw-exmeaning" type="text" class="aw-input">
+      </div>
+    </div>
+    <div class="aw-actions">
+      <button type="button" class="aw-btn aw-btn--cancel" onclick="awClose()"><i class="ti ti-x"></i> Huỷ</button>
+      <button type="button" class="aw-btn aw-btn--more" id="awSaveMoreBtn" onclick="awSaveAndMore()"><i class="ti ti-device-floppy"></i> Lưu & thêm tiếp</button>
+      <button type="button" class="aw-btn aw-btn--save" onclick="awSave()"><i class="ti ti-device-floppy"></i> Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── IMPORT WORDS MODAL ── -->
+<div id="importWordOverlay" class="iw-overlay" style="display:none;">
+  <div class="iw-modal" onclick="event.stopPropagation()">
+    <header class="iw-header">
+      <div class="iw-header-text">
+        <h2 class="iw-title">Import từ vựng hàng loạt</h2>
+        <p class="iw-subtitle">Dùng AI để chuyển file Excel/Sheet về đúng định dạng Andeck</p>
+      </div>
+      <button type="button" class="iw-close" id="importModalClose" aria-label="Đóng"><i class="ti ti-x"></i></button>
+    </header>
+    <div class="iw-body">
+      <ol class="iw-steps">
+        <li class="iw-step">
+          <span class="iw-step-num">1</span>
+          <div class="iw-step-content">
+            <strong>Copy prompt bên dưới</strong>
+            <span>Prompt hướng dẫn AI hiểu đúng định dạng Andeck</span>
+          </div>
+        </li>
+        <li class="iw-step">
+          <span class="iw-step-num">2</span>
+          <div class="iw-step-content">
+            <strong>Dán vào ChatGPT hoặc Claude</strong>
+            <span>Paste thêm nội dung file Excel/Sheet vào cuối rồi gửi đi</span>
+          </div>
+        </li>
+        <li class="iw-step">
+          <span class="iw-step-num">3</span>
+          <div class="iw-step-content">
+            <strong>Copy kết quả JSON → dán vào ô bên dưới</strong>
+            <span>Web sẽ kiểm tra và thêm từ tự động</span>
+          </div>
+        </li>
+      </ol>
+      <div class="iw-notice" role="note">⚠️ Kiểm tra giới hạn từ trước khi up file — liên hệ admin để gia hạn số lượng từ</div>
+      <div class="iw-block" id="importLangPairBlock">
+        <label class="iw-label" for="importLangPairSelect">Cặp ngôn ngữ</label>
+        <select id="importLangPairSelect" class="iw-name-input"></select>
+      </div>
+      <div class="iw-block">
+        <div class="iw-block-head">
+          <label class="iw-label" for="importPromptPreview">Prompt mẫu</label>
+          <button type="button" class="iw-copy-btn" id="copyPromptBtn">Copy prompt</button>
+        </div>
+        <pre id="importPromptPreview" class="iw-prompt-preview" aria-readonly="true"></pre>
+      </div>
+      <div class="iw-block" id="importDeckNameBlock">
+        <label class="iw-label" for="importDeckNameInput">Tên deck</label>
+        <input type="text" id="importDeckNameInput" class="iw-name-input" maxlength="50" placeholder="Để trống = tự động (Import ngày-tháng-năm)" autocomplete="off">
+      </div>
+      <div class="iw-block">
+        <div class="iw-block-head">
+          <label class="iw-label" for="importJsonInput">Dán JSON vào đây</label>
+          <span class="iw-word-count" id="importWordCount">0 từ hợp lệ</span>
+        </div>
+        <textarea id="importJsonInput" class="iw-json-input" rows="10" spellcheck="false" placeholder='[{"primary":"hello","reading":"","meaning":"xin chào",...}]'></textarea>
+      </div>
+    </div>
+    <footer class="iw-footer">
+      <span class="iw-quota-info" id="importQuotaInfo">Quota: 0/150 từ</span>
+      <div class="iw-footer-actions">
+        <button type="button" class="iw-btn iw-btn--cancel" id="importModalCancel">Huỷ</button>
+        <button type="button" class="iw-btn iw-btn--submit" id="importSubmitBtn">Xem trước &amp; Lưu</button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ── DELETE CONFIRM DIALOG ── -->
+<div id="deleteConfirmOverlay" class="dm-confirm-overlay" style="display:none;">
+  <div class="dm-confirm-box" onclick="event.stopPropagation()">
+    <div class="dm-confirm-title">Xác nhận xóa</div>
+    <div class="dm-confirm-text">
+      Bạn sắp xóa <strong id="deleteCount">0</strong> từ khỏi deck.
+      Hành động này không thể hoàn tác.
+    </div>
+    <div class="dm-confirm-actions">
+      <button type="button" class="dm-confirm-btn dm-confirm-btn--cancel" onclick="dmCancelDialog()">Huỷ</button>
+      <button type="button" class="dm-confirm-btn dm-confirm-btn--delete" onclick="dmConfirmDelete()">Xóa</button>
+    </div>
   </div>
 </div>
 
@@ -204,8 +382,12 @@
 </div>
 
 <script src="modules/01-config-state.js"></script>
-<script src="modules/deck-features/core.js"></script>
 <script src="modules/03-auth.js"></script>
+<script src="modules/04-main-table.js"></script>
+<script src="modules/05-speech-sound.js"></script>
+<script src="modules/deck-features/core.js"></script>
+<script src="modules/deck-features/editor.js"></script>
+<script src="modules/deck-features/import.js"></script>
 <script src="modules/deck-features/bootstrap.js"></script>
 </body>
 </html>

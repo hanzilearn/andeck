@@ -5,6 +5,19 @@
 
 let currentUser = null;
 
+/* ─── Study table state (module 04) ─── */
+let currentLevel = null;
+let VOCAB = [];
+let mode = 'all';
+let shuffled = false;
+let order = [];
+let answers = {};
+let _answersCache = {};
+
+function isFreeLocked() {
+  return false;
+}
+
 const SCREENS = [
   'login-screen',
   'register-screen',
@@ -58,6 +71,10 @@ function showLabelToast(msg, color) {
 
 function backFromDeckStudy() {
   window._currentDeckId = null;
+  currentLevel = null;
+  adClearLayoutProfile();
+  if (typeof emExit === 'function') emExit();
+  if (typeof dmExit === 'function') dmExit();
   showOnly('deck-hub-screen');
   if (typeof initDeckHub === 'function') initDeckHub();
 }
