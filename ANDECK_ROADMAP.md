@@ -235,21 +235,21 @@ API: `GET /api/decks/lang-profiles` → frontend render form, cột bảng, impo
 - [x] Modal import AI JSON — mode create / append
 - [x] Prompt động theo `langPair`
 - [x] Parse + validate + quota slice (max 500/request)
-- [ ] Import file JSON format **Hanzi legacy** (`zh-vi` only) — parser frontend (Chat G)
+- [x] Import file JSON format **Hanzi legacy** (`zh-vi` only) — parser frontend (Chat G)
 
 ### Export
 
-- [ ] Tải JSON deck (format Andeck chuẩn)
+- [x] Tải JSON deck (format Andeck chuẩn)
 
 ### Auth & Admin
 
 - [x] Login / đổi MK / JWT
-- [ ] `admin.html`: danh sách user, quota deck/từ, xem/xóa deck user, seed admin
+- [x] `admin.html`: danh sách user, quota deck/từ, xem/xóa deck user, seed admin
 
 ### Deploy
 
-- [ ] Render service `andeck`, env riêng, MongoDB database `andeck`
-- [ ] QA checklist (mục 10)
+- [x] Render service `andeck`, env riêng, MongoDB database `andeck`
+- [x] QA checklist (mục 10)
 
 \*Mode phát âm: ẩn nếu trình duyệt/lang không hỗ trợ (hiếm với zh/en/ja).
 
@@ -301,8 +301,8 @@ Tất cả (trừ login): `Authorization: Bearer <token>`.
 | **3** | Editor từ + import AI (create/append) | D | ✅ |
 | **4** | Bảng học + TTS/mic generic | E | ✅ |
 | **5** | Quiz, flashcard, labels, stars, timer | F | ✅ |
-| **6** | Admin + export JSON + Hanzi legacy import | G | ⬜ |
-| **7** | Deploy Render + QA + ANDECK_OVERVIEW.md | H | ⬜ |
+| **6** | Admin + export JSON + Hanzi legacy import | G | ✅ |
+| **7** | Deploy Render + QA + ANDECK_OVERVIEW.md | H | ✅ |
 
 **Backlog (mỗi hạng mục = 1 chat riêng):**
 
@@ -470,10 +470,10 @@ Dùng field generic primary/reading/meaning. Cập nhật Phase 5.
 
 **Deliverables:**
 
-- [ ] `public/admin.html` + JS inline hoặc module — **không tab HSK**
-- [ ] Quota user, xem/xóa deck
-- [ ] `GET /api/decks/:id/export` + nút UI “Tải JSON”
-- [ ] Parser import nhận JSON array Hanzi `{ hanzi, pinyin, meaning... }` khi deck `zh-vi`
+- [x] `public/admin.html` + JS inline hoặc module — **không tab HSK**
+- [x] Quota user, xem/xóa deck
+- [x] `GET /api/decks/:id/export` + nút UI “Tải JSON”
+- [x] Parser import nhận JSON array Hanzi `{ hanzi, pinyin, meaning... }` khi deck `zh-vi`
 
 **Prompt:**
 
@@ -492,11 +492,11 @@ Tham khảo E:\hanzi-learn\public\admin.html — bỏ phần HSK. Cập nhật P
 
 **Deliverables:**
 
-- [ ] Hướng dẫn deploy Render (subdomain `andeck`)
-- [ ] `.env.example` đầy đủ: `MONGO_URI`, `JWT_SECRET`, `PORT`
-- [ ] Chạy QA mục 10
-- [ ] Tạo `ANDECK_OVERVIEW.md` (giống vai trò `HANZI_LEARN_OVERVIEW.md`)
-- [ ] Cập nhật Phase 7 → ✅
+- [x] Hướng dẫn deploy Render (subdomain `andeck`)
+- [x] `.env.example` đầy đủ: `MONGO_URI`, `JWT_SECRET`, `PORT`
+- [x] Chạy QA mục 10
+- [x] Tạo `ANDECK_OVERVIEW.md` (giống vai trò `HANZI_LEARN_OVERVIEW.md`)
+- [x] Cập nhật Phase 7 → ✅
 
 **Prompt:**
 
@@ -583,3 +583,5 @@ A → B → C → D → E → F → G → H
 | 2026-06-25 | Phase 1 (Chat B): backend auth, decks CRUD/import/bulk/export, quota, labels/stars, admin skeleton |
 | 2026-06-25 | Phase 2 (Chat C): frontend auth + hub deck — login/register, CRUD deck, langPair, quota pills, study shell |
 | 2026-06-26 | Phase 5 (Chat F): quiz, flashcard, nhãn/sao, timer — port modules + CSS, tích hợp bảng học |
+| 2026-06-26 | Phase 6 (Chat G): admin.html (no HSK), export JSON UI, Hanzi legacy import parser zh-vi |
+| 2026-06-26 | Phase 7 (Chat H): `.env.example`, ANDECK_OVERVIEW.md, QA 12/12 pass production, deploy Render andeck.onrender.com |

@@ -234,6 +234,37 @@ tr.em-row-edit:hover {
   box-shadow: 0 4px 12px rgba(26, 92, 74, 0.55);
   transform: translateY(-1px);
 }
+/* Nút export JSON header app-screen */
+.mp-export-btn.mp-export-btn--header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding: 7px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #fff;
+  background: linear-gradient(90deg, #4a3d6b 0%, #7b6ba8 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(74, 61, 107, 0.45);
+  transition: background .15s, box-shadow .15s, transform .15s;
+}
+.mp-export-btn.mp-export-btn--header:hover {
+  background: linear-gradient(90deg, #3a3058 0%, #6a5a96 100%);
+  box-shadow: 0 4px 12px rgba(74, 61, 107, 0.55);
+  transform: translateY(-1px);
+}
+.mp-export-btn.mp-export-btn--header span[aria-hidden="true"] {
+  display: inline-flex;
+  align-items: center;
+}
+
 .mp-upfile-btn.mp-upfile-btn--header span[aria-hidden="true"] {
   display: inline-flex;
   align-items: center;

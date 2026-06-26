@@ -2,7 +2,7 @@
 
 Web học từ vựng đa ngôn ngữ — tạo deck riêng, import JSON, quiz & flashcard.
 
-**Roadmap & phân công chat:** xem [`ANDECK_ROADMAP.md`](./ANDECK_ROADMAP.md).
+**Tổng quan v1:** [`ANDECK_OVERVIEW.md`](./ANDECK_OVERVIEW.md) · **Roadmap:** [`ANDECK_ROADMAP.md`](./ANDECK_ROADMAP.md)
 
 Code tham chiếu (My Project): repo Hanzi Learn tại `E:\hanzi-learn` — chỉ đọc/port, không sửa production.
 

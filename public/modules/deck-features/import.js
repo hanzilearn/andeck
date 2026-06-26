@@ -84,27 +84,113 @@ function adMapImportItem(item, langPair) {
   };
 }
 
+function adImportIsLegacyItem(item) {
+  if (!item || typeof item !== 'object') return false;
+  return (
+    item.hanzi != null ||
+    item.pinyin != null ||
+    item.ex_hanzi != null ||
+    item.ex_pinyin != null ||
+    item.ex_viet != null ||
+    item.tu_loai != null
+  );
+}
+
+function adImportDetectLegacy(arr) {
+  if (!Array.isArray(arr) || !arr.length) return false;
+  return arr.some(adImportIsLegacyItem);
+}
+
+function adImportUnwrapPayload(data) {
+  if (Array.isArray(data)) {
+    return { words: data, langPair: null, name: null, source: 'array' };
+  }
+  if (!data || typeof data !== 'object') return null;
+
+  if (data.format === 'andeck' && data.deck && Array.isArray(data.deck.words)) {
+    return {
+      words: data.deck.words,
+      langPair: data.deck.langPair || null,
+      name: data.deck.name || null,
+      source: 'andeck-export'
+    };
+  }
+
+  if (Array.isArray(data.words)) {
+    return {
+      words: data.words,
+      langPair: data.langPair || null,
+      name: data.name || null,
+      source: 'deck-object'
+    };
+  }
+
+  return null;
+}
+
+function adImportApplyMeta(meta) {
+  if (!meta || adImportMode !== 'create') return;
+  if (meta.name) {
+    const nameEl = document.getElementById('importDeckNameInput');
+    if (nameEl && !String(nameEl.value || '').trim()) nameEl.value = meta.name;
+  }
+  if (meta.langPair) {
+    const sel = document.getElementById('importLangPairSelect');
+    if (sel) {
+      sel.value = meta.langPair;
+      adImportRefreshPrompt();
+    }
+  }
+}
+
 function adImportParseJson(text, langPair) {
   if (!text || !String(text).trim()) {
-    return { ok: false, items: [], count: 0 };
+    return { ok: false, items: [], count: 0, meta: null };
   }
   let raw = String(text).trim();
   const fenced = raw.match(/^```(?:json)?\s*([\s\S]*?)```\s*$/i);
   if (fenced) raw = fenced[1].trim();
   try {
     const data = JSON.parse(raw);
-    if (!Array.isArray(data)) return { ok: false, items: [], count: 0 };
-    const pair = langPair || window._currentLangPair || 'zh-vi';
-    const items = data
+    let words = null;
+    let meta = null;
+
+    if (Array.isArray(data)) {
+      words = data;
+      meta = { langPair: null, name: null, legacy: adImportDetectLegacy(words), source: 'array' };
+    } else {
+      const unwrapped = adImportUnwrapPayload(data);
+      if (!unwrapped) return { ok: false, items: [], count: 0, meta: null };
+      words = unwrapped.words;
+      meta = {
+        langPair: unwrapped.langPair,
+        name: unwrapped.name,
+        legacy: adImportDetectLegacy(words),
+        source: unwrapped.source
+      };
+    }
+
+    let pair = langPair || window._currentLangPair || 'zh-vi';
+    if (meta.legacy) {
+      if (adImportMode === 'append' && pair !== 'zh-vi') {
+        return { ok: false, items: [], count: 0, meta: meta, error: 'legacy-zh-only' };
+      }
+      pair = 'zh-vi';
+      meta.langPair = 'zh-vi';
+    }
+
+    const items = words
       .map(function (item) {
         return adMapImportItem(item, pair);
       })
       .filter(function (mapped) {
         return mapped && mapped.primary && mapped.meaning;
       });
-    return { ok: true, items: items, count: items.length };
+
+    meta.legacy = meta.legacy || adImportDetectLegacy(words);
+    return { ok: true, items: items, count: items.length, meta: meta };
   } catch {
-    return { ok: false, items: [], count: 0 };
+    return { ok: false, items: [], count: 0, meta: null };
   }
 }
 
@@ -166,7 +252,7 @@ function adImportRefreshPrompt() {
   if (placeholder && profile) {
     const sample =
       profile.langPair === 'zh-vi'
-        ? '[{"primary":"\u670b\u53cb","reading":"p\u00e9ngyou","meaning":"b\u1ea1n b\u00e8",...}]'
+        ? '[{"hanzi":"\u670b\u53cb","pinyin":"p\u00e9ngyou","meaning":"b\u1ea1n b\u00e8","ex_hanzi":"","ex_pinyin":"","ex_viet":"","tu_loai":""}]'
         : '[{"primary":"hello","reading":"","meaning":"xin ch\u00e0o",...}]';
     placeholder.placeholder = sample;
   }
@@ -207,9 +293,18 @@ function adImportUpdateWordCountDisplay() {
   const input = document.getElementById('importJsonInput');
   if (!span || !input) return;
   const parsed = adImportParseJson(input.value, adImportGetLangPairForParse());
+  if (parsed.error === 'legacy-zh-only') {
+    span.textContent = 'Format Hanzi legacy chỉ dùng cho deck zh-vi';
+    span.classList.remove('is-valid');
+    return;
+  }
   if (parsed.ok && parsed.count > 0) {
-    span.textContent = parsed.count + ' t\u1eeb h\u1ee3p l\u1ec7';
+    let label = parsed.count + ' t\u1eeb h\u1ee3p l\u1ec7';
+    if (parsed.meta && parsed.meta.legacy) label += ' (Hanzi legacy)';
+    else if (parsed.meta && parsed.meta.source === 'andeck-export') label += ' (Andeck export)';
+    span.textContent = label;
     span.classList.add('is-valid');
+    adImportApplyMeta(parsed.meta);
   } else {
     span.textContent = '0 t\u1eeb h\u1ee3p l\u1ec7';
     span.classList.remove('is-valid');
@@ -498,6 +593,10 @@ async function adImportSubmit() {
   const input = document.getElementById('importJsonInput');
   const langPair = adImportGetLangPairForParse();
   const parsed = adImportParseJson(input?.value || '', langPair);
+  if (parsed.error === 'legacy-zh-only') {
+    alert('JSON format Hanzi legacy (hanzi/pinyin) chỉ import được vào deck zh-vi.');
+    return;
+  }
   if (!parsed.ok || parsed.count === 0) {
     alert('Kh\u00f4ng c\u00f3 t\u1eeb h\u1ee3p l\u1ec7, vui l\u00f2ng ki\u1ec3m tra l\u1ea1i');
     return;

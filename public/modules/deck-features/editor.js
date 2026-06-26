@@ -177,6 +177,8 @@ async function loadDeckStudy(deckId) {
     }
     const upfileHdr = document.getElementById('adUpfileHeaderBtn');
     if (upfileHdr) upfileHdr.style.display = '';
+    const exportBtn = document.getElementById('adExportBtn');
+    if (exportBtn) exportBtn.style.display = '';
 
     const profile = adGetLangProfile(deck.langPair);
     adApplyWordFormLabels(profile);
@@ -488,9 +490,46 @@ function dmRowClick(tr, wordId) {
   dmToggleRow(wordId, cb.checked);
 }
 
+async function adExportDeckJson() {
+  const deckId = window._currentDeckId;
+  if (!deckId || !getToken()) {
+    alert('Vui l\u00f2ng m\u1edf deck \u0111\u1ec3 t\u1ea3i JSON.');
+    return;
+  }
+  try {
+    const res = await fetch('/api/decks/' + deckId + '/export', { headers: adAuthHeaders() });
+    if (!res.ok) {
+      const err = await res.json().catch(function () {
+        return {};
+      });
+      alert(err.error || 'Kh\u00f4ng th\u1ec3 t\u1ea3i JSON.');
+      return;
+    }
+    const blob = await res.blob();
+    let filename = 'andeck-' + deckId.slice(0, 8) + '.json';
+    const disposition = res.headers.get('Content-Disposition') || '';
+    const match = disposition.match(/filename="([^"]+)"/);
+    if (match) filename = match[1];
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    adNotify('\u0110\u00e3 t\u1ea3i JSON deck', 'ok');
+  } catch (e) {
+    console.error('adExportDeckJson:', e);
+    alert('L\u1ed7i k\u1ebft n\u1ed1i, vui l\u00f2ng th\u1eed l\u1ea1i.');
+  }
+}
+
 function initEditorModals() {
   if (adEditorInited) return;
   adEditorInited = true;
+
+  document.getElementById('adExportBtn')?.addEventListener('click', adExportDeckJson);
 
   document.getElementById('addWordOverlay')?.addEventListener('click', function (e) {
     if (e.target.id === 'addWordOverlay') awClose();
