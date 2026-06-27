@@ -257,6 +257,20 @@
 .zalo-popup-note  { font-size: 11px; color: var(--gray); }
 .zalo-popup-close { position: absolute; top: 6px; right: 10px; background: none; border: none; font-size: 14px; cursor: pointer; color: var(--gray); }
 
+[data-theme="dark"] .zalo-popup {
+  background: var(--paper-dark);
+  border-color: rgba(0, 104, 255, 0.35);
+}
+[data-theme="dark"] .zalo-popup-title {
+  color: var(--ink);
+}
+[data-theme="dark"] .zalo-bubble::before {
+  background: #25252d;
+}
+[data-theme="dark"] .zalo-bubble::after {
+  border-top-color: #25252d;
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .zalo-float  { bottom: 16px; right: 16px; }

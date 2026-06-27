@@ -327,12 +327,16 @@ function toggleAvatar() {
 
 function closeAllDropdowns() {
   document.getElementById('avatar-dropdown').classList.remove('show');
+  document.getElementById('zalo-popup')?.classList.remove('show');
 }
 
 document.addEventListener('click', function (e) {
   const dd = document.getElementById('avatar-dropdown');
   if (dd && dd.classList.contains('show') && !e.target.closest('.avatar-wrap')) {
     dd.classList.remove('show');
+  }
+  if (!e.target.closest('.zalo-float')) {
+    document.getElementById('zalo-popup')?.classList.remove('show');
   }
 });
 
@@ -392,6 +396,15 @@ async function doChangePw() {
   }
 }
 
+function getZaloAdminNum() {
+  const el = document.querySelector('.zalo-popup-num');
+  return (el && el.textContent.trim()) || '0792 739 257';
+}
+
+function toggleZaloPopup() {
+  document.getElementById('zalo-popup')?.classList.toggle('show');
+}
+
 function showZaloContact() {
-  alert('Liên hệ admin để khôi phục mật khẩu.');
+  alert('Liên hệ Zalo Admin: ' + getZaloAdminNum());
 }

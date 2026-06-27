@@ -127,14 +127,58 @@ function adApplyWordFormLabels(profile) {
   set('awLabelExReading', (profile.readingLabel || 'Reading') + ' v\u00ed d\u1ee5');
   set('awLabelExMeaning', 'Ngh\u0129a v\u00ed d\u1ee5');
 
-  const readingRow = document.getElementById('awReadingRow');
-  if (readingRow) readingRow.style.display = profile.hasReading === false ? 'none' : '';
+  const readingField = document.getElementById('awReadingField');
+  if (readingField) readingField.style.display = profile.hasReading === false ? 'none' : '';
+}
 
-  const accBtn = document.getElementById('awAccordionBtn');
-  if (accBtn) {
-    const hint = profile.hasReading !== false ? profile.readingLabel : 'v\u00ed d\u1ee5, t\u1eeb lo\u1ea1i';
-    accBtn.querySelector('span').textContent = 'Th\u00eam chi ti\u1ebft (' + (hint || 'tu\u1eeb lo\u1ea1i') + '...)';
-  }
+function awIsExtraOpen(el) {
+  return el && el.style.display === 'block';
+}
+
+function awClearExampleFields() {
+  ['aw-exprimary', 'aw-exreading', 'aw-exmeaning'].forEach(function (id) {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+}
+
+function awClearNoteField() {
+  const el = document.getElementById('aw-note');
+  if (el) el.value = '';
+}
+
+function awCloseExamplePanel() {
+  const opt = document.getElementById('awOptional');
+  const btn = document.getElementById('awExampleBtn');
+  if (opt) opt.style.display = 'none';
+  if (btn) btn.classList.remove('is-open');
+}
+
+function awCloseNotePanel() {
+  const noteSec = document.getElementById('awNoteSection');
+  const btn = document.getElementById('awNoteBtn');
+  if (noteSec) noteSec.style.display = 'none';
+  if (btn) btn.classList.remove('is-open');
+}
+
+function awOpenExamplePanel() {
+  awCloseNotePanel();
+  awClearNoteField();
+  const opt = document.getElementById('awOptional');
+  const btn = document.getElementById('awExampleBtn');
+  if (opt) opt.style.display = 'block';
+  if (btn) btn.classList.add('is-open');
+}
+
+function awOpenNotePanel() {
+  awCloseExamplePanel();
+  awClearExampleFields();
+  const noteSec = document.getElementById('awNoteSection');
+  const btn = document.getElementById('awNoteBtn');
+  if (noteSec) noteSec.style.display = 'block';
+  if (btn) btn.classList.add('is-open');
+  const noteInput = document.getElementById('aw-note');
+  if (noteInput) noteInput.focus();
 }
 
 async function loadDeckStudy(deckId) {
@@ -232,16 +276,18 @@ function awFillForm(w) {
   document.getElementById('aw-exreading').value = w.exReading || '';
   document.getElementById('aw-exmeaning').value = w.exMeaning || '';
   document.getElementById('aw-note').value = w.note || '';
-  const hasOptional = !!(w.reading || w.pos || w.exPrimary || w.exReading || w.exMeaning);
+  const hasExamples = !!(w.exPrimary || w.exReading || w.exMeaning);
   const hasNote = !!String(w.note || '').trim();
-  const opt = document.getElementById('awOptional');
-  const btn = document.getElementById('awAccordionBtn');
-  const noteSec = document.getElementById('awNoteSection');
-  const noteBtn = document.getElementById('awNoteBtn');
-  if (opt) opt.style.display = hasOptional ? 'block' : 'none';
-  if (btn) btn.classList.toggle('is-open', hasOptional);
-  if (noteSec) noteSec.style.display = hasNote ? 'block' : 'none';
-  if (noteBtn) noteBtn.classList.toggle('is-open', hasNote);
+  awCloseExamplePanel();
+  awCloseNotePanel();
+  if (hasExamples) {
+    awOpenExamplePanel();
+  } else if (hasNote) {
+    const noteSec = document.getElementById('awNoteSection');
+    const btn = document.getElementById('awNoteBtn');
+    if (noteSec) noteSec.style.display = 'block';
+    if (btn) btn.classList.add('is-open');
+  }
 }
 
 function awOpen() {
@@ -282,33 +328,25 @@ function awResetForm() {
       if (el) el.value = '';
     }
   );
-  const opt = document.getElementById('awOptional');
-  const btn = document.getElementById('awAccordionBtn');
-  const noteSec = document.getElementById('awNoteSection');
-  const noteBtn = document.getElementById('awNoteBtn');
-  if (opt) opt.style.display = 'none';
-  if (btn) btn.classList.remove('is-open');
-  if (noteSec) noteSec.style.display = 'none';
-  if (noteBtn) noteBtn.classList.remove('is-open');
+  awCloseExamplePanel();
+  awCloseNotePanel();
 }
 
-function awToggleOptional() {
+function awToggleExample() {
   const opt = document.getElementById('awOptional');
-  const btn = document.getElementById('awAccordionBtn');
-  const open = opt.style.display === 'block';
-  opt.style.display = open ? 'none' : 'block';
-  if (btn) btn.classList.toggle('is-open', !open);
+  if (awIsExtraOpen(opt)) {
+    awCloseExamplePanel();
+  } else {
+    awOpenExamplePanel();
+  }
 }
 
 function awToggleNote() {
   const noteSec = document.getElementById('awNoteSection');
-  const btn = document.getElementById('awNoteBtn');
-  const open = noteSec.style.display === 'block';
-  noteSec.style.display = open ? 'none' : 'block';
-  if (btn) btn.classList.toggle('is-open', !open);
-  if (!open) {
-    const noteInput = document.getElementById('aw-note');
-    if (noteInput) noteInput.focus();
+  if (awIsExtraOpen(noteSec)) {
+    awCloseNotePanel();
+  } else {
+    awOpenNotePanel();
   }
 }
 

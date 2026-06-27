@@ -139,23 +139,26 @@ function adShowQuotaLimit(type) {
   const ov = document.getElementById('adQuotaLimitOverlay');
   const titleEl = document.getElementById('adQuotaLimitTitle');
   const textEl = document.getElementById('adQuotaLimitText');
+  const zalo = typeof getZaloAdminNum === 'function' ? getZaloAdminNum() : '0792 739 257';
   if (!ov || !titleEl || !textEl) {
     const msg =
       type === 'deck'
-        ? 'Số deck của bạn đã đến giới hạn (' + AD.deckQuota + '). Liên hệ admin để gia hạn.'
-        : 'Số từ đã đến giới hạn (' + adMaxTotalWords() + ' tổng). Liên hệ admin để gia hạn.';
+        ? 'Số deck của bạn đã đến giới hạn (' + AD.deckQuota + '). Liên hệ Zalo Admin: ' + zalo
+        : 'Số từ đã đến giới hạn (' + adMaxTotalWords() + ' tổng). Liên hệ Zalo Admin: ' + zalo;
     alert(msg);
     return;
   }
   if (type === 'deck') {
     titleEl.textContent = 'Giới hạn deck';
     textEl.textContent =
-      'Số deck của bạn đã đến giới hạn (' + AD.deckQuota + '). Gia hạn thêm — liên hệ admin.';
+      'Số deck của bạn đã đến giới hạn (' + AD.deckQuota + '). Gia hạn thêm — liên hệ Zalo Admin.';
   } else {
     titleEl.textContent = 'Giới hạn từ vựng';
     textEl.textContent =
-      'Số từ đã đến giới hạn (' + adMaxTotalWords() + ' tổng). Gia hạn thêm — liên hệ admin.';
+      'Số từ đã đến giới hạn (' + adMaxTotalWords() + ' tổng). Gia hạn thêm — liên hệ Zalo Admin.';
   }
+  const zaloEl = document.getElementById('adQuotaLimitZaloNum');
+  if (zaloEl) zaloEl.textContent = zalo;
   ov.style.display = 'flex';
 }
 
@@ -580,6 +583,10 @@ function initAdModals() {
     if (e.target.id === 'adConfirmOverlay') adConfirmClose(false);
   });
   document.getElementById('adQuotaLimitCloseBtn')?.addEventListener('click', adCloseQuotaLimit);
+  document.getElementById('adQuotaLimitZaloBtn')?.addEventListener('click', function () {
+    adCloseQuotaLimit();
+    if (typeof showZaloContact === 'function') showZaloContact();
+  });
   document.getElementById('adQuotaLimitOverlay')?.addEventListener('click', function (e) {
     if (e.target.id === 'adQuotaLimitOverlay') adCloseQuotaLimit();
   });

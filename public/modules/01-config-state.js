@@ -128,6 +128,16 @@ function showOnly(id) {
     tmrSelect.style.visibility = showTmr ? 'visible' : 'hidden';
     tmrSelect.style.pointerEvents = showTmr ? '' : 'none';
   }
+
+  const zaloFloat = document.getElementById('zalo-float');
+  if (zaloFloat) {
+    const showZalo =
+      id === 'login-screen' || id === 'register-screen' || id === 'deck-hub-screen';
+    zaloFloat.style.display = showZalo ? 'block' : 'none';
+    if (!showZalo) {
+      document.getElementById('zalo-popup')?.classList.remove('show');
+    }
+  }
 }
 
 function esc(str) {

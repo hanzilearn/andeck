@@ -380,6 +380,24 @@
   color: var(--color-text-secondary);
 }
 
+[data-theme="dark"] .mp-modal-select {
+  background: #25252D;
+  color: #C8D4E0;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+[data-theme="dark"] .mp-modal-select option {
+  background: #25252D;
+  color: #C8D4E0;
+}
+[data-theme="dark"] .mp-modal-input {
+  background: #25252D;
+  color: #C8D4E0;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+[data-theme="dark"] .mp-modal-input::placeholder {
+  color: rgba(200, 212, 224, 0.45);
+}
+
 .mp-modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.55);

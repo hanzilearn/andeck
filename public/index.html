@@ -534,10 +534,20 @@
         <input id="aw-meaning" type="text" class="aw-input">
       </div>
     </div>
+    <div class="aw-row" id="awCoreRow">
+      <div class="aw-field" id="awReadingField">
+        <label class="aw-label" id="awLabelReading">Phiên âm</label>
+        <input id="aw-reading" type="text" class="aw-input">
+      </div>
+      <div class="aw-field">
+        <label class="aw-label" id="awLabelPos">Từ loại</label>
+        <input id="aw-pos" type="text" class="aw-input">
+      </div>
+    </div>
     <div class="aw-toggle-row">
-      <button id="awAccordionBtn" type="button" class="aw-accordion-btn" onclick="awToggleOptional()">
-        <i class="ti ti-chevron-down aw-chevron" id="awChevron"></i>
-        <span>Thêm chi tiết (reading, ví dụ...)</span>
+      <button id="awExampleBtn" type="button" class="aw-accordion-btn" onclick="awToggleExample()">
+        <i class="ti ti-chevron-down aw-chevron" id="awExampleChevron"></i>
+        <span>Thêm ví dụ</span>
       </button>
       <button id="awNoteBtn" type="button" class="aw-accordion-btn" onclick="awToggleNote()">
         <i class="ti ti-chevron-down aw-chevron" id="awNoteChevron"></i>
@@ -545,16 +555,6 @@
       </button>
     </div>
     <div id="awOptional" class="aw-optional">
-      <div class="aw-row" id="awReadingRow">
-        <div class="aw-field">
-          <label class="aw-label" id="awLabelReading">Reading</label>
-          <input id="aw-reading" type="text" class="aw-input">
-        </div>
-        <div class="aw-field">
-          <label class="aw-label" id="awLabelPos">Từ loại</label>
-          <input id="aw-pos" type="text" class="aw-input">
-        </div>
-      </div>
       <div class="aw-row">
         <div class="aw-field">
           <label class="aw-label" id="awLabelExPrimary">Ví dụ</label>
@@ -715,8 +715,10 @@
   <div class="dm-confirm-box" onclick="event.stopPropagation()">
     <div class="dm-confirm-title" id="adQuotaLimitTitle">Giới hạn</div>
     <div class="dm-confirm-text" id="adQuotaLimitText"></div>
+    <div class="mp-quota-zalo-num" id="adQuotaLimitZaloNum">0792 739 257</div>
     <div class="dm-confirm-actions">
       <button type="button" class="dm-confirm-btn dm-confirm-btn--cancel" id="adQuotaLimitCloseBtn">Đóng</button>
+      <button type="button" class="dm-confirm-btn dm-confirm-btn--warn" id="adQuotaLimitZaloBtn">Liên hệ Zalo</button>
     </div>
   </div>
 </div>
@@ -741,6 +743,19 @@
     <div class="modal-msg" id="pw-msg"></div>
     <button type="button" class="btn-start" onclick="doChangePw()">Lưu mật khẩu</button>
   </div>
+</div>
+
+<!-- Zalo floating CSKH -->
+<div class="zalo-float" id="zalo-float">
+  <div class="zalo-popup" id="zalo-popup">
+    <button type="button" class="zalo-popup-close" onclick="toggleZaloPopup()">✕</button>
+    <div class="zalo-popup-title">Liên hệ Zalo Admin</div>
+    <div class="zalo-popup-num">0792 739 257</div>
+    <div class="zalo-popup-note">Bộ phận CSKH · Hỗ trợ 24/7</div>
+  </div>
+  <button type="button" class="zalo-bubble" onclick="toggleZaloPopup()" title="CSKH Zalo">
+    <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 4C12.95 4 4 12.07 4 22c0 5.52 2.87 10.43 7.34 13.66L9.5 43l7.84-4.15C19.56 39.6 21.73 40 24 40c11.05 0 20-8.07 20-18S35.05 4 24 4z" fill="white"></path><text x="24" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#0068FF" font-family="sans-serif">Z</text></svg>
+  </button>
 </div>
 
 <script src="modules/01-config-state.js"></script>
