@@ -133,8 +133,7 @@ function adApplyWordFormLabels(profile) {
   const accBtn = document.getElementById('awAccordionBtn');
   if (accBtn) {
     const hint = profile.hasReading !== false ? profile.readingLabel : 'v\u00ed d\u1ee5, t\u1eeb lo\u1ea1i';
-    accBtn.querySelector('span').textContent =
-      'Th\u00eam chi ti\u1ebft (' + (hint || 'tu\u1eeb lo\u1ea1i') + '...)';
+    accBtn.querySelector('span').textContent = 'Th\u00eam chi ti\u1ebft (' + (hint || 'tu\u1eeb lo\u1ea1i') + '...)';
   }
 }
 
@@ -232,11 +231,17 @@ function awFillForm(w) {
   document.getElementById('aw-exprimary').value = w.exPrimary || '';
   document.getElementById('aw-exreading').value = w.exReading || '';
   document.getElementById('aw-exmeaning').value = w.exMeaning || '';
+  document.getElementById('aw-note').value = w.note || '';
   const hasOptional = !!(w.reading || w.pos || w.exPrimary || w.exReading || w.exMeaning);
+  const hasNote = !!String(w.note || '').trim();
   const opt = document.getElementById('awOptional');
   const btn = document.getElementById('awAccordionBtn');
+  const noteSec = document.getElementById('awNoteSection');
+  const noteBtn = document.getElementById('awNoteBtn');
   if (opt) opt.style.display = hasOptional ? 'block' : 'none';
   if (btn) btn.classList.toggle('is-open', hasOptional);
+  if (noteSec) noteSec.style.display = hasNote ? 'block' : 'none';
+  if (noteBtn) noteBtn.classList.toggle('is-open', hasNote);
 }
 
 function awOpen() {
@@ -271,7 +276,7 @@ function awClose() {
 }
 
 function awResetForm() {
-  ['aw-primary', 'aw-meaning', 'aw-reading', 'aw-pos', 'aw-exprimary', 'aw-exreading', 'aw-exmeaning'].forEach(
+  ['aw-primary', 'aw-meaning', 'aw-reading', 'aw-pos', 'aw-exprimary', 'aw-exreading', 'aw-exmeaning', 'aw-note'].forEach(
     function (id) {
       const el = document.getElementById(id);
       if (el) el.value = '';
@@ -279,8 +284,12 @@ function awResetForm() {
   );
   const opt = document.getElementById('awOptional');
   const btn = document.getElementById('awAccordionBtn');
+  const noteSec = document.getElementById('awNoteSection');
+  const noteBtn = document.getElementById('awNoteBtn');
   if (opt) opt.style.display = 'none';
   if (btn) btn.classList.remove('is-open');
+  if (noteSec) noteSec.style.display = 'none';
+  if (noteBtn) noteBtn.classList.remove('is-open');
 }
 
 function awToggleOptional() {
@@ -291,6 +300,18 @@ function awToggleOptional() {
   if (btn) btn.classList.toggle('is-open', !open);
 }
 
+function awToggleNote() {
+  const noteSec = document.getElementById('awNoteSection');
+  const btn = document.getElementById('awNoteBtn');
+  const open = noteSec.style.display === 'block';
+  noteSec.style.display = open ? 'none' : 'block';
+  if (btn) btn.classList.toggle('is-open', !open);
+  if (!open) {
+    const noteInput = document.getElementById('aw-note');
+    if (noteInput) noteInput.focus();
+  }
+}
+
 function awCollectWordPayload() {
   return {
     primary: document.getElementById('aw-primary').value.trim(),
@@ -299,7 +320,8 @@ function awCollectWordPayload() {
     pos: document.getElementById('aw-pos')?.value.trim() || '',
     exPrimary: document.getElementById('aw-exprimary')?.value.trim() || '',
     exReading: document.getElementById('aw-exreading')?.value.trim() || '',
-    exMeaning: document.getElementById('aw-exmeaning')?.value.trim() || ''
+    exMeaning: document.getElementById('aw-exmeaning')?.value.trim() || '',
+    note: document.getElementById('aw-note')?.value.trim() || ''
   };
 }
 

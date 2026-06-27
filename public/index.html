@@ -534,10 +534,16 @@
         <input id="aw-meaning" type="text" class="aw-input">
       </div>
     </div>
-    <button id="awAccordionBtn" type="button" class="aw-accordion-btn" onclick="awToggleOptional()">
-      <i class="ti ti-chevron-down aw-chevron" id="awChevron"></i>
-      <span>Thêm chi tiết (reading, ví dụ, từ loại...)</span>
-    </button>
+    <div class="aw-toggle-row">
+      <button id="awAccordionBtn" type="button" class="aw-accordion-btn" onclick="awToggleOptional()">
+        <i class="ti ti-chevron-down aw-chevron" id="awChevron"></i>
+        <span>Thêm chi tiết (reading, ví dụ...)</span>
+      </button>
+      <button id="awNoteBtn" type="button" class="aw-accordion-btn" onclick="awToggleNote()">
+        <i class="ti ti-chevron-down aw-chevron" id="awNoteChevron"></i>
+        <span>Thêm chú thích</span>
+      </button>
+    </div>
     <div id="awOptional" class="aw-optional">
       <div class="aw-row" id="awReadingRow">
         <div class="aw-field">
@@ -562,6 +568,12 @@
       <div class="aw-field aw-field--full">
         <label class="aw-label" id="awLabelExMeaning">Nghĩa ví dụ</label>
         <input id="aw-exmeaning" type="text" class="aw-input">
+      </div>
+    </div>
+    <div id="awNoteSection" class="aw-optional">
+      <div class="aw-field aw-field--full">
+        <label class="aw-label" id="awLabelNote">Chú thích</label>
+        <input id="aw-note" type="text" class="aw-input" placeholder="vd: các dùng từ đó, lưu ý ngữ pháp...">
       </div>
     </div>
     <div class="aw-actions">

@@ -101,6 +101,17 @@
   background: var(--color-background-primary);
 }
 
+.aw-toggle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.aw-toggle-row .aw-accordion-btn {
+  width: 100%;
+  margin-bottom: 0;
+}
+
 .aw-accordion-btn {
   display: flex;
   align-items: center;
@@ -297,6 +308,7 @@
     margin: 0 auto;
   }
   .aw-row { grid-template-columns: 1fr; gap: 12px; }
+  .aw-toggle-row { grid-template-columns: 1fr; }
   .aw-actions {
     flex-direction: column-reverse;
     align-items: stretch;
