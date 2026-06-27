@@ -31,6 +31,32 @@ function adHasReadingColumn() {
   return !p || p.hasReading !== false;
 }
 
+function adFormatDetailHtml(w, locked) {
+  if (locked) return '<span class="td-detail-empty">\u2014</span>';
+  const hasEx = !!(w.exPrimary && String(w.exPrimary).trim());
+  const hasNote = !!(w.note && String(w.note).trim());
+  if (!hasEx && !hasNote) {
+    return '<span class="td-detail-empty">\u2014</span>';
+  }
+  let html = '';
+  if (hasEx) {
+    html +=
+      '<div class="ex-hanzi">' +
+      adFormatPrimaryHtml(w.exPrimary, w.exReading || '') +
+      '</div>';
+    if (w.exReading && String(w.exReading).trim()) {
+      html += '<div class="ex-pinyin">' + adFormatReadingHtml(w.exReading, false) + '</div>';
+    }
+    if (w.exMeaning && String(w.exMeaning).trim()) {
+      html += '<div class="ex-viet">' + esc(w.exMeaning) + '</div>';
+    }
+  }
+  if (hasNote) {
+    html += '<div class="word-note">' + esc(w.note) + '</div>';
+  }
+  return html;
+}
+
 /* ─── MODE ─── */
 function setMode(m, btn) {
   if (m === 'pron') {
@@ -246,6 +272,9 @@ function render() {
           .indexOf(searchQuery) !== -1 ||
         String(w.meaning || '')
           .toLowerCase()
+          .indexOf(searchQuery) !== -1 ||
+        String(w.note || '')
+          .toLowerCase()
           .indexOf(searchQuery) !== -1
       );
     });
@@ -271,7 +300,7 @@ function render() {
   const deckProfile =
     deckAllMode && window._adLayoutProfile
       ? window._adLayoutProfile
-      : { showReading: adHasReadingColumn(), showExample: true, layout: 'full' };
+      : { showReading: adHasReadingColumn(), showDetail: false, showExample: false, layout: 'normal' };
   const dmOn = inDeck && typeof dmActive !== 'undefined' && dmActive;
   const emOn = inDeck && typeof emActive !== 'undefined' && emActive;
   const dmHdr = dmOn ? '<th class="dm-check-col" style="width:40px;"></th>' : '';
@@ -382,7 +411,12 @@ function render() {
           '</div></th>'
         : '';
     const readHdr = deckProfile.showReading ? '<th>' + readingLbl + '</th>' : '';
-    const exHdr = deckProfile.showExample ? '<th class="th-example-pc">V\u00ed d\u1ee5</th>' : '';
+    const detailHdr =
+      deckAllMode && deckProfile.showDetail
+        ? '<th class="th-example-pc th-detail-pc">V\u00ed d\u1ee5 / Ch\u00fa thích</th>'
+        : !deckAllMode && deckProfile.showExample
+          ? '<th class="th-example-pc">V\u00ed d\u1ee5</th>'
+          : '';
     thead.innerHTML =
       '<tr>' +
       dmHdr +
@@ -394,7 +428,7 @@ function render() {
       '<th>' +
       meaningLbl +
       '</th>' +
-      exHdr +
+      detailHdr +
       lblHdr +
       '</tr>';
   }
@@ -404,7 +438,11 @@ function render() {
     tblEl.classList.toggle('mp-project-table', deckAllMode);
     tblEl.classList.remove('mp-layout-sparse', 'mp-layout-full');
     if (deckAllMode) {
-      tblEl.classList.add(deckProfile.layout === 'sparse' ? 'mp-layout-sparse' : 'mp-layout-full');
+      if (deckProfile.showDetail) {
+        tblEl.classList.add('mp-layout-full');
+      } else if (!deckProfile.showReading) {
+        tblEl.classList.add('mp-layout-sparse');
+      }
     }
   }
 
@@ -527,10 +565,13 @@ function render() {
       );
     }
 
-    const hasEx = !!(w.exPrimary && String(w.exPrimary).trim()) && !locked;
-    let exPC = '';
-    if (deckProfile.showExample) {
-      exPC = hasEx
+    let detailPC = '';
+    if (deckAllMode && deckProfile.showDetail) {
+      detailPC =
+        '<td class="td-example-pc td-detail-pc">' + adFormatDetailHtml(w, locked) + '</td>';
+    } else if (!deckAllMode && deckProfile.showExample) {
+      const hasEx = !!(w.exPrimary && String(w.exPrimary).trim()) && !locked;
+      detailPC = hasEx
         ? '<td class="td-example-pc"><div class="ex-hanzi">' +
           adFormatPrimaryHtml(w.exPrimary, w.exReading || '') +
           '</div><div class="ex-pinyin">' +
@@ -538,7 +579,7 @@ function render() {
           '</div><div class="ex-viet">' +
           esc(w.exMeaning || '') +
           '</div></td>'
-        : '<td class="td-example-pc"><span style="color:#555">\u2014</span></td>';
+        : '<td class="td-example-pc"><span class="td-detail-empty">\u2014</span></td>';
     }
     const posTag = w.pos ? '<div class="tu-loai-tag">' + esc(w.pos) + '</div>' : '';
     const primaryDisplay = adFormatPrimaryHtml(w.primary, w.reading);
@@ -576,7 +617,7 @@ function render() {
       '<td class="td-meaning">' +
       esc(w.meaning) +
       '</td>' +
-      exPC +
+      detailPC +
       starCell +
       '</tr>'
     );

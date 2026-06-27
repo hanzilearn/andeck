@@ -697,6 +697,40 @@ body[data-lang-pair="ja-vi"] #tbl.mp-layout-sparse .td-hanzi {
   font-size: 15px;
   line-height: 1.5;
 }
+/* Deck học — thu hẹp cột chính, nhường chỗ ví dụ/chú thích */
+#tbl.mp-layout-full.mp-project-table .td-hanzi {
+  width: 16%;
+  max-width: 150px;
+}
+#tbl.mp-layout-full.mp-project-table .td-pinyin {
+  width: 14%;
+  max-width: 120px;
+}
+#tbl.mp-layout-full.mp-project-table .td-meaning {
+  width: 18%;
+  max-width: 180px;
+}
+#tbl.mp-layout-full.mp-project-table .td-example-pc,
+#tbl.mp-layout-full.mp-project-table .td-detail-pc {
+  width: 30%;
+  min-width: 140px;
+  max-width: 300px;
+}
+.td-detail-empty {
+  color: #999;
+  font-size: 12px;
+}
+.word-note {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.45;
+  font-style: italic;
+}
+.word-note:only-child {
+  margin-top: 0;
+  font-style: normal;
+}
 .icon-toggle.is-disabled,
 .icon-toggle:disabled {
   opacity: 0.35;
@@ -848,7 +882,17 @@ body[data-lang-pair="ja-vi"] #tbl.mp-layout-sparse .td-hanzi {
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .td-example-pc, .th-example-pc { display: none !important; }
+  .td-example-pc,
+  .th-example-pc,
+  .td-detail-pc,
+  .th-detail-pc,
+  .word-note { display: none !important; }
+  #tbl.mp-layout-full.mp-project-table .td-hanzi,
+  #tbl.mp-layout-full.mp-project-table .td-pinyin,
+  #tbl.mp-layout-full.mp-project-table .td-meaning {
+    width: auto;
+    max-width: none;
+  }
 }
 @media (max-width: 600px) {
   #app-screen .app-header { padding: 0 14px; }

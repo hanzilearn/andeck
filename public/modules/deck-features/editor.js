@@ -12,25 +12,34 @@ let adEditorInited = false;
 
 const AD_LAYOUT_HIDE_THRESHOLD = 0.7;
 
+function adWordHasDetail(w) {
+  if (!w) return false;
+  return !!(String(w.exPrimary || '').trim() || String(w.note || '').trim());
+}
+
 function adAnalyzeLayout(vocab) {
   const list = Array.isArray(vocab) ? vocab : [];
   const n = list.length;
   if (!n) {
-    const profile = { showReading: true, showExample: true, layout: 'full' };
+    const profile = { showReading: true, showDetail: false, showExample: false, layout: 'normal' };
     window._adLayoutProfile = profile;
     return profile;
   }
   let missingReading = 0;
-  let missingExample = 0;
+  let hasAnyDetail = false;
   for (let i = 0; i < list.length; i++) {
     const w = list[i];
     if (!String(w.reading || '').trim()) missingReading++;
-    if (!String(w.exPrimary || '').trim()) missingExample++;
+    if (adWordHasDetail(w)) hasAnyDetail = true;
   }
   const showReading = missingReading / n < AD_LAYOUT_HIDE_THRESHOLD;
-  const showExample = missingExample / n < AD_LAYOUT_HIDE_THRESHOLD;
-  const layout = !showReading || !showExample ? 'sparse' : 'full';
-  const profile = { showReading: showReading, showExample: showExample, layout: layout };
+  const showDetail = hasAnyDetail;
+  const profile = {
+    showReading: showReading,
+    showDetail: showDetail,
+    showExample: showDetail,
+    layout: showDetail ? 'full' : showReading ? 'normal' : 'sparse'
+  };
   window._adLayoutProfile = profile;
   return profile;
 }
