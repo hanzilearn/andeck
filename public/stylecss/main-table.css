@@ -332,8 +332,15 @@ tr.em-row-edit:hover {
   transition: all .15s;
   color: var(--ink);
 }
-.mode-btn.active { background: var(--red); color: white; border-color: var(--red); }
-.mode-btn:hover:not(.active) { border-color: var(--red); color: var(--red); }
+#app-screen .mode-btn.active {
+  background: var(--red);
+  color: white;
+  border-color: var(--red);
+}
+#app-screen .mode-btn:hover:not(.active) {
+  border-color: var(--red);
+  color: var(--red);
+}
 
 .shuffle-btn.on { background: var(--gold); border-color: var(--gold); color: #fff; }
 .shuffle-btn:hover:not(.on) { border-color: var(--gold); color: #7d5a00; }
@@ -341,20 +348,44 @@ tr.em-row-edit:hover {
 .reset-btn { color: var(--gray); border-color: rgba(0,0,0,.12); }
 .reset-btn:hover { border-color: var(--red); color: var(--red); }
 
-.exam-btn { background: var(--red-dark); color: white; border-color: var(--red-dark); margin-left: auto; }
-.exam-btn:hover { background: #7b241c; }
+#app-screen .toolbar-actions .exam-btn {
+  background: var(--red-dark);
+  color: white;
+  border-color: var(--red-dark);
+  font-size: 12px;
+  font-weight: 700;
+}
+#app-screen .toolbar-actions .exam-btn:hover {
+  background: #7b241c;
+  border-color: #7b241c;
+  color: white;
+}
 
 /* Nút flashcard trong toolbar */
-.fc-btn { background: #2980b9 !important; }
-.fc-btn:hover { background: #1a6da0 !important; }
+#app-screen .toolbar-actions .exam-btn.fc-btn {
+  background: #2980b9;
+  color: white;
+  border-color: #2980b9;
+  font-size: 12px;
+  font-weight: 700;
+}
+#app-screen .toolbar-actions .exam-btn.fc-btn:hover {
+  background: #1a6da0;
+  border-color: #1a6da0;
+  color: white;
+}
 
 /* Toolbar separator */
 .toolbar-sep {
   display: inline-block;
-  width: 1px; height: 24px;
-  background: rgba(255,255,255,.15);
+  width: 1px;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.12);
   vertical-align: middle;
-  margin: 0 6px;
+  margin: 0 8px;
+}
+[data-theme="dark"] .toolbar-sep {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 /* Icon toggle tròn trong toolbar */
@@ -369,10 +400,26 @@ tr.em-row-edit:hover {
   font-size: 14px;
   cursor: pointer;
   transition: all .15s;
-  padding: 0; line-height: 1;
+  padding: 0;
+  line-height: 1;
+  position: relative;
   vertical-align: middle;
   color: #1a0a00;
   box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+#app-screen .icon-toggle svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+#app-screen .icon-toggle .eye-open,
+#app-screen .icon-toggle .eye-slash {
+  display: inline-flex;
+  align-items: center;
+}
+#app-screen #shuffle-btn {
+  font-size: 14px;
+  line-height: 1;
 }
 .icon-toggle:hover {
   border-color: rgba(0,0,0,.15);
@@ -394,8 +441,8 @@ tr.em-row-edit:hover {
 
 /* Pinyin eye icon toggle */
 .icon-toggle.on-red .eye-open { display: none; }
-.icon-toggle.on-red .eye-slash { display: inline; }
-.icon-toggle:not(.on-red) .eye-open { display: inline; }
+.icon-toggle.on-red .eye-slash { display: inline-flex; align-items: center; }
+.icon-toggle:not(.on-red) .eye-open { display: inline-flex; align-items: center; }
 .icon-toggle:not(.on-red) .eye-slash { display: none; }
 
 /* Star slash khi ẩn sao */
@@ -905,9 +952,10 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   color: #9AAFC4;
   border-color: rgba(255,255,255,0.08);
 }
-[data-theme="dark"] .mode-btn.active {
+[data-theme="dark"] #app-screen .mode-btn.active {
   background: #7A8FA6;
   color: #fff;
+  border-color: #7A8FA6;
 }
 [data-theme="dark"] #app-screen .app-header {
   background: #25252D !important;
@@ -922,11 +970,23 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   box-shadow: 0 4px 12px rgba(47, 155, 122, 0.45);
 }
 /* ── Dark mode: Toolbar action buttons ── */
-[data-theme="dark"] .fc-btn {
-  color: #ffffff !important;
+[data-theme="dark"] #app-screen .toolbar-actions .exam-btn.fc-btn {
+  background: #2980b9;
+  color: #fff;
+  border-color: #2980b9;
 }
-[data-theme="dark"] .exam-btn {
-  color: #ffffff !important;
+[data-theme="dark"] #app-screen .toolbar-actions .exam-btn:not(.fc-btn) {
+  background: #4A5A6C;
+  color: #fff;
+  border-color: rgba(255,255,255,0.2);
+}
+[data-theme="dark"] #app-screen .toolbar-actions .exam-btn.fc-btn:hover {
+  background: #1a6da0;
+  border-color: #1a6da0;
+}
+[data-theme="dark"] #app-screen .toolbar-actions .exam-btn:not(.fc-btn):hover {
+  background: #3d4d5f;
+  border-color: rgba(255,255,255,0.28);
 }
 
 /* ── Dark mode: Nút Đã nhớ ── */
@@ -936,17 +996,6 @@ tr.row-locked .td-meaning { filter: blur(2px); }
 }
 [data-theme="dark"] .th-label-text {
   color: #000000 !important;
-}
-
-/* ── Dark mode: fc-btn & exam-btn ── */
-[data-theme="dark"] .fc-btn {
-  background: #2980b9 !important;      /* giữ xanh dương gốc, đủ tương phản */
-  color: #FFFFFF !important;
-}
-[data-theme="dark"] .exam-btn {
-  background: #4A5A6C !important;      /* nền xám xanh đậm */
-  color: #FFFFFF !important;
-  border-color: rgba(255,255,255,0.2) !important;
 }
 
 /* Dark mode: tiêu đề deck trên header bảng từ */
