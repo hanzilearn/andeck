@@ -10,7 +10,12 @@
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
-  background: var(--paper, #F0F2F5);
+  background: var(--paper);
+}
+[data-theme="dark"] #fc-setup-screen,
+[data-theme="dark"] #fc-play-screen,
+[data-theme="dark"] #fc-end-screen {
+  background: var(--paper);
 }
 #fc-play-screen > *:not(.quiz-header):not(.fc-body),
 #fc-play-screen .fc-body {
@@ -84,10 +89,17 @@
 
 /* ── Card Content ── */
 .fc-hanzi {
-  font-family: 'Noto Serif SC', SimSun, 'Songti SC', serif;
+  font-family: var(--font-study-zh);
   font-size: 84px; color: var(--red-dark, #3A4A5C ); line-height: 1.15;
 }
-.fc-pinyin   { font-size: 24px; color: var(--gray); font-style: italic; min-height: 32px; }
+body[data-lang-pair="en-vi"] .fc-hanzi,
+body[data-lang-pair="ja-vi"] .fc-hanzi { font-size: 72px; }
+.fc-hanzi .primary-stack { align-items: center; }
+.fc-pinyin {
+  font-size: 22px; color: var(--gray); font-style: italic; min-height: 32px;
+}
+.fc-pinyin .reading-stack { align-items: center; gap: 4px; }
+.fc-pinyin .reading-token { white-space: nowrap; }
 
 .fc-speak-btn {
   width: 52px; height: 52px;
@@ -116,8 +128,9 @@
   border-left: 3px solid var(--gold);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
-.fc-ex-hanzi  { font-family: 'Noto Serif SC', serif; font-size: 17px; color: var(--red-dark); line-height: 1.6; }
-.fc-ex-pinyin { font-size: 14px; color: #95a5a6; font-style: italic; margin-top: 3px; }
+.fc-ex-hanzi  { font-family: var(--font-study-zh); font-size: 17px; color: var(--red-dark); line-height: 1.6; }
+.fc-ex-pinyin { font-size: 13px; color: #95a5a6; font-style: italic; margin-top: 3px; }
+.fc-ex-pinyin .reading-token { white-space: nowrap; }
 .fc-ex-viet   { font-size: 14px; color: var(--ink); margin-top: 4px; font-weight: 500; }
 
 /* ── Setup: Lưu vào nhãn ── */
@@ -156,10 +169,15 @@
   white-space: nowrap;
 }
 [data-theme="dark"] .fc-save-label-display {
-  background: #25252D;
+  background: #1e1e24;
   border-color: rgba(255, 255, 255, 0.12);
 }
 [data-theme="dark"] .fc-save-label-name { color: #C8D4E0; }
+[data-theme="dark"] .fc-save-label-change.opt-btn:not(.active) {
+  background: #25252d;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: var(--ink);
+}
 
 /* ── Star button ── */
 .fc-star {

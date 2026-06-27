@@ -259,17 +259,17 @@ function fcRender() {
 
   fcUpdateStarButtons(ci);
 
-  document.getElementById('fc-primary').textContent = w.primary;
+  document.getElementById('fc-primary').innerHTML = adFormatPrimaryHtml(w.primary, w.reading);
   document.getElementById('fc-reading').innerHTML = fcHideReading
-    ? '<span style="color:#ccc">•••</span>'
-    : esc(w.reading || '');
+    ? '<span style="color:#ccc">\u2022\u2022\u2022</span>'
+    : adFormatReadingHtml(w.reading || '', false);
 
   document.getElementById('fc-pos').textContent = w.pos || '';
   document.getElementById('fc-meaning').textContent = w.meaning;
   if (w.exPrimary?.trim()) {
     document.getElementById('fc-example').style.display = 'block';
-    document.getElementById('fc-ex-primary').textContent = w.exPrimary;
-    document.getElementById('fc-ex-reading').textContent = w.exReading || '';
+    document.getElementById('fc-ex-primary').innerHTML = adFormatPrimaryHtml(w.exPrimary, w.exReading || '');
+    document.getElementById('fc-ex-reading').innerHTML = adFormatReadingHtml(w.exReading || '', false);
     document.getElementById('fc-ex-meaning').textContent = w.exMeaning || '';
   } else {
     document.getElementById('fc-example').style.display = 'none';
@@ -358,11 +358,11 @@ function showFcQuit() {
   if (s === 0) {
     b.textContent = 'Chưa có từ nào đánh dấu nhớ';
     b.disabled = true;
-    b.style.opacity = '.5';
+    b.classList.add('is-disabled');
   } else {
     b.textContent = '⭐ Lưu ' + s + ' từ → ' + labelName + ' & thoát';
     b.disabled = false;
-    b.style.opacity = '1';
+    b.classList.remove('is-disabled');
   }
   document.getElementById('fc-quit-modal').classList.add('show');
 }

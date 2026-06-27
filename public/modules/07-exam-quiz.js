@@ -268,12 +268,12 @@ function renderQuiz() {
 
   if (q.qtype === 'meaning') {
     const readingDisplay = hideReadingExam
-      ? '<span style="color:#888">•••</span>'
-      : esc(w.reading || '');
+      ? '<span style="color:#888">\u2022\u2022\u2022</span>'
+      : adFormatReadingHtml(w.reading || '', false);
     card.innerHTML =
       '<div class="quiz-q-label">Chọn nghĩa tiếng Việt đúng</div>' +
       '<div class="quiz-q-hanzi">' +
-      esc(w.primary) +
+      adFormatPrimaryHtml(w.primary, w.reading) +
       '</div>' +
       '<button class="quiz-speak" onclick="speak(\'' +
       speakText +
@@ -301,7 +301,7 @@ function renderQuiz() {
       esc(readingLbl) +
       ' đúng</div>' +
       '<div class="quiz-q-hanzi">' +
-      esc(w.primary) +
+      adFormatPrimaryHtml(w.primary, w.reading) +
       '</div>' +
       '<div class="choices">' +
       readingChoices
@@ -475,11 +475,11 @@ function quitQuiz() {
   if (correctN === 0) {
     saveBtn.textContent = 'Chưa có từ đúng để lưu';
     saveBtn.disabled = true;
-    saveBtn.style.background = '#ccc';
+    saveBtn.classList.add('is-disabled');
   } else {
     saveBtn.textContent = '⭐ Lưu ' + correctN + ' từ đúng & thoát';
     saveBtn.disabled = false;
-    saveBtn.style.background = '';
+    saveBtn.classList.remove('is-disabled');
   }
   document.getElementById('quit-modal').classList.add('show');
 }
@@ -545,11 +545,13 @@ function showResult() {
         (checked ? '✓' : '') +
         '</div>' +
         '<div class="ri-hanzi">' +
-        esc(w.primary) +
+        adFormatPrimaryHtml(w.primary, w.reading) +
         '</div>' +
         '<div class="ri-info">' +
         (w.reading
-          ? '<div style="font-size:12px;color:var(--gray);font-style:italic">' + esc(w.reading) + '</div>'
+          ? '<div style="font-size:12px;color:var(--gray);font-style:italic">' +
+            adFormatReadingHtml(w.reading, false) +
+            '</div>'
           : '') +
         '<div style="font-size:13px">' +
         esc(w.meaning) +

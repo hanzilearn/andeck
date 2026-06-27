@@ -53,6 +53,11 @@ function adSyncFilterButtonUi() {
   if (typeof starFilter !== 'undefined') starFilter = 'all';
 }
 
+function adSyncStudyLangAttr(langPair) {
+  const pair = langPair || window._currentLangPair || 'zh-vi';
+  document.body.setAttribute('data-lang-pair', pair);
+}
+
 function adGetLangProfile(langPair) {
   const pair = langPair || window._currentLangPair;
   return (
@@ -198,6 +203,7 @@ async function loadDeckStudy(deckId) {
 
     window._currentDeckId = deckId;
     window._currentLangPair = deck.langPair;
+    adSyncStudyLangAttr(deck.langPair);
     currentLevel = 'deck_' + deckId;
     adDeckWords = (deck.words || []).slice();
     VOCAB = adDeckWords.slice();

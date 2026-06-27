@@ -19,6 +19,46 @@
   --color-text-secondary: #5a6a7a;
   --color-border-secondary: #d0d7de;
   --color-border-tertiary: #ede8dc;
+  --font-study-zh: 'Noto Serif SC', SimSun, 'Songti SC', serif;
+  --font-study-en: 'Times New Roman', Times, Georgia, 'DejaVu Serif', serif;
+  --font-study-ja: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+}
+
+/* Font từ vựng theo cặp ngôn ngữ — dùng chung bảng, flashcard, quiz, form */
+body[data-lang-pair="zh-vi"] .td-hanzi,
+body[data-lang-pair="zh-vi"] .vocab-input,
+body[data-lang-pair="zh-vi"] .fc-hanzi,
+body[data-lang-pair="zh-vi"] .fc-ex-hanzi,
+body[data-lang-pair="zh-vi"] .quiz-q-hanzi,
+body[data-lang-pair="zh-vi"] .choice-hanzi,
+body[data-lang-pair="zh-vi"] .ex-hanzi,
+body[data-lang-pair="zh-vi"] .aw-input--hanzi {
+  font-family: var(--font-study-zh);
+}
+
+body[data-lang-pair="en-vi"] .td-hanzi,
+body[data-lang-pair="en-vi"] .vocab-input,
+body[data-lang-pair="en-vi"] .fc-hanzi,
+body[data-lang-pair="en-vi"] .fc-ex-hanzi,
+body[data-lang-pair="en-vi"] .quiz-q-hanzi,
+body[data-lang-pair="en-vi"] .choice-hanzi,
+body[data-lang-pair="en-vi"] .ex-hanzi,
+body[data-lang-pair="en-vi"] .aw-input--hanzi {
+  font-family: var(--font-study-en);
+  letter-spacing: normal;
+  font-weight: 500;
+}
+
+body[data-lang-pair="ja-vi"] .td-hanzi,
+body[data-lang-pair="ja-vi"] .vocab-input,
+body[data-lang-pair="ja-vi"] .fc-hanzi,
+body[data-lang-pair="ja-vi"] .fc-ex-hanzi,
+body[data-lang-pair="ja-vi"] .quiz-q-hanzi,
+body[data-lang-pair="ja-vi"] .choice-hanzi,
+body[data-lang-pair="ja-vi"] .ex-hanzi,
+body[data-lang-pair="ja-vi"] .aw-input--hanzi {
+  font-family: var(--font-study-ja);
+  letter-spacing: normal;
 }
 
 [data-theme="dark"] {
@@ -249,6 +289,9 @@ select:focus {
 }
 [data-theme="dark"] .modal-box {
   background: #25252d;
+  color: var(--ink);
+}
+[data-theme="dark"] .modal-box h3 {
   color: var(--ink);
 }
 /* ── Empty state ── */

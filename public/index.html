@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Andeck · Học từ vựng đa ngôn ngữ</title>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="stylecss/base.css">
 <link rel="stylesheet" href="stylecss/auth.css">
 <link rel="stylesheet" href="stylecss/deck-hub.css">
@@ -289,13 +289,15 @@
 
 <!-- ==================== QUIT QUIZ POPUP ==================== -->
 <div class="modal-overlay" id="quit-modal">
-  <div class="modal-box" style="text-align:center">
+  <div class="modal-box study-quit-modal">
     <div style="font-size:32px;margin-bottom:10px">⏸️</div>
     <h3 style="margin-bottom:8px">Thoát bài kiểm tra?</h3>
-    <p id="quit-summary" style="color:var(--gray);font-size:13px;margin-bottom:20px"></p>
-    <button type="button" class="btn-save-star" onclick="quitAndSave()" style="width:100%;margin-bottom:10px" id="quit-save-btn">⭐ Lưu từ đúng & thoát</button>
-    <button type="button" class="btn-home" onclick="quitNoSave()" style="width:100%;margin-bottom:8px">Thoát không lưu</button>
-    <button type="button" class="btn-back" onclick="closeQuitModal()" style="width:100%">← Tiếp tục làm</button>
+    <p id="quit-summary" class="study-quit-summary"></p>
+    <div class="study-quit-actions">
+      <button type="button" class="btn-save-star" onclick="quitAndSave()" id="quit-save-btn">⭐ Lưu từ đúng & thoát</button>
+      <button type="button" class="btn-home" onclick="quitNoSave()">Thoát không lưu</button>
+      <button type="button" class="btn-back" onclick="closeQuitModal()">← Tiếp tục làm</button>
+    </div>
   </div>
 </div>
 
@@ -406,13 +408,15 @@
 
 <!-- ==================== FLASHCARD QUIT MODAL ==================== -->
 <div class="modal-overlay" id="fc-quit-modal">
-  <div class="modal-box" style="text-align:center">
+  <div class="modal-box study-quit-modal">
     <div style="font-size:32px;margin-bottom:10px">⏸️</div>
     <h3 style="margin-bottom:8px">Thoát Flashcard?</h3>
-    <p id="fc-quit-summary" style="color:var(--gray);font-size:13px;margin-bottom:20px"></p>
-    <button type="button" class="btn-save-star" id="fc-quit-save" onclick="fcQuitSave()" style="width:100%;margin-bottom:10px"></button>
-    <button type="button" class="btn-home" onclick="fcQuitNoSave()" style="width:100%;margin-bottom:8px">Thoát không lưu</button>
-    <button type="button" class="btn-back" onclick="closeFcQuit()" style="width:100%">← Tiếp tục học</button>
+    <p id="fc-quit-summary" class="study-quit-summary"></p>
+    <div class="study-quit-actions">
+      <button type="button" class="btn-save-star" id="fc-quit-save" onclick="fcQuitSave()"></button>
+      <button type="button" class="btn-home" onclick="fcQuitNoSave()">Thoát không lưu</button>
+      <button type="button" class="btn-back" onclick="closeFcQuit()">← Tiếp tục học</button>
+    </div>
   </div>
 </div>
 

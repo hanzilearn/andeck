@@ -439,9 +439,7 @@ function render() {
       : '<button class="speak-btn" onclick="speak(\'' +
         speakText +
         '\')" title="Ph\u00e1t \u00e2m">\uD83D\uDD0A</button>';
-    const readingText = readingHidden
-      ? '<span style="color:#888;font-style:italic">\u2022\u2022\u2022</span>'
-      : esc(w.reading);
+    const readingText = adFormatReadingHtml(w.reading, readingHidden);
     const wordId = w.id || '';
     const rowOn = deckRowOn(wordId);
     const rowCls = deckRowClass(rc);
@@ -503,7 +501,7 @@ function render() {
         dmCell(w) +
         sttCell(idx, w) +
         '<td class="td-hanzi">' +
-        esc(w.primary) +
+        adFormatPrimaryHtml(w.primary, w.reading) +
         '</td>' +
         readCell +
         '<td class="td-input">' +
@@ -534,18 +532,19 @@ function render() {
     if (deckProfile.showExample) {
       exPC = hasEx
         ? '<td class="td-example-pc"><div class="ex-hanzi">' +
-          esc(w.exPrimary) +
+          adFormatPrimaryHtml(w.exPrimary, w.exReading || '') +
           '</div><div class="ex-pinyin">' +
-          esc(w.exReading || '') +
+          adFormatReadingHtml(w.exReading || '', false) +
           '</div><div class="ex-viet">' +
           esc(w.exMeaning || '') +
           '</div></td>'
         : '<td class="td-example-pc"><span style="color:#555">\u2014</span></td>';
     }
     const posTag = w.pos ? '<div class="tu-loai-tag">' + esc(w.pos) + '</div>' : '';
+    const primaryDisplay = adFormatPrimaryHtml(w.primary, w.reading);
     const primaryInner = deckProfile.showReading
-      ? esc(w.primary) + posTag
-      : '<div class="td-hanzi-inner">' + speakBtn + '<span>' + esc(w.primary) + '</span></div>' + posTag;
+      ? primaryDisplay + posTag
+      : '<div class="td-hanzi-inner">' + speakBtn + '<span>' + primaryDisplay + '</span></div>' + posTag;
     const readCell = deckProfile.showReading
       ? '<td class="td-pinyin"><div class="td-pinyin-inner">' + speakBtn + readingText + '</div></td>'
       : '';

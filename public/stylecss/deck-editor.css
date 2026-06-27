@@ -91,7 +91,7 @@
 .aw-input--hanzi {
   font-size: 20px;
   text-align: center;
-  font-family: 'Noto Serif SC', SimSun, serif;
+  font-family: var(--font-study-zh);
 }
 
 .aw-modal .aw-input:focus {

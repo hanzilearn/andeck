@@ -148,6 +148,65 @@ function esc(str) {
     .replace(/"/g, '&quot;');
 }
 
+/** Tách chuỗi phiên âm thành từng token (IPA /.../, khoảng trắng, dấu phẩy). */
+function adSplitReadingTokens(reading) {
+  const s = String(reading || '').trim();
+  if (!s) return [];
+
+  const ipa = s.match(/\/[^/]+\//g);
+  if (ipa && ipa.length > 1) return ipa;
+  if (ipa && ipa.length === 1 && ipa[0] === s) return [s];
+
+  if (s.indexOf(',') !== -1) {
+    const parts = s.split(/,\s*/).map(function (p) {
+      return p.trim();
+    }).filter(Boolean);
+    if (parts.length > 1) return parts;
+  }
+
+  const spaced = s.split(/\s+/).filter(Boolean);
+  if (spaced.length > 1) return spaced;
+
+  return [s];
+}
+
+/** HTML phiên âm — mỗi token một dòng khi có nhiều từ. */
+function adFormatReadingHtml(reading, hidden) {
+  if (hidden) {
+    return '<span class="reading-hidden-dots" style="color:#888;font-style:italic">\u2022\u2022\u2022</span>';
+  }
+  const tokens = adSplitReadingTokens(reading);
+  if (!tokens.length) return '';
+  const inner = tokens
+    .map(function (t) {
+      return '<span class="reading-token">' + esc(t) + '</span>';
+    })
+    .join('');
+  const cls = tokens.length > 1 ? 'reading-stack' : 'reading-stack reading-stack--single';
+  return '<div class="' + cls + '">' + inner + '</div>';
+}
+
+/** HTML từ gốc — xếp dọc khi số từ khớp số phiên âm. */
+function adFormatPrimaryHtml(primary, reading) {
+  const readTokens = adSplitReadingTokens(reading);
+  const parts = String(primary || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (readTokens.length > 1 && parts.length === readTokens.length) {
+    return (
+      '<div class="primary-stack">' +
+      parts
+        .map(function (p) {
+          return '<span class="primary-token">' + esc(p) + '</span>';
+        })
+        .join('') +
+      '</div>'
+    );
+  }
+  return esc(primary);
+}
+
 function backFromDeckStudy() {
   window._currentDeckId = null;
   adResetStudySession();
