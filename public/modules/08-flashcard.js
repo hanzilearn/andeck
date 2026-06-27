@@ -246,11 +246,12 @@ function fcUpdateExampleBox(w) {
 
   if (!hasEx && !hasNote) {
     box.style.display = 'none';
-    box.classList.remove('fc-example--compact');
+    box.classList.remove('fc-example--compact', 'fc-example--with-ex');
     return;
   }
 
   box.style.display = 'block';
+  box.classList.toggle('fc-example--with-ex', hasEx);
 
   if (hasEx) {
     exPrimaryEl.style.display = '';

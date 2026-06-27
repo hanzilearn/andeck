@@ -167,7 +167,7 @@ body[data-lang-pair="ja-vi"] .fc-hanzi { font-size: 48px; }
   color: var(--ink);
   line-height: 1.4;
 }
-.fc-ex-note:not(:first-child) {
+.fc-example--with-ex .fc-ex-note {
   margin-top: 8px;
   padding-top: 6px;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
@@ -180,7 +180,7 @@ body[data-lang-pair="ja-vi"] .fc-hanzi { font-size: 48px; }
 .fc-example--compact .fc-ex-pinyin { font-size: 11px; margin-top: 2px; line-height: 1.25; }
 .fc-example--compact .fc-ex-viet { font-size: 11px; margin-top: 2px; line-height: 1.25; }
 .fc-example--compact .fc-ex-note { font-size: 12px; line-height: 1.3; }
-.fc-example--compact .fc-ex-note:not(:first-child) { margin-top: 6px; padding-top: 4px; }
+.fc-example--compact.fc-example--with-ex .fc-ex-note { margin-top: 6px; padding-top: 4px; }
 
 /* ── Setup: Lưu vào nhãn ── */
 .fc-save-label-row {
@@ -310,6 +310,6 @@ body[data-lang-pair="ja-vi"] .fc-hanzi { font-size: 48px; }
 [data-theme="dark"] .fc-ex-pinyin { color: #e8c070; }
 [data-theme="dark"] .fc-ex-viet { color: #a8bccf; }
 [data-theme="dark"] .fc-ex-note { color: #d8e4f0; }
-[data-theme="dark"] .fc-ex-note:not(:first-child) {
+[data-theme="dark"] .fc-example--with-ex .fc-ex-note {
   border-top-color: rgba(255, 255, 255, 0.08);
 }
