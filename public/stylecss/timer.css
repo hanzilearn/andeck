@@ -271,6 +271,70 @@
   border-top-color: #25252d;
 }
 
+/* ── Dark mode: modal đồng hồ ── */
+[data-theme="dark"] .tmr-modal-card {
+  background: #25252d;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+[data-theme="dark"] .tmr-modal-card h2 {
+  color: #e8eef4;
+}
+[data-theme="dark"] .tmr-modal-card .tmr-subtitle {
+  color: #9aafc4;
+}
+[data-theme="dark"] .tmr-mode-tabs {
+  background: #1e1e24;
+}
+[data-theme="dark"] .tmr-mode-tab {
+  color: #9aafc4;
+}
+[data-theme="dark"] .tmr-mode-tab.active {
+  background: #2f3540;
+  color: #f0f4f8;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] .tmr-time-input-group label {
+  color: #9aafc4;
+}
+[data-theme="dark"] .tmr-time-input {
+  background: #1e1e24;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f5f8fc;
+}
+[data-theme="dark"] .tmr-time-input:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.28);
+}
+[data-theme="dark"] .tmr-btn-secondary {
+  background: #2a2a32;
+  color: #e8eef4;
+}
+[data-theme="dark"] .tmr-btn-secondary:hover {
+  background: #353540;
+}
+[data-theme="dark"] .tmr-btn-primary {
+  background: #e8eef4;
+  color: #1a1a1f;
+}
+[data-theme="dark"] .tmr-btn-primary:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+[data-theme="dark"] .tmr-icon-btn {
+  background: #25252d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+[data-theme="dark"] .tmr-icon-btn:hover {
+  background: #2f3540;
+  color: #ff6b5a;
+}
+[data-theme="dark"] .tmr-icon-btn.active {
+  background: #e74c3c;
+  color: #fff;
+  border-color: transparent;
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .zalo-float  { bottom: 16px; right: 16px; }
