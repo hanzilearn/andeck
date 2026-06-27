@@ -21,19 +21,19 @@
   --color-border-tertiary: #ede8dc;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-study: var(--font-sans);
-  --font-study-zh: var(--font-sans);
+  --font-study-zh: 'Noto Serif SC', SimSun, 'Songti SC', serif;
   --font-study-en: var(--font-sans);
-  --font-study-ja: var(--font-sans);
+  --font-study-ja: var(--font-sans), 'Noto Sans JP', system-ui, sans-serif;
   --type-deck-title-size: 22px;
-  --type-word-size: 20px;
-  --type-word-weight: 600;
-  --type-reading-size: 15px;
+  --type-word-size: 17px;
+  --type-word-weight: 500;
+  --type-reading-size: 13px;
   --type-reading-weight: 400;
   --type-reading-color: var(--text-secondary);
-  --type-meaning-size: 17px;
-  --type-meaning-weight: 500;
-  --type-pos-size: 11px;
-  --type-line-height: 1.55;
+  --type-meaning-size: 13px;
+  --type-meaning-weight: 400;
+  --type-pos-size: 9px;
+  --type-line-height: 1.45;
 }
 
 /* Từ vựng — Inter, không serif */
@@ -65,7 +65,18 @@ body[data-lang-pair="zh-vi"] .ex-hanzi,
 body[data-lang-pair="zh-vi"] .fc-ex-hanzi,
 body[data-lang-pair="zh-vi"] .aw-input--hanzi,
 body[data-lang-pair="zh-vi"] .result-item .ri-hanzi {
-  font-family: var(--font-sans), 'Noto Sans SC', system-ui, sans-serif;
+  font-family: var(--font-study-zh);
+}
+
+body[data-lang-pair="en-vi"] .td-hanzi,
+body[data-lang-pair="en-vi"] .fc-hanzi,
+body[data-lang-pair="en-vi"] .quiz-q-hanzi,
+body[data-lang-pair="en-vi"] .choice-hanzi,
+body[data-lang-pair="en-vi"] .ex-hanzi,
+body[data-lang-pair="en-vi"] .fc-ex-hanzi,
+body[data-lang-pair="en-vi"] .aw-input--hanzi,
+body[data-lang-pair="en-vi"] .result-item .ri-hanzi {
+  font-family: var(--font-study-en);
 }
 
 body[data-lang-pair="ja-vi"] .td-hanzi,
@@ -76,7 +87,7 @@ body[data-lang-pair="ja-vi"] .ex-hanzi,
 body[data-lang-pair="ja-vi"] .fc-ex-hanzi,
 body[data-lang-pair="ja-vi"] .aw-input--hanzi,
 body[data-lang-pair="ja-vi"] .result-item .ri-hanzi {
-  font-family: var(--font-sans), 'Noto Sans JP', system-ui, sans-serif;
+  font-family: var(--font-study-ja);
 }
 
 /* Phiên âm — thông tin phụ */

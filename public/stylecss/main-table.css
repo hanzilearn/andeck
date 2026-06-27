@@ -520,16 +520,17 @@ tbody tr:hover { background: rgba(212,160,23,.04); }
 tbody tr.row-correct { background: rgba(39,174,96,.08) !important; }
 tbody tr.row-wrong   { background: rgba(231,76,60,.07) !important; }
 
-td { padding: 14px 16px; vertical-align: middle; line-height: var(--type-line-height); }
+td { padding: 9px 14px; vertical-align: middle; line-height: var(--type-line-height); }
 
 .td-stt { color: var(--gray); font-size: 12px; width: 36px; text-align: center; }
 .td-hanzi {
   font-size: var(--type-word-size);
   color: var(--ink);
-  min-width: 100px;
+  min-width: 90px;
   font-weight: var(--type-word-weight);
 }
-body[data-lang-pair="zh-vi"] .td-hanzi { font-size: 22px; }
+body[data-lang-pair="zh-vi"] .td-hanzi { font-size: 22px; color: var(--red-dark); }
+body[data-lang-pair="ja-vi"] .td-hanzi { font-size: 20px; }
 .td-pinyin {
   min-width: 120px;
 }
@@ -552,7 +553,7 @@ body[data-lang-pair="zh-vi"] .td-hanzi { font-size: 22px; }
 .primary-stack {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 .primary-token {
   display: block;
@@ -611,7 +612,7 @@ body[data-lang-pair="zh-vi"] .td-hanzi { font-size: 22px; }
   padding: 8px 10px;
   border: 1.5px solid rgba(192,57,43,.2);
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 15px;
   background: var(--paper);
   outline: none;
   transition: all .2s;
@@ -632,10 +633,10 @@ body[data-lang-pair="zh-vi"] .td-hanzi { font-size: 22px; }
 .example-row td { padding: 6px 14px 12px; border-bottom: 1px solid rgba(192,57,43,.05); }
 .example-content { font-size: 12px; color: var(--gray); line-height: 1.7; padding-left: 4px; }
 .example-content .ex-hanzi {
-  font-size: 15px;
-  color: var(--ink);
+  font-size: 14px;
+  color: var(--red-dark);
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
 }
 .example-content .ex-pinyin { font-style: italic; color: #999; }
 .example-content .ex-pinyin .reading-token { white-space: nowrap; }
@@ -654,14 +655,14 @@ tr.row-locked .td-meaning { filter: blur(2px); }
 
 /* Ví dụ column trên PC */
 .td-example-pc {
-  font-size: 12px; padding: 8px 10px;
+  font-size: 12px; padding: 6px 10px;
   vertical-align: middle; max-width: 300px;
 }
 .td-example-pc .ex-hanzi {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: var(--type-line-height);
-  font-weight: 600;
+  font-size: 13px;
+  color: #4A7FA5;
+  line-height: 1.5;
+  font-weight: 500;
 }
 .td-example-pc .ex-pinyin {
   color: #c4a882; font-style: italic; margin-top: 2px;
@@ -670,8 +671,8 @@ tr.row-locked .td-meaning { filter: blur(2px); }
 .td-example-pc .ex-viet   { font-size: 11px; color: #aaa; margin-top: 2px; }
 .th-example-pc { text-align: left; }
 
-/* Tăng size chữ Hán ví dụ (HSK) */
-.ex-hanzi { font-size: 17px !important; line-height: 1.6 !important; }
+/* Ví dụ chữ Hán trong bảng */
+.ex-hanzi { font-size: 15px !important; line-height: 1.5 !important; }
 
 /* My Project — adaptive layout (mode Tất cả) */
 #tbl.mp-project-table .td-hanzi-inner {
@@ -684,16 +685,16 @@ tr.row-locked .td-meaning { filter: blur(2px); }
 }
 body[data-lang-pair="en-vi"] #tbl.mp-layout-sparse .td-hanzi,
 body[data-lang-pair="ja-vi"] #tbl.mp-layout-sparse .td-hanzi {
-  font-size: 24px;
+  font-size: 22px;
 }
 #tbl.mp-layout-sparse .td-meaning {
-  font-size: var(--type-meaning-size);
+  font-size: 13px;
 }
 #tbl.mp-layout-sparse td {
-  padding: 18px 16px;
+  padding: 12px 14px;
 }
 #tbl.mp-layout-full.mp-project-table .td-example-pc .ex-hanzi {
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.5;
 }
 .icon-toggle.is-disabled,
@@ -719,13 +720,13 @@ body[data-lang-pair="ja-vi"] #tbl.mp-layout-sparse .td-hanzi {
   font-family: var(--font-sans);
   font-style: normal;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 5px;
-  margin-top: 4px;
-  letter-spacing: 0.02em;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-top: 3px;
+  letter-spacing: 0.3px;
   text-transform: lowercase;
-  background: rgba(122, 143, 166, 0.14);
-  color: var(--text-secondary);
+  background: rgba(212, 160, 23, 0.2);
+  color: #d4a017;
   white-space: nowrap;
 }
 
