@@ -560,7 +560,6 @@ body[data-lang-pair="ja-vi"] .td-hanzi { font-size: 20px; }
   white-space: nowrap;
   line-height: var(--type-line-height);
 }
-.td-example-pc .ex-pinyin .reading-stack { gap: 2px; }
 .td-meaning {
   color: var(--ink);
   font-size: var(--type-meaning-size);
@@ -665,10 +664,20 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   font-weight: 500;
 }
 .td-example-pc .ex-pinyin {
-  color: #c4a882; font-style: italic; margin-top: 2px;
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 3px;
+  color: #b8860b;
+  font-weight: 500;
+  line-height: 1.45;
 }
-.td-example-pc .ex-pinyin .reading-token { font-size: 10.5px; }
-.td-example-pc .ex-viet   { font-size: 11px; color: #aaa; margin-top: 2px; }
+.td-example-pc .ex-viet {
+  font-size: 12px;
+  color: #5a6a7a;
+  font-weight: 500;
+  margin-top: 3px;
+  line-height: 1.45;
+}
 .th-example-pc { text-align: left; }
 
 /* Ví dụ chữ Hán trong bảng */
@@ -721,15 +730,17 @@ body[data-lang-pair="ja-vi"] #tbl.mp-layout-sparse .td-hanzi {
   font-size: 12px;
 }
 .word-note {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-  line-height: 1.45;
-  font-style: italic;
-}
-.word-note:only-child {
-  margin-top: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 6px;
+  line-height: 1.5;
   font-style: normal;
+}
+.td-detail-pc .word-note:only-child,
+.td-example-pc .word-note:only-child {
+  margin-top: 0;
+  font-size: 14px;
 }
 .icon-toggle.is-disabled,
 .icon-toggle:disabled {
@@ -745,6 +756,20 @@ body[data-lang-pair="ja-vi"] #tbl.mp-layout-sparse .td-hanzi {
 }
 [data-theme="dark"] #tbl.mp-layout-full.mp-project-table .td-example-pc .ex-hanzi {
   color: #6ba3c7;
+}
+[data-theme="dark"] .td-example-pc .ex-pinyin,
+[data-theme="dark"] .td-detail-pc .ex-pinyin {
+  color: #e8c070;
+}
+[data-theme="dark"] .td-example-pc .ex-viet,
+[data-theme="dark"] .td-detail-pc .ex-viet {
+  color: #a8bccf;
+}
+[data-theme="dark"] .word-note {
+  color: #d8e4f0;
+}
+[data-theme="dark"] .td-detail-empty {
+  color: #6a7a8a;
 }
 
 /* Từ loại tag */

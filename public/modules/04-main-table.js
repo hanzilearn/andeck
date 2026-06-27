@@ -45,7 +45,7 @@ function adFormatDetailHtml(w, locked) {
       adFormatPrimaryHtml(w.exPrimary, w.exReading || '') +
       '</div>';
     if (w.exReading && String(w.exReading).trim()) {
-      html += '<div class="ex-pinyin">' + adFormatReadingHtml(w.exReading, false) + '</div>';
+      html += '<div class="ex-pinyin">' + esc(w.exReading) + '</div>';
     }
     if (w.exMeaning && String(w.exMeaning).trim()) {
       html += '<div class="ex-viet">' + esc(w.exMeaning) + '</div>';
