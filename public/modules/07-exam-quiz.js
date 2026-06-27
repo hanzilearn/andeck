@@ -283,7 +283,9 @@ function renderQuiz() {
       choices
         .map(function (ci) {
           return (
-            '<button class="choice-btn" onclick="pickChoice(this,' +
+            '<button class="choice-btn" data-choice-idx="' +
+            ci +
+            '" onclick="pickChoice(this,' +
             ci +
             ',' +
             q.idx +
@@ -307,7 +309,9 @@ function renderQuiz() {
       readingChoices
         .map(function (p) {
           return (
-            '<button class="choice-btn" onclick="pickReadingChoice(this,\'' +
+            '<button class="choice-btn" data-reading="' +
+            esc(p) +
+            '" onclick="pickReadingChoice(this,\'' +
             esc(p) +
             "','" +
             esc(w.reading || '') +
@@ -331,7 +335,9 @@ function renderQuiz() {
       choices
         .map(function (ci) {
           return (
-            '<button class="choice-btn" onclick="pickChoice(this,' +
+            '<button class="choice-btn" data-choice-idx="' +
+            ci +
+            '" onclick="pickChoice(this,' +
             ci +
             ',' +
             q.idx +
@@ -355,8 +361,8 @@ function pickChoice(btn, chosen, correct, type) {
   btn.classList.add(isCorrect ? 'correct-choice' : 'wrong-choice');
   if (!isCorrect) {
     card.querySelectorAll('.choice-btn').forEach(function (b) {
-      const m = b.getAttribute('onclick').match(/pickChoice\(this,(\d+)/);
-      if (m && parseInt(m[1], 10) === correct) b.classList.add('correct-choice');
+      const idx = parseInt(b.getAttribute('data-choice-idx'), 10);
+      if (idx === correct) b.classList.add('correct-choice');
     });
   }
   playFeedbackSound(isCorrect);
@@ -382,8 +388,8 @@ function pickReadingChoice(btn, chosenReading, correctReading, correctIdx) {
   btn.classList.add(isCorrect ? 'correct-choice' : 'wrong-choice');
   if (!isCorrect) {
     card.querySelectorAll('.choice-btn').forEach(function (b) {
-      const match = b.getAttribute('onclick')?.match(/pickReadingChoice\(this,'([^']*)'/);
-      if (match?.[1] === correctReading) b.classList.add('correct-choice');
+      const reading = b.getAttribute('data-reading');
+      if (reading === correctReading) b.classList.add('correct-choice');
     });
   }
   playFeedbackSound(isCorrect);
@@ -549,13 +555,9 @@ function showResult() {
         '</div>' +
         '<div class="ri-info">' +
         (w.reading
-          ? '<div style="font-size:12px;color:var(--gray);font-style:italic">' +
-            adFormatReadingHtml(w.reading, false) +
-            '</div>'
+          ? '<div class="ri-reading">' + adFormatReadingHtml(w.reading, false) + '</div>'
           : '') +
-        '<div style="font-size:13px">' +
-        esc(w.meaning) +
-        '</div></div>' +
+        '<div class="ri-meaning">' + esc(w.meaning) + '</div></div>' +
         '<div class="ri-icon">' +
         (r.correct ? '✅' : '❌') +
         '</div></div>'

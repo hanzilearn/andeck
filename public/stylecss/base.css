@@ -19,46 +19,99 @@
   --color-text-secondary: #5a6a7a;
   --color-border-secondary: #d0d7de;
   --color-border-tertiary: #ede8dc;
-  --font-study-zh: 'Noto Serif SC', SimSun, 'Songti SC', serif;
-  --font-study-en: 'Times New Roman', Times, Georgia, 'DejaVu Serif', serif;
-  --font-study-ja: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-study: var(--font-sans);
+  --font-study-zh: var(--font-sans);
+  --font-study-en: var(--font-sans);
+  --font-study-ja: var(--font-sans);
+  --type-deck-title-size: 22px;
+  --type-word-size: 20px;
+  --type-word-weight: 600;
+  --type-reading-size: 15px;
+  --type-reading-weight: 400;
+  --type-reading-color: var(--text-secondary);
+  --type-meaning-size: 17px;
+  --type-meaning-weight: 500;
+  --type-pos-size: 11px;
+  --type-line-height: 1.55;
 }
 
-/* Font từ vựng theo cặp ngôn ngữ — dùng chung bảng, flashcard, quiz, form */
-body[data-lang-pair="zh-vi"] .td-hanzi,
-body[data-lang-pair="zh-vi"] .vocab-input,
-body[data-lang-pair="zh-vi"] .fc-hanzi,
-body[data-lang-pair="zh-vi"] .fc-ex-hanzi,
-body[data-lang-pair="zh-vi"] .quiz-q-hanzi,
-body[data-lang-pair="zh-vi"] .choice-hanzi,
-body[data-lang-pair="zh-vi"] .ex-hanzi,
-body[data-lang-pair="zh-vi"] .aw-input--hanzi {
-  font-family: var(--font-study-zh);
+/* Từ vựng — Inter, không serif */
+.td-hanzi,
+.fc-hanzi,
+.fc-ex-hanzi,
+.quiz-q-hanzi,
+.choice-hanzi,
+.ex-hanzi,
+.aw-input--hanzi,
+.result-item .ri-hanzi {
+  font-family: var(--font-study);
+  font-weight: var(--type-word-weight);
+  letter-spacing: -0.01em;
+  line-height: var(--type-line-height);
 }
 
-body[data-lang-pair="en-vi"] .td-hanzi,
-body[data-lang-pair="en-vi"] .vocab-input,
-body[data-lang-pair="en-vi"] .fc-hanzi,
-body[data-lang-pair="en-vi"] .fc-ex-hanzi,
-body[data-lang-pair="en-vi"] .quiz-q-hanzi,
-body[data-lang-pair="en-vi"] .choice-hanzi,
-body[data-lang-pair="en-vi"] .ex-hanzi,
-body[data-lang-pair="en-vi"] .aw-input--hanzi {
-  font-family: var(--font-study-en);
-  letter-spacing: normal;
+.vocab-input,
+.aw-input--hanzi {
+  font-family: var(--font-sans);
   font-weight: 500;
 }
 
+body[data-lang-pair="zh-vi"] .td-hanzi,
+body[data-lang-pair="zh-vi"] .fc-hanzi,
+body[data-lang-pair="zh-vi"] .quiz-q-hanzi,
+body[data-lang-pair="zh-vi"] .choice-hanzi,
+body[data-lang-pair="zh-vi"] .ex-hanzi,
+body[data-lang-pair="zh-vi"] .fc-ex-hanzi,
+body[data-lang-pair="zh-vi"] .aw-input--hanzi,
+body[data-lang-pair="zh-vi"] .result-item .ri-hanzi {
+  font-family: var(--font-sans), 'Noto Sans SC', system-ui, sans-serif;
+}
+
 body[data-lang-pair="ja-vi"] .td-hanzi,
-body[data-lang-pair="ja-vi"] .vocab-input,
 body[data-lang-pair="ja-vi"] .fc-hanzi,
-body[data-lang-pair="ja-vi"] .fc-ex-hanzi,
 body[data-lang-pair="ja-vi"] .quiz-q-hanzi,
 body[data-lang-pair="ja-vi"] .choice-hanzi,
 body[data-lang-pair="ja-vi"] .ex-hanzi,
-body[data-lang-pair="ja-vi"] .aw-input--hanzi {
-  font-family: var(--font-study-ja);
-  letter-spacing: normal;
+body[data-lang-pair="ja-vi"] .fc-ex-hanzi,
+body[data-lang-pair="ja-vi"] .aw-input--hanzi,
+body[data-lang-pair="ja-vi"] .result-item .ri-hanzi {
+  font-family: var(--font-sans), 'Noto Sans JP', system-ui, sans-serif;
+}
+
+/* Phiên âm — thông tin phụ */
+.td-pinyin,
+.td-pinyin .reading-token,
+.fc-pinyin,
+.fc-pinyin .reading-token,
+.fc-ex-pinyin,
+.fc-ex-pinyin .reading-token,
+.quiz-q-pinyin,
+.quiz-q-pinyin .reading-token,
+.choice-pinyin,
+.choice-pinyin .reading-token,
+.result-item .ri-reading,
+.result-item .ri-reading .reading-token,
+.ex-pinyin,
+.ex-pinyin .reading-token {
+  font-family: var(--font-sans);
+  font-weight: var(--type-reading-weight);
+  font-size: var(--type-reading-size);
+  font-style: normal;
+  color: var(--type-reading-color);
+  line-height: var(--type-line-height);
+}
+
+/* Nghĩa — nổi bật thứ hai */
+.td-meaning,
+.fc-meaning,
+.fc-ex-viet,
+.quiz-q-meaning,
+.result-item .ri-meaning {
+  font-family: var(--font-sans);
+  font-weight: var(--type-meaning-weight);
+  font-size: var(--type-meaning-size);
+  line-height: var(--type-line-height);
 }
 
 [data-theme="dark"] {
@@ -91,11 +144,14 @@ body[data-lang-pair="ja-vi"] .aw-input--hanzi {
 }
 
 body {
-  font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
   background: var(--paper);
   color: var(--ink);
   min-height: 100vh;
+  line-height: var(--type-line-height);
   transition: background 0.3s, color 0.3s;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .screen {
@@ -198,7 +254,7 @@ select {
   padding: 10px 13px;
   border: 1.5px solid rgba(122, 143, 166, 0.25);
   border-radius: 6px;
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
   background: var(--paper);
   color: var(--ink);
@@ -273,7 +329,7 @@ select:focus {
   color: white;
   border: none;
   border-radius: 6px;
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;

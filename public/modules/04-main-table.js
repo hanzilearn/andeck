@@ -513,7 +513,7 @@ function render() {
             dis +
             ' value="' +
             val +
-            '" placeholder="Nh\u1eadp ngh\u0129a..." style="font-family:\'Be Vietnam Pro\',sans-serif;font-size:13px" onkeydown="if(event.key===\'Enter\')check(' +
+            '" placeholder="Nh\u1eadp ngh\u0129a..." onkeydown="if(event.key===\'Enter\')check(' +
             idx +
             ',this,\'meaning\')">') +
         (a && !a.correct && !locked

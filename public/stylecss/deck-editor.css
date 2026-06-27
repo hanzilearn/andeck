@@ -91,7 +91,7 @@
 .aw-input--hanzi {
   font-size: 20px;
   text-align: center;
-  font-family: var(--font-study-zh);
+  font-weight: 600;
 }
 
 .aw-modal .aw-input:focus {
@@ -288,7 +288,7 @@
   text-align: center;
   letter-spacing: 1px;
   margin: 4px 0 16px;
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: var(--font-sans);
 }
 
 [data-theme="dark"] #app-screen {

@@ -38,7 +38,7 @@
   color: var(--ink); font-weight: 600; font-size: 13px;
 }
 .pron-result .pron-heard-text.is-hanzi {
-  font-family: 'Noto Serif SC', serif; font-size: 15px;
+  font-family: inherit; font-size: 15px;
 }
 .pron-result .pron-feedback { color: #a0826d; font-style: italic; font-size: 12px; }
 .pron-result .pron-status  { font-weight: 700; font-size: 12px; margin-top: 2px; }
@@ -46,8 +46,8 @@
 .pron-result .pron-status.wrong   { color: var(--wrong); }
 .pron-result .pron-answer  { color: #8a7666; font-weight: 500; }
 .pron-result .pron-answer-hanzi {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 14px; color: var(--gold); font-weight: 700; margin-left: 3px;
+  font-family: var(--font-sans);
+  font-size: 14px; color: var(--gold); font-weight: 600; margin-left: 3px;
 }
 
 /* ── Row đang ghi âm ── */

@@ -238,7 +238,7 @@
   background: var(--ink); color: white;
   font-size: 9px; font-weight: 700; letter-spacing: .5px;
   padding: 4px 10px; border-radius: 10px; white-space: nowrap;
-  font-family: 'Be Vietnam Pro', sans-serif; opacity: .85;
+  font-family: var(--font-sans); opacity: .85;
 }
 .zalo-bubble::after {
   content: '';
@@ -253,7 +253,7 @@
 }
 .zalo-popup.show { display: block; animation: fadeIn .2s ease; }
 .zalo-popup-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
-.zalo-popup-num   { font-size: 18px; font-weight: 700; color: #0068FF; letter-spacing: 1px; margin-bottom: 10px; font-family: 'Be Vietnam Pro', sans-serif; }
+.zalo-popup-num   { font-size: 18px; font-weight: 700; color: #0068FF; letter-spacing: 1px; margin-bottom: 10px; font-family: var(--font-sans); }
 .zalo-popup-note  { font-size: 11px; color: var(--gray); }
 .zalo-popup-close { position: absolute; top: 6px; right: 10px; background: none; border: none; font-size: 14px; cursor: pointer; color: var(--gray); }
 
