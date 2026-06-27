@@ -138,10 +138,49 @@ body[data-lang-pair="ja-vi"] .fc-hanzi { font-size: 48px; }
   border-radius: 10px;
   border-left: 3px solid var(--gold);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  line-height: 1.4;
 }
-.fc-ex-hanzi  { font-size: 17px; color: var(--ink); line-height: var(--type-line-height); font-weight: 600; }
-.fc-ex-pinyin { margin-top: 3px; }
-.fc-ex-viet   { margin-top: 4px; }
+.fc-ex-hanzi {
+  font-size: 17px;
+  color: #4A7FA5;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.fc-ex-pinyin {
+  margin-top: 4px;
+  font-size: 13px;
+  font-style: italic;
+  color: #b8860b;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.fc-ex-viet {
+  margin-top: 3px;
+  font-size: 13px;
+  color: #5a6a7a;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.fc-ex-note {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.fc-ex-note:not(:first-child) {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+.fc-example--compact {
+  padding: 10px 12px;
+  line-height: 1.3;
+}
+.fc-example--compact .fc-ex-hanzi { font-size: 14px; line-height: 1.3; }
+.fc-example--compact .fc-ex-pinyin { font-size: 11px; margin-top: 2px; line-height: 1.25; }
+.fc-example--compact .fc-ex-viet { font-size: 11px; margin-top: 2px; line-height: 1.25; }
+.fc-example--compact .fc-ex-note { font-size: 12px; line-height: 1.3; }
+.fc-example--compact .fc-ex-note:not(:first-child) { margin-top: 6px; padding-top: 4px; }
 
 /* ── Setup: Lưu vào nhãn ── */
 .fc-save-label-row {
@@ -267,6 +306,10 @@ body[data-lang-pair="ja-vi"] .fc-hanzi { font-size: 48px; }
   border-left-color: var(--gold);
   box-shadow: none;
 }
-[data-theme="dark"] .fc-ex-hanzi  { color: var(--gold-light); }
-[data-theme="dark"] .fc-ex-pinyin { color: var(--color-text-secondary); }
-[data-theme="dark"] .fc-ex-viet   { color: var(--ink); }
+[data-theme="dark"] .fc-ex-hanzi { color: #7eb8dc; }
+[data-theme="dark"] .fc-ex-pinyin { color: #e8c070; }
+[data-theme="dark"] .fc-ex-viet { color: #a8bccf; }
+[data-theme="dark"] .fc-ex-note { color: #d8e4f0; }
+[data-theme="dark"] .fc-ex-note:not(:first-child) {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}

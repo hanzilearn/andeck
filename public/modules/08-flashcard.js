@@ -233,6 +233,67 @@ function startFc() {
   fcRender();
 }
 
+function fcUpdateExampleBox(w) {
+  const box = document.getElementById('fc-example');
+  const exPrimaryEl = document.getElementById('fc-ex-primary');
+  const exReadingEl = document.getElementById('fc-ex-reading');
+  const exMeaningEl = document.getElementById('fc-ex-meaning');
+  const exNoteEl = document.getElementById('fc-ex-note');
+  if (!box || !exPrimaryEl || !exReadingEl || !exMeaningEl || !exNoteEl) return;
+
+  const hasEx = !!(w.exPrimary && String(w.exPrimary).trim());
+  const hasNote = !!(w.note && String(w.note).trim());
+
+  if (!hasEx && !hasNote) {
+    box.style.display = 'none';
+    box.classList.remove('fc-example--compact');
+    return;
+  }
+
+  box.style.display = 'block';
+
+  if (hasEx) {
+    exPrimaryEl.style.display = '';
+    exPrimaryEl.innerHTML = adFormatPrimaryHtml(w.exPrimary, w.exReading || '');
+    const reading = String(w.exReading || '').trim();
+    if (reading) {
+      exReadingEl.style.display = '';
+      exReadingEl.textContent = reading;
+    } else {
+      exReadingEl.style.display = 'none';
+      exReadingEl.textContent = '';
+    }
+    const exMean = String(w.exMeaning || '').trim();
+    if (exMean) {
+      exMeaningEl.style.display = '';
+      exMeaningEl.textContent = exMean;
+    } else {
+      exMeaningEl.style.display = 'none';
+      exMeaningEl.textContent = '';
+    }
+  } else {
+    exPrimaryEl.style.display = 'none';
+    exPrimaryEl.innerHTML = '';
+    exReadingEl.style.display = 'none';
+    exReadingEl.textContent = '';
+    exMeaningEl.style.display = 'none';
+    exMeaningEl.textContent = '';
+  }
+
+  if (hasNote) {
+    exNoteEl.style.display = '';
+    exNoteEl.textContent = String(w.note).trim();
+  } else {
+    exNoteEl.style.display = 'none';
+    exNoteEl.textContent = '';
+  }
+
+  const totalLen =
+    (hasEx ? String(w.exPrimary || '') + String(w.exReading || '') + String(w.exMeaning || '') : '') +
+    (hasNote ? String(w.note || '') : '');
+  box.classList.toggle('fc-example--compact', totalLen.length > 72);
+}
+
 function fcRender() {
   if (fcIdx < 0) fcIdx = 0;
   if (fcIdx >= fcCards.length) fcIdx = fcCards.length - 1;
@@ -266,14 +327,7 @@ function fcRender() {
 
   document.getElementById('fc-pos').textContent = w.pos || '';
   document.getElementById('fc-meaning').textContent = w.meaning;
-  if (w.exPrimary?.trim()) {
-    document.getElementById('fc-example').style.display = 'block';
-    document.getElementById('fc-ex-primary').innerHTML = adFormatPrimaryHtml(w.exPrimary, w.exReading || '');
-    document.getElementById('fc-ex-reading').innerHTML = adFormatReadingHtml(w.exReading || '', false);
-    document.getElementById('fc-ex-meaning').textContent = w.exMeaning || '';
-  } else {
-    document.getElementById('fc-example').style.display = 'none';
-  }
+  fcUpdateExampleBox(w);
 
   document.getElementById('fc-prev').disabled = fcIdx === 0;
   const nb = document.getElementById('fc-next');
