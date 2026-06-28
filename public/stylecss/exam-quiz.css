@@ -175,7 +175,9 @@
 }
 body[data-lang-pair="zh-vi"] .quiz-q-hanzi { font-size: 48px; }
 body[data-lang-pair="en-vi"] .quiz-q-hanzi,
-body[data-lang-pair="ja-vi"] .quiz-q-hanzi { font-size: 36px; }
+body[data-lang-pair="de-vi"] .quiz-q-hanzi,
+body[data-lang-pair="ja-vi"] .quiz-q-hanzi,
+body[data-lang-pair="ko-vi"] .quiz-q-hanzi { font-size: 36px; }
 .quiz-q-hanzi .primary-stack { align-items: center; gap: 6px; }
 .quiz-q-pinyin { margin-bottom: 6px; }
 .quiz-q-pinyin .reading-stack { align-items: center; gap: 3px; }

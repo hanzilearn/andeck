@@ -24,6 +24,8 @@
   --font-study-zh: 'Noto Serif SC', SimSun, 'Songti SC', serif;
   --font-study-en: var(--font-sans);
   --font-study-ja: var(--font-sans), 'Noto Sans JP', system-ui, sans-serif;
+  --font-study-ko: 'Nanum Gothic', 'Noto Sans KR', sans-serif;
+  --font-study-de: 'Inter', 'Noto Sans', sans-serif;
   --type-deck-title-size: 22px;
   --type-word-size: 17px;
   --type-word-weight: 500;
@@ -88,6 +90,28 @@ body[data-lang-pair="ja-vi"] .fc-ex-hanzi,
 body[data-lang-pair="ja-vi"] .aw-input--hanzi,
 body[data-lang-pair="ja-vi"] .result-item .ri-hanzi {
   font-family: var(--font-study-ja);
+}
+
+body[data-lang-pair="ko-vi"] .td-hanzi,
+body[data-lang-pair="ko-vi"] .fc-hanzi,
+body[data-lang-pair="ko-vi"] .quiz-q-hanzi,
+body[data-lang-pair="ko-vi"] .choice-hanzi,
+body[data-lang-pair="ko-vi"] .ex-hanzi,
+body[data-lang-pair="ko-vi"] .fc-ex-hanzi,
+body[data-lang-pair="ko-vi"] .aw-input--hanzi,
+body[data-lang-pair="ko-vi"] .result-item .ri-hanzi {
+  font-family: var(--font-study-ko);
+}
+
+body[data-lang-pair="de-vi"] .td-hanzi,
+body[data-lang-pair="de-vi"] .fc-hanzi,
+body[data-lang-pair="de-vi"] .quiz-q-hanzi,
+body[data-lang-pair="de-vi"] .choice-hanzi,
+body[data-lang-pair="de-vi"] .ex-hanzi,
+body[data-lang-pair="de-vi"] .fc-ex-hanzi,
+body[data-lang-pair="de-vi"] .aw-input--hanzi,
+body[data-lang-pair="de-vi"] .result-item .ri-hanzi {
+  font-family: var(--font-study-de);
 }
 
 /* Phiên âm — thông tin phụ */

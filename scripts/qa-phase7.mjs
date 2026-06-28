@@ -237,15 +237,17 @@ async function main() {
   const nWords = qd.data?.deck?.words?.length ?? 0;
   record(9, 'Quiz deck ≥4 từ', nWords >= 4, `deck có ${nWords} từ; UI chặn n<4 (07-exam-quiz.js)`);
 
-  // 10 — TTS 3 lang profiles
+  // 10 — TTS lang profiles (5 cặp)
   const lp = await req('GET', '/api/decks/lang-profiles');
   const profiles = lp.data?.profiles || [];
   const ttsMap = Object.fromEntries(profiles.map((p) => [p.langPair, p.ttsLang]));
   const ttsOk =
     ttsMap['zh-vi'] === 'zh-CN' &&
     ttsMap['en-vi'] === 'en-US' &&
-    ttsMap['ja-vi'] === 'ja-JP';
-  record(10, 'TTS zh-vi / en-vi / ja-vi', ttsOk, JSON.stringify(ttsMap));
+    ttsMap['ja-vi'] === 'ja-JP' &&
+    ttsMap['ko-vi'] === 'ko-KR' &&
+    ttsMap['de-vi'] === 'de-DE';
+  record(10, 'TTS 5 lang profiles', ttsOk, JSON.stringify(ttsMap));
 
   // 11 — admin đổi quota
   const adminLogin = await req('POST', '/api/login', { username: 'admin1', password: 'Andinhlinh2@' });

@@ -530,7 +530,8 @@ td { padding: 9px 14px; vertical-align: middle; line-height: var(--type-line-hei
   font-weight: var(--type-word-weight);
 }
 body[data-lang-pair="zh-vi"] .td-hanzi { font-size: 22px; color: var(--red-dark); }
-body[data-lang-pair="ja-vi"] .td-hanzi { font-size: 20px; }
+body[data-lang-pair="ja-vi"] .td-hanzi,
+body[data-lang-pair="ko-vi"] .td-hanzi { font-size: 20px; }
 .td-pinyin {
   min-width: 120px;
 }
@@ -693,7 +694,9 @@ tr.row-locked .td-meaning { filter: blur(2px); }
   font-size: 28px;
 }
 body[data-lang-pair="en-vi"] #tbl.mp-layout-sparse .td-hanzi,
-body[data-lang-pair="ja-vi"] #tbl.mp-layout-sparse .td-hanzi {
+body[data-lang-pair="de-vi"] #tbl.mp-layout-sparse .td-hanzi,
+body[data-lang-pair="ja-vi"] #tbl.mp-layout-sparse .td-hanzi,
+body[data-lang-pair="ko-vi"] #tbl.mp-layout-sparse .td-hanzi {
   font-size: 22px;
 }
 #tbl.mp-layout-sparse .td-meaning {

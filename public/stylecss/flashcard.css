@@ -97,7 +97,9 @@
 }
 body[data-lang-pair="zh-vi"] .fc-hanzi { font-size: 64px; }
 body[data-lang-pair="en-vi"] .fc-hanzi,
-body[data-lang-pair="ja-vi"] .fc-hanzi { font-size: 48px; }
+body[data-lang-pair="de-vi"] .fc-hanzi,
+body[data-lang-pair="ja-vi"] .fc-hanzi,
+body[data-lang-pair="ko-vi"] .fc-hanzi { font-size: 48px; }
 .fc-hanzi .primary-stack { align-items: center; gap: 6px; }
 .fc-pinyin {
   min-height: 28px;

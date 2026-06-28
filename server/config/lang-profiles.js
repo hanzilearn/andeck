@@ -1,4 +1,4 @@
-// server/config/lang-profiles.js — cấu hình ngôn ngữ v1 (zh-vi, en-vi, ja-vi)
+// server/config/lang-profiles.js — cấu hình ngôn ngữ (zh-vi, en-vi, ja-vi, ko-vi, de-vi)
 
 const LANG_PROFILES = {
   'zh-vi': {
@@ -40,6 +40,34 @@ const LANG_PROFILES = {
     readingRequired: false,
     ttsLang: 'ja-JP',
     speechLang: 'ja-JP',
+    quizPrimaryMode: true,
+    importFields: ['primary', 'reading', 'meaning', 'exPrimary', 'exReading', 'exMeaning', 'pos', 'note']
+  },
+  'ko-vi': {
+    langPair: 'ko-vi',
+    label: 'Hàn → Việt',
+    primaryLabel: 'Từ',
+    readingLabel: 'Romanization',
+    meaningLabel: 'Nghĩa',
+    requiredFields: ['primary', 'meaning'],
+    hasReading: true,
+    readingRequired: false,
+    ttsLang: 'ko-KR',
+    speechLang: 'ko-KR',
+    quizPrimaryMode: true,
+    importFields: ['primary', 'reading', 'meaning', 'exPrimary', 'exReading', 'exMeaning', 'pos', 'note']
+  },
+  'de-vi': {
+    langPair: 'de-vi',
+    label: 'Đức → Việt',
+    primaryLabel: 'Từ',
+    readingLabel: 'Phiên âm',
+    meaningLabel: 'Nghĩa',
+    requiredFields: ['primary', 'meaning'],
+    hasReading: true,
+    readingRequired: false,
+    ttsLang: 'de-DE',
+    speechLang: 'de-DE',
     quizPrimaryMode: true,
     importFields: ['primary', 'reading', 'meaning', 'exPrimary', 'exReading', 'exMeaning', 'pos', 'note']
   }

@@ -138,6 +138,8 @@
 .mp-card[data-lang="zh-vi"] .mp-card-accent { background: #4A90D9; }
 .mp-card[data-lang="en-vi"] .mp-card-accent { background: #7A8FA6; }
 .mp-card[data-lang="ja-vi"] .mp-card-accent { background: #9B8EC4; }
+.mp-card[data-lang="ko-vi"] .mp-card-accent { background: #E74C3C; }
+.mp-card[data-lang="de-vi"] .mp-card-accent { background: #F5A623; }
 
 .mp-gear-btn {
   position: absolute;
@@ -226,6 +228,8 @@
 .mp-card[data-lang="zh-vi"] .mp-card-btn { background: #4A90D9; }
 .mp-card[data-lang="en-vi"] .mp-card-btn { background: #7A8FA6; }
 .mp-card[data-lang="ja-vi"] .mp-card-btn { background: #9B8EC4; }
+.mp-card[data-lang="ko-vi"] .mp-card-btn { background: #E74C3C; }
+.mp-card[data-lang="de-vi"] .mp-card-btn { background: #F5A623; }
 
 .mp-card-lang {
   font-size: 11px;

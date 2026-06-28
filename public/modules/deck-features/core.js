@@ -334,7 +334,9 @@ function renderAdLangPairOptions() {
     sel.innerHTML =
       '<option value="zh-vi">Trung → Việt</option>' +
       '<option value="en-vi">Anh → Việt</option>' +
-      '<option value="ja-vi">Nhật → Việt</option>';
+      '<option value="ja-vi">Nhật → Việt</option>' +
+      '<option value="ko-vi">Hàn → Việt</option>' +
+      '<option value="de-vi">Đức → Việt</option>';
     return;
   }
   sel.innerHTML = adLangProfiles

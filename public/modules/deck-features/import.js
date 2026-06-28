@@ -320,7 +320,9 @@ function adImportRenderLangPairOptions() {
       : [
           { langPair: 'zh-vi', label: 'Trung \u2192 Vi\u1ec7t' },
           { langPair: 'en-vi', label: 'Anh \u2192 Vi\u1ec7t' },
-          { langPair: 'ja-vi', label: 'Nh\u1eadt \u2192 Vi\u1ec7t' }
+          { langPair: 'ja-vi', label: 'Nh\u1eadt \u2192 Vi\u1ec7t' },
+          { langPair: 'ko-vi', label: 'H\u00e0n \u2192 Vi\u1ec7t' },
+          { langPair: 'de-vi', label: '\u0110\u1ee9c \u2192 Vi\u1ec7t' }
         ];
   sel.innerHTML = profiles
     .map(function (p) {
