@@ -210,7 +210,6 @@ function initPronRecognition() {
 }
 
 function startPronRecording(idx) {
-  if (isFreeLocked(idx)) return;
   const rec = initPronRecognition();
   if (!rec) {
     alert(

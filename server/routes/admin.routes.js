@@ -78,14 +78,20 @@ router.delete('/users/:email', auth, adminOnly, async (req, res) => {
 router.get('/users/:email/decks', auth, adminOnly, async (req, res) => {
   try {
     const email = decodeURIComponent(req.params.email);
-    const decks = await Deck.find({ email });
-    res.json(decks.map((d) => ({
-      deckId: d.deckId,
-      name: d.name,
-      langPair: d.langPair,
-      wordCount: (d.words || []).length,
-      createdAt: d.createdAt
-    })));
+    const decks = await Deck.aggregate([
+      { $match: { email } },
+      {
+        $project: {
+          _id: 0,
+          deckId: 1,
+          name: 1,
+          langPair: 1,
+          createdAt: 1,
+          wordCount: { $size: { $ifNull: ['$words', []] } }
+        }
+      }
+    ]);
+    res.json(decks);
   } catch (err) {
     console.error('GET /api/admin/users/:email/decks:', err);
     res.status(500).json({ error: 'Loi he thong' });

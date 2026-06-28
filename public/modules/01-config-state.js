@@ -48,10 +48,6 @@ function getAuthToken() {
   return window._authToken || localStorage.getItem('andeck_token') || '';
 }
 
-function isFreeLocked() {
-  return false;
-}
-
 function getCurrentFilterState() {
   if (!currentLevel) return { state: 'all', ids: [] };
   if (!filterStatePerLevel[currentLevel]) {

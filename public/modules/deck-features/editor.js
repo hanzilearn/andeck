@@ -65,6 +65,7 @@ function adSyncFilterButtonUi() {
 function adSyncStudyLangAttr(langPair) {
   const pair = langPair || window._currentLangPair || 'zh-vi';
   document.body.setAttribute('data-lang-pair', pair);
+  if (typeof adEnsureLangFonts === 'function') adEnsureLangFonts(pair);
 }
 
 function adGetLangProfile(langPair) {
@@ -196,7 +197,7 @@ function awOpenNotePanel() {
 }
 
 async function loadDeckStudy(deckId) {
-  if (!getToken()) return;
+  if (!getAuthToken()) return;
   try {
     const res = await fetch('/api/decks/' + deckId, { headers: adAuthHeaders() });
     if (!res.ok) {
@@ -578,7 +579,7 @@ function dmRowClick(tr, wordId) {
 
 async function adExportDeckJson() {
   const deckId = window._currentDeckId;
-  if (!deckId || !getToken()) {
+  if (!deckId || !getAuthToken()) {
     alert('Vui l\u00f2ng m\u1edf deck \u0111\u1ec3 t\u1ea3i JSON.');
     return;
   }

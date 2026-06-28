@@ -31,8 +31,7 @@ function adHasReadingColumn() {
   return !p || p.hasReading !== false;
 }
 
-function adFormatDetailHtml(w, locked) {
-  if (locked) return '<span class="td-detail-empty">\u2014</span>';
+function adFormatDetailHtml(w) {
   const hasEx = !!(w.exPrimary && String(w.exPrimary).trim());
   const hasNote = !!(w.note && String(w.note).trim());
   if (!hasEx && !hasNote) {
@@ -59,18 +58,8 @@ function adFormatDetailHtml(w, locked) {
 
 /* ─── MODE ─── */
 function setMode(m, btn) {
-  if (m === 'pron') {
-    m = 'all';
-    btn = document.querySelector('.mode-btn[data-mode="all"]') || btn;
-  }
   _answersCache[mode] = answers;
   answers = _answersCache[m] || {};
-  if (_pronCurrentIdx !== -1 && _pronRecognition) {
-    try {
-      _pronRecognition.stop();
-    } catch (e) {}
-    _pronCurrentIdx = -1;
-  }
   mode = m;
   if (m === 'all') window.scrollTo({ top: 0, behavior: 'smooth' });
   document.querySelectorAll('.mode-btn').forEach(function (b) {
@@ -111,7 +100,6 @@ function toggleHideStarred() {
 }
 
 function toggleStar(idx) {
-  if (isFreeLocked(idx)) return;
   const cur = itemLabels[idx];
   if (!cur) {
     if (!activeLabelId) {
@@ -256,8 +244,6 @@ function render() {
   const thead = document.getElementById('thead-row');
   const tbody = document.getElementById('tbody');
   if (!thead || !tbody) return;
-
-  if (mode === 'pron') mode = 'all';
 
   let filteredOrder = order;
   if (searchQuery) {
@@ -465,18 +451,16 @@ function render() {
   function buildRow(idx) {
     const w = VOCAB[idx];
     const a = answers[idx];
-    const locked = isFreeLocked(idx);
-    const rc = locked ? 'row-locked' : a ? (a.correct ? 'row-correct' : 'row-wrong') : '';
-    const icon = a && !locked ? (a.correct ? '\u2705' : '\u274c') : '';
-    const val = a && !locked ? esc(a.value) : '';
-    const ic = a && !locked ? (a.correct ? 'correct' : 'wrong') : '';
-    const dis = a || locked ? 'disabled' : '';
+    const rc = a ? (a.correct ? 'row-correct' : 'row-wrong') : '';
+    const icon = a ? (a.correct ? '\u2705' : '\u274c') : '';
+    const val = a ? esc(a.value) : '';
+    const ic = a ? (a.correct ? 'correct' : 'wrong') : '';
+    const dis = a ? 'disabled' : '';
     const speakText = esc(w.primary);
-    const speakBtn = locked
-      ? '\uD83D\uDD0A'
-      : '<button class="speak-btn" onclick="speak(\'' +
-        speakText +
-        '\')" title="Ph\u00e1t \u00e2m">\uD83D\uDD0A</button>';
+    const speakBtn =
+      '<button class="speak-btn" onclick="speak(\'' +
+      speakText +
+      '\')" title="Ph\u00e1t \u00e2m">\uD83D\uDD0A</button>';
     const readingText = adFormatReadingHtml(w.reading, readingHidden);
     const wordId = w.id || '';
     const rowOn = deckRowOn(wordId);
@@ -500,20 +484,18 @@ function render() {
         '<td class="td-meaning">' +
         esc(w.meaning) +
         '</td><td class="td-input">' +
-        (locked
-          ? '<span style="color:#999;font-size:12px">\uD83D\uDD12</span>'
-          : '<input class="vocab-input ' +
-            ic +
-            '" type="text" ' +
-            dis +
-            ' value="' +
-            val +
-            '" placeholder="Nh\u1eadp ' +
-            esc(adPrimaryLabel()) +
-            '..." onkeydown="if(event.key===\'Enter\')check(' +
-            idx +
-            ',this,\'primary\')">') +
-        (a && !a.correct && !locked
+        '<input class="vocab-input ' +
+        ic +
+        '" type="text" ' +
+        dis +
+        ' value="' +
+        val +
+        '" placeholder="Nh\u1eadp ' +
+        esc(adPrimaryLabel()) +
+        '..." onkeydown="if(event.key===\'Enter\')check(' +
+        idx +
+        ',this,\'primary\')">' +
+        (a && !a.correct
           ? '<div class="hint-answer">\u2192 ' + esc(w.primary) + '</div>'
           : '') +
         '</td><td class="td-result"><span class="result-icon" id="ic-' +
@@ -543,18 +525,16 @@ function render() {
         '</td>' +
         readCell +
         '<td class="td-input">' +
-        (locked
-          ? '<span style="color:#999;font-size:12px">\uD83D\uDD12</span>'
-          : '<input class="vocab-input ' +
-            ic +
-            '" type="text" ' +
-            dis +
-            ' value="' +
-            val +
-            '" placeholder="Nh\u1eadp ngh\u0129a..." onkeydown="if(event.key===\'Enter\')check(' +
-            idx +
-            ',this,\'meaning\')">') +
-        (a && !a.correct && !locked
+        '<input class="vocab-input ' +
+        ic +
+        '" type="text" ' +
+        dis +
+        ' value="' +
+        val +
+        '" placeholder="Nh\u1eadp ngh\u0129a..." onkeydown="if(event.key===\'Enter\')check(' +
+        idx +
+        ',this,\'meaning\')">' +
+        (a && !a.correct
           ? '<div class="hint-answer">\u2192 ' + esc(w.meaning) + '</div>'
           : '') +
         '</td><td class="td-result"><span class="result-icon" id="ic-' +
@@ -568,9 +548,9 @@ function render() {
     let detailPC = '';
     if (deckAllMode && deckProfile.showDetail) {
       detailPC =
-        '<td class="td-example-pc td-detail-pc">' + adFormatDetailHtml(w, locked) + '</td>';
+        '<td class="td-example-pc td-detail-pc">' + adFormatDetailHtml(w) + '</td>';
     } else if (!deckAllMode && deckProfile.showExample) {
-      const hasEx = !!(w.exPrimary && String(w.exPrimary).trim()) && !locked;
+      const hasEx = !!(w.exPrimary && String(w.exPrimary).trim());
       detailPC = hasEx
         ? '<td class="td-example-pc"><div class="ex-hanzi">' +
           adFormatPrimaryHtml(w.exPrimary, w.exReading || '') +
@@ -597,9 +577,9 @@ function render() {
       : null;
     const starCell =
       inDeck && !dmOn && !emOn
-        ? '<td class="td-star">' + (locked ? '🔒' : renderStarSVG(idx, lbl)) + '</td>'
+        ? '<td class="td-star">' + renderStarSVG(idx, lbl) + '</td>'
         : '';
-    const allCls = deckRowClass(locked ? 'row-locked' : '');
+    const allCls = deckRowClass('');
     return (
       '<tr class="' +
       allCls +
@@ -815,16 +795,9 @@ function closeModeDropdown() {
 }
 
 function selectModeFromDropdown(m) {
-  if (m === 'pron') m = 'all';
   _answersCache[mode] = answers;
   answers = _answersCache[m] || {};
   closeModeDropdown();
-  if (_pronCurrentIdx !== -1 && _pronRecognition) {
-    try {
-      _pronRecognition.stop();
-    } catch (e) {}
-    _pronCurrentIdx = -1;
-  }
   mode = m;
   if (m === 'all') window.scrollTo({ top: 0, behavior: 'smooth' });
   document.querySelectorAll('.mode-btn').forEach(function (b) {

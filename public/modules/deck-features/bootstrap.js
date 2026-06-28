@@ -7,5 +7,5 @@ document.addEventListener('DOMContentLoaded', function () {
   initEditorModals();
   initAdImportModal();
   loadAdLangProfiles();
-  if (getToken()) loadAdDecks();
+  if (getAuthToken()) loadAdDecks();
 });

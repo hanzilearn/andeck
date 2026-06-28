@@ -34,10 +34,8 @@ function adBuildImportPrompt(profile) {
   let extra = '';
   if (profile.langPair === 'zh-vi') {
     extra =
-      '\n(C\u00f3 th\u1ec3 d\u00f9ng t\u00ean legacy: hanzi, pinyin, ex_hanzi, ex_pinyin, ex_viet, tu_loai.)';
-  }
-  if (profile.langPair === 'zh-vi') {
-    extra += '\nPinyin ph\u1ea3i c\u00f3 d\u1ea5u thanh (\u0101 \u00e1 \u01ce \u00e0), kh\u00f4ng d\u00f9ng s\u1ed1.';
+      '\n(C\u00f3 th\u1ec3 d\u00f9ng t\u00ean legacy: hanzi, pinyin, ex_hanzi, ex_pinyin, ex_viet, tu_loai.)' +
+      '\nPinyin ph\u1ea3i c\u00f3 d\u1ea5u thanh (\u0101 \u00e1 \u01ce \u00e0), kh\u00f4ng d\u00f9ng s\u1ed1.';
   }
 
   return (
@@ -333,7 +331,7 @@ function adImportRenderLangPairOptions() {
 
 function adImportOpenModal(mode) {
   adImportMode = mode === 'append' ? 'append' : 'create';
-  if (!getToken()) {
+  if (!getAuthToken()) {
     alert('Vui l\u00f2ng \u0111\u0103ng nh\u1eadp \u0111\u1ec3 import t\u1eeb v\u1ef1ng.');
     return;
   }

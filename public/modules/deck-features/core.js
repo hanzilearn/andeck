@@ -35,12 +35,8 @@ function adResetSessionState() {
   renderAdGrid();
 }
 
-function getToken() {
-  return window._authToken || localStorage.getItem('andeck_token') || '';
-}
-
 function adAuthHeaders(json) {
-  const headers = { Authorization: 'Bearer ' + getToken() };
+  const headers = { Authorization: 'Bearer ' + getAuthToken() };
   if (json) headers['Content-Type'] = 'application/json';
   return headers;
 }
@@ -509,7 +505,7 @@ async function loadAdLangProfiles() {
 }
 
 async function loadAdDecks() {
-  if (!getToken()) {
+  if (!getAuthToken()) {
     adResetSessionState();
     return;
   }

@@ -81,23 +81,30 @@ function resolveImportDeckName(rawName) {
 router.get('/', auth, async (req, res) => {
   try {
     const userEmail = req.user.email;
-    const decks = await Deck.find({ email: userEmail }, '-__v').sort({ updatedAt: -1 });
+    const decks = await Deck.aggregate([
+      { $match: { email: userEmail } },
+      {
+        $project: {
+          _id: 0,
+          deckId: 1,
+          name: 1,
+          description: 1,
+          langPair: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          wordCount: { $size: { $ifNull: ['$words', []] } }
+        }
+      },
+      { $sort: { updatedAt: -1 } }
+    ]);
     const { deckQuota, wordQuota } = await getUserQuotas(userEmail);
-    const totalWords = decks.reduce((sum, d) => sum + (d.words?.length || 0), 0);
+    const totalWords = decks.reduce((sum, d) => sum + (d.wordCount || 0), 0);
 
     res.json({
       deckQuota,
       wordQuota,
       totalWords,
-      decks: decks.map((d) => ({
-        deckId: d.deckId,
-        name: d.name,
-        description: d.description,
-        langPair: d.langPair,
-        wordCount: (d.words || []).length,
-        createdAt: d.createdAt,
-        updatedAt: d.updatedAt
-      }))
+      decks
     });
   } catch (err) {
     console.error('GET /api/decks:', err);

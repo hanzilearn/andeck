@@ -10,7 +10,7 @@
 
 **Andeck** — web học từ vựng đa ngôn ngữ, port lõi **My Project** từ Hanzi Learn sang kiến trúc generic:
 
-- User tạo **deck** (bộ từ), chọn cặp ngôn ngữ (`zh-vi`, `en-vi`, `ja-vi`)
+- User tạo **deck** (bộ từ), chọn cặp ngôn ngữ (`zh-vi`, `en-vi`, `ja-vi`, `ko-vi`, `de-vi`)
 - Import JSON từ AI (create/append), thêm/sửa/xóa từ thủ công
 - Học deck: bảng từ (4 mode), quiz, flashcard, nhãn màu, sao, timer, TTS/mic
 - Export JSON (format Andeck); import format legacy Hanzi My Project (`zh-vi`)
@@ -48,8 +48,7 @@ D:\andeck\
 │   │   ├── main-table.css, speech-sound.css
 │   │   ├── label-system.css, exam-quiz.css, flashcard.css, timer.css
 │   └── modules/
-│       ├── 01-config-state.js  State, showOnly, theme
-│       ├── 02-lang-profiles.js Cache profile từ API
+│       ├── 01-config-state.js  State, showOnly, getAuthToken
 │       ├── 03-auth.js          Login/register, JWT Andeck
 │       ├── 04-main-table.js    Bảng học generic
 │       ├── 05-speech-sound.js  TTS/mic theo langPair
@@ -58,7 +57,7 @@ D:\andeck\
 │       ├── 08-flashcard.js
 │       ├── 09-timer.js
 │       └── deck-features/
-│           ├── core.js         Hub, quota, CRUD deck
+│           ├── core.js         Hub, quota, CRUD deck, lang profiles API
 │           ├── import.js       Import create/append + Hanzi legacy
 │           ├── editor.js       Học deck, CRUD từ, export JSON
 │           └── bootstrap.js
@@ -66,7 +65,7 @@ D:\andeck\
 │   ├── index.js                Listen, MongoDB, seed
 │   ├── create-app.js           Express + middleware
 │   ├── config.js               PORT, JWT_SECRET, MONGO_URI
-│   ├── config/lang-profiles.js zh-vi, en-vi, ja-vi
+│   ├── config/lang-profiles.js zh-vi, en-vi, ja-vi, ko-vi, de-vi
 │   ├── middleware/             auth, rate-limit, request-logger
 │   ├── models/                 user, deck, label, item, star
 │   ├── services/               labels, deck-ids, word-validation
@@ -152,6 +151,8 @@ Token lưu `localStorage.andeck_token`. Mọi API (trừ login/register): `Autho
 | `zh-vi` | Chữ Hán | Pinyin | `zh-CN` | `zh-CN` |
 | `en-vi` | Từ tiếng Anh | Phiên âm (tuỳ chọn) | `en-US` | `en-US` |
 | `ja-vi` | Từ tiếng Nhật | Furigana | `ja-JP` | `ja-JP` |
+| `ko-vi` | Từ tiếng Hàn | Romanization | `ko-KR` | `ko-KR` |
+| `de-vi` | Từ tiếng Đức | Phiên âm | `de-DE` | `de-DE` |
 
 Bắt buộc mọi profile: `primary`, `meaning`.
 
@@ -203,7 +204,10 @@ Biến môi trường — xem [`.env.example`](./.env.example):
    MONGO_URI=mongodb+srv://.../andeck
    JWT_SECRET=<chuỗi mới, khác Hanzi>
    PORT=3000
+   NODE_ENV=production
    ```
+
+   Static: `stylecss/` + `modules/` cache 7 ngày (prod); `index.html` không cache. Font UI (Inter) load sẵn; font học (Noto/Nanum…) lazy theo `langPair` khi mở deck.
 
 4. **Build & start:** `npm install` (auto) · **Start command:** `npm start`
 5. Push `main` → Render auto deploy.
@@ -238,7 +242,7 @@ Chạy script: `node scripts/qa-phase7.mjs` (mặc định target production).
 
 ## Backlog (sau v1)
 
-- Thêm lang: `ko-vi`, `fr-vi`, `de-vi`… (chỉ thêm block `lang-profiles.js`)
+- Thêm lang: `fr-vi`… (chỉ thêm block `lang-profiles.js`)
 - Marketplace (`isPublic`, browse deck)
 - CSV import
 - Zalo CSKH modal (port từ Hanzi)

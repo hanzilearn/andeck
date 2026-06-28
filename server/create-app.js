@@ -13,7 +13,11 @@ function createApp() {
   app.use(compression());
   app.use(express.json({ limit: '2mb' }));
   app.set('trust proxy', 1);
-  app.use(express.static(path.join(ROOT_DIR, 'public')));
+  const isProd = process.env.NODE_ENV === 'production';
+  const staticMaxAge = isProd ? '7d' : 0;
+  app.use('/stylecss', express.static(path.join(ROOT_DIR, 'public/stylecss'), { maxAge: staticMaxAge, etag: true }));
+  app.use('/modules', express.static(path.join(ROOT_DIR, 'public/modules'), { maxAge: staticMaxAge, etag: true }));
+  app.use(express.static(path.join(ROOT_DIR, 'public'), { maxAge: 0, etag: true }));
   app.use(requestLogger);
   registerRoutes(app);
   return app;
