@@ -310,23 +310,12 @@ function adImportUpdateWordCountDisplay() {
 }
 
 function adImportRenderLangPairOptions() {
+  if (typeof adRenderLangPairSelect === 'function') {
+    adRenderLangPairSelect('importLangPairSelect', adLangProfiles);
+    return;
+  }
   const sel = document.getElementById('importLangPairSelect');
-  if (!sel) return;
-  const profiles =
-    typeof adLangProfiles !== 'undefined' && adLangProfiles.length
-      ? adLangProfiles
-      : [
-          { langPair: 'zh-vi', label: 'Trung \u2192 Vi\u1ec7t' },
-          { langPair: 'en-vi', label: 'Anh \u2192 Vi\u1ec7t' },
-          { langPair: 'ja-vi', label: 'Nh\u1eadt \u2192 Vi\u1ec7t' },
-          { langPair: 'ko-vi', label: 'H\u00e0n \u2192 Vi\u1ec7t' },
-          { langPair: 'de-vi', label: '\u0110\u1ee9c \u2192 Vi\u1ec7t' }
-        ];
-  sel.innerHTML = profiles
-    .map(function (p) {
-      return '<option value="' + esc(p.langPair) + '">' + esc(p.label) + '</option>';
-    })
-    .join('');
+  if (sel) sel.innerHTML = '<option value="" disabled selected>Đang tải...</option>';
 }
 
 function adImportOpenModal(mode) {
@@ -348,7 +337,8 @@ function adImportOpenModal(mode) {
       adShowQuotaLimit('deck');
       return;
     }
-    adImportRenderLangPairOptions();
+    if (!adLangProfiles.length) loadAdLangProfiles();
+    else adImportRenderLangPairOptions();
   } else {
     if (!window._currentDeckId) return;
   }
@@ -620,7 +610,6 @@ function initAdImportModal() {
   if (adImportModalInited) return;
   adImportModalInited = true;
 
-  adImportRenderLangPairOptions();
   adImportRefreshPrompt();
 
   document.getElementById('importModalClose')?.addEventListener('click', adImportCloseModal);

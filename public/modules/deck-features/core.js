@@ -323,27 +323,28 @@ function closeAdRenameModal() {
   adEditingId = null;
 }
 
-function renderAdLangPairOptions() {
-  const sel = document.getElementById('adCreateLangPair');
+function adRenderLangPairSelect(selectId, profiles) {
+  const sel = document.getElementById(selectId);
   if (!sel) return;
-  if (!adLangProfiles.length) {
-    sel.innerHTML =
-      '<option value="zh-vi">Trung → Việt</option>' +
-      '<option value="en-vi">Anh → Việt</option>' +
-      '<option value="ja-vi">Nhật → Việt</option>' +
-      '<option value="ko-vi">Hàn → Việt</option>' +
-      '<option value="de-vi">Đức → Việt</option>';
+  const list = profiles && profiles.length ? profiles : [];
+  if (!list.length) {
+    sel.innerHTML = '<option value="" disabled selected>Không tải được ngôn ngữ</option>';
     return;
   }
-  sel.innerHTML = adLangProfiles
+  sel.innerHTML = list
     .map(function (p) {
       return '<option value="' + esc(p.langPair) + '">' + esc(p.label) + '</option>';
     })
     .join('');
 }
 
+function renderAdLangPairOptions() {
+  adRenderLangPairSelect('adCreateLangPair', adLangProfiles);
+}
+
 function openAdCreateModal() {
-  renderAdLangPairOptions();
+  if (!adLangProfiles.length) loadAdLangProfiles();
+  else renderAdLangPairOptions();
   document.getElementById('adCreateNameInput').value = '';
   document.getElementById('adCreateModal').style.display = 'flex';
   setTimeout(function () {
@@ -496,11 +497,19 @@ async function confirmAdDelete(id) {
 async function loadAdLangProfiles() {
   try {
     const res = await fetch('/api/decks/lang-profiles');
-    if (!res.ok) return;
-    const data = await res.json();
-    adLangProfiles = data.profiles || [];
+    if (!res.ok) {
+      adLangProfiles = [];
+    } else {
+      const data = await res.json();
+      adLangProfiles = data.profiles || [];
+    }
   } catch (err) {
     console.error('loadAdLangProfiles:', err);
+    adLangProfiles = [];
+  }
+  renderAdLangPairOptions();
+  if (typeof adImportRenderLangPairOptions === 'function') {
+    adImportRenderLangPairOptions();
   }
 }
 

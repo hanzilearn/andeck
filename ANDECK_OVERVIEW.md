@@ -115,7 +115,7 @@ Token lưu `localStorage.andeck_token`. Mọi API (trừ login/register): `Autho
 
 ### Decks — `decks.routes.js`
 
-- `GET /api/decks/lang-profiles` — cấu hình UI theo lang
+- `GET /api/decks/lang-profiles` — cấu hình UI theo lang (dropdown tạo deck / import lấy danh sách từ đây, không hardcode frontend)
 - `GET /api/decks` — list + `deckQuota`, `wordQuota`, `totalWords`
 - `POST /api/decks` — tạo deck (chọn `langPair`)
 - `POST /api/decks/import` — create deck + words (max 500/request)

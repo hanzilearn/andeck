@@ -626,7 +626,9 @@
       <div class="iw-notice" role="note">⚠️ Kiểm tra giới hạn từ trước khi up file — liên hệ admin để gia hạn số lượng từ</div>
       <div class="iw-block" id="importLangPairBlock">
         <label class="iw-label" for="importLangPairSelect">Cặp ngôn ngữ</label>
-        <select id="importLangPairSelect" class="iw-name-input"></select>
+        <select id="importLangPairSelect" class="iw-name-input">
+          <option value="" disabled selected>Đang tải...</option>
+        </select>
       </div>
       <div class="iw-block">
         <div class="iw-block-head">
@@ -690,11 +692,7 @@
     <h3 class="mp-modal-title">Tạo deck mới</h3>
     <label class="mp-modal-label" for="adCreateLangPair">Cặp ngôn ngữ</label>
     <select id="adCreateLangPair" class="mp-modal-select">
-      <option value="zh-vi">Trung → Việt</option>
-      <option value="en-vi">Anh → Việt</option>
-      <option value="ja-vi">Nhật → Việt</option>
-      <option value="ko-vi">Hàn → Việt</option>
-      <option value="de-vi">Đức → Việt</option>
+      <option value="" disabled selected>Đang tải...</option>
     </select>
     <label class="mp-modal-label" for="adCreateNameInput">Tên deck</label>
     <input type="text" id="adCreateNameInput" class="mp-modal-input" placeholder="Tên deck..." maxlength="50">
