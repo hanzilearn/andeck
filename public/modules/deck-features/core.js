@@ -140,28 +140,24 @@ function adIsDeckAtQuota() {
 
 function adShowQuotaLimit(type) {
   const ov = document.getElementById('adQuotaLimitOverlay');
-  const titleEl = document.getElementById('adQuotaLimitTitle');
   const textEl = document.getElementById('adQuotaLimitText');
+  const zaloWrap = document.getElementById('adQuotaLimitZaloWrap');
   const zalo = typeof getZaloAdminNum === 'function' ? getZaloAdminNum() : '0792 739 257';
-  if (!ov || !titleEl || !textEl) {
-    const msg =
-      type === 'deck'
-        ? 'Số deck của bạn đã đến giới hạn (' + AD.deckQuota + '). Liên hệ Zalo Admin: ' + zalo
-        : 'Số từ đã đến giới hạn (' + adMaxTotalWords() + ' tổng). Liên hệ Zalo Admin: ' + zalo;
-    alert(msg);
+  if (!ov || !textEl) {
+    const limit = type === 'deck' ? AD.deckQuota : adPoolWordQuota();
+    const kind = type === 'deck' ? 'deck' : 'từ';
+    alert(
+      'Số ' + kind + ' của bạn đã đến giới hạn (' + limit + '). Nâng cấp gói hoặc liên hệ Zalo Admin: ' + zalo
+    );
     return;
   }
-  if (type === 'deck') {
-    titleEl.textContent = 'Giới hạn deck';
-    textEl.textContent =
-      'Số deck của bạn đã đến giới hạn (' + AD.deckQuota + '). Gia hạn thêm — liên hệ Zalo Admin.';
-  } else {
-    titleEl.textContent = 'Giới hạn từ vựng';
-    textEl.textContent =
-      'Số từ đã đến giới hạn (' + adMaxTotalWords() + ' tổng). Gia hạn thêm — liên hệ Zalo Admin.';
-  }
+  const limit = type === 'deck' ? AD.deckQuota : adPoolWordQuota();
+  const kind = type === 'deck' ? 'deck' : 'từ';
+  textEl.textContent =
+    'Số ' + kind + ' của bạn đã đến giới hạn (' + limit + '). Nâng cấp gói hoặc liên hệ Zalo Admin.';
   const zaloEl = document.getElementById('adQuotaLimitZaloNum');
   if (zaloEl) zaloEl.textContent = zalo;
+  if (zaloWrap) zaloWrap.hidden = true;
   ov.style.display = 'flex';
 }
 
@@ -602,8 +598,8 @@ function initAdModals() {
     if (typeof adOpenUpgradeModal === 'function') adOpenUpgradeModal();
   });
   document.getElementById('adQuotaLimitZaloBtn')?.addEventListener('click', function () {
-    adCloseQuotaLimit();
-    if (typeof showZaloContact === 'function') showZaloContact();
+    const zaloWrap = document.getElementById('adQuotaLimitZaloWrap');
+    if (zaloWrap) zaloWrap.hidden = false;
   });
   document.getElementById('adQuotaLimitOverlay')?.addEventListener('click', function (e) {
     if (e.target.id === 'adQuotaLimitOverlay') adCloseQuotaLimit();

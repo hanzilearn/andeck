@@ -604,28 +604,3 @@
     width: 100%;
   }
 }
-
-/* Quota limit overlay — nút Mua gói */
-#adQuotaLimitOverlay .dm-confirm-actions--quota {
-  flex-wrap: wrap;
-  justify-content: stretch;
-}
-
-#adQuotaLimitOverlay .dm-confirm-btn--buy {
-  padding: 7px 20px;
-  border: none;
-  background: var(--red, #7a8fa6);
-  color: #fff;
-  font-weight: 600;
-}
-
-@media (max-width: 420px) {
-  #adQuotaLimitOverlay .dm-confirm-actions--quota {
-    flex-direction: column;
-  }
-
-  #adQuotaLimitOverlay .dm-confirm-actions--quota .dm-confirm-btn {
-    width: 100%;
-    text-align: center;
-  }
-}

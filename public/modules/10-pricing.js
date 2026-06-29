@@ -282,7 +282,6 @@
     openPrOverlay('adPaymentModal');
   };
 
-  document.getElementById('adUpgradeBtn')?.addEventListener('click', adOpenUpgradeModal);
   document.getElementById('adUpgradeClose')?.addEventListener('click', adCloseUpgradeModal);
   document.getElementById('adUpgradeModal')?.addEventListener('click', function (e) {
     if (e.target.id === 'adUpgradeModal') adCloseUpgradeModal();
