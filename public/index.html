@@ -812,7 +812,7 @@
         <div class="pr-payment-row pr-payment-row--code">
           <span class="pr-payment-row__label">Mã đơn</span>
           <div class="pr-payment-row__code-wrap">
-            <span class="pr-payment-row__value pr-payment-row__value--code" id="adOrderCode">—</span>
+            <span class="pr-payment-row__value pr-payment-row__value--code" id="adOrderCode">Chưa có — bấm Đã thanh toán</span>
             <button type="button" class="pr-btn pr-btn--secondary pr-btn--sm" id="adCopyOrderCode" aria-label="Copy mã đơn">Copy</button>
           </div>
         </div>
@@ -840,7 +840,7 @@
       </div>
       <label class="pr-consent">
         <input type="checkbox" id="adPaymentConsent">
-        <span>Đồng ý <a href="/terms.html" target="_blank" rel="noopener noreferrer">điều khoản</a> và <a href="/refund.html" target="_blank" rel="noopener noreferrer">chính sách hoàn tiền</a></span>
+        <span>Đồng ý <a href="/terms.html" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">điều khoản</a> và <a href="/refund.html" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">chính sách hoàn tiền</a></span>
       </label>
     </div>
   </div>
@@ -852,7 +852,6 @@
     <div class="pr-modal__head">
       <div>
         <h2 class="pr-modal__title" id="adOrdersTitle">Đơn của tôi</h2>
-        <p class="pr-modal__sub">Chụp màn hình trang này gửi kèm bill khi xác minh Zalo</p>
       </div>
       <button type="button" class="pr-modal__close" id="adOrdersClose" aria-label="Đóng">✕</button>
     </div>

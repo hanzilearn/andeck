@@ -132,11 +132,6 @@ table{width:100%;border-collapse:collapse}
 .sp-deck-meta{font-size:9px;color:var(--text3);margin-top:2px}
 .sp-empty{font-size:10px;color:var(--text3);text-align:center;padding:8px 0}
 
-.admin-legal-footer{position:fixed;bottom:0;left:0;right:0;z-index:400;text-align:center;padding:8px;font-size:11px;color:var(--text3);background:var(--bg2);border-top:1px solid var(--border)}
-.admin-legal-footer a{color:var(--gold);text-decoration:none;margin:0 6px}
-.admin-legal-footer a:hover{text-decoration:underline}
-body{padding-bottom:32px}
-
 .badge-pending{background:rgba(230,126,34,.12);color:var(--orange)}
 .badge-applied{background:rgba(46,204,113,.12);color:var(--green)}
 .badge-refunded{background:rgba(149,165,166,.15);color:#95a5a6}
@@ -163,8 +158,8 @@ body{padding-bottom:32px}
   .main{
     grid-template-columns:1fr;
     grid-template-rows:auto 1fr;
-    height:calc(100vh - 44px - 32px);
-    height:calc(100dvh - 44px - 32px);
+    height:calc(100vh - 44px);
+    height:calc(100dvh - 44px);
   }
   .left-panel{
     display:grid;
@@ -195,8 +190,6 @@ body{padding-bottom:32px}
 @media(max-width:600px){
   .modal{width:calc(100vw - 20px);padding:20px 16px}
   .side-panel{width:100%}
-  .admin-legal-footer{font-size:10px;padding:10px 8px;line-height:1.5}
-  body{padding-bottom:44px}
   .admin-name{display:none}
   .left-panel{grid-template-columns:1fr 1fr}
 }
@@ -680,9 +673,5 @@ document.querySelectorAll('.m-ov').forEach(function(el){el.addEventListener('cli
   }
 })();
 </script>
-
-<footer class="admin-legal-footer">
-  <a href="/">← Về app</a>
-</footer>
 </body>
 </html>

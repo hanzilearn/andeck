@@ -263,7 +263,11 @@
     var hasOrder = !!(existing && adOrderIsActive(existing));
 
     if (codeEl) {
-      codeEl.textContent = hasOrder ? adPaymentSession.orderCode : '—';
+      if (hasOrder && adPaymentSession.orderCode) {
+        codeEl.textContent = adPaymentSession.orderCode;
+      } else {
+        codeEl.textContent = 'Chưa có — bấm Đã thanh toán';
+      }
     }
 
     if (paidBtn) {

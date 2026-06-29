@@ -194,6 +194,10 @@
   flex-direction: column;
   gap: 8px;
   margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border-tertiary, #ede8dc);
+  background: var(--color-background-secondary, #f5f0e8);
 }
 
 .pr-payment-row {
@@ -255,10 +259,14 @@
 }
 
 .pr-consent a {
-  color: inherit;
+  color: var(--red-dark, #3a4a5c);
+  font-weight: 700;
   text-decoration: underline;
-  pointer-events: none;
-  opacity: 0.7;
+  pointer-events: auto;
+}
+
+.pr-consent a:hover {
+  color: var(--ink, #1c2b3a);
 }
 
 .pr-qr-wrap {
@@ -603,6 +611,20 @@
 
 [data-theme="dark"] .pr-payment-row__value {
   color: #e8dcc8;
+}
+
+[data-theme="dark"] .pr-payment-meta {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .pr-consent a {
+  color: #7ec8ff;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .pr-consent a:hover {
+  color: #a8d4ff;
 }
 
 [data-theme="dark"] .pr-package-card,
