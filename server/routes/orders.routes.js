@@ -20,7 +20,8 @@ function serializeOrder(order) {
     status: order.status,
     createdAt: order.createdAt,
     verifiedAt: order.verifiedAt,
-    appliedAt: order.appliedAt
+    appliedAt: order.appliedAt,
+    refundedAt: order.refundedAt
   };
 }
 

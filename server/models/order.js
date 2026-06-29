@@ -10,13 +10,14 @@ const orderSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   status: {
     type: String,
-    enum: ['pending', 'verified', 'applied'],
+    enum: ['pending', 'verified', 'applied', 'refunded'],
     default: 'pending',
     index: true
   },
   createdAt: { type: Date, default: Date.now },
   verifiedAt: { type: Date },
-  appliedAt: { type: Date }
+  appliedAt: { type: Date },
+  refundedAt: { type: Date }
 });
 
 module.exports = mongoose.models.Order || mongoose.model('Order', orderSchema);

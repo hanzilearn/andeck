@@ -35,8 +35,8 @@ body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);colo
 .main{height:calc(100vh - 44px);overflow:hidden;display:grid;grid-template-columns:270px 1fr}
 .left-panel{padding:14px;overflow-y:auto;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
 .right-panel{display:flex;flex-direction:column;height:100%;overflow:hidden}
-.panel-head{padding:10px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid var(--border)}
-.panel-head h2{font-size:15px;color:var(--text);font-weight:600}
+.panel-head{padding:10px 16px 8px;display:flex;flex-direction:column;align-items:stretch;gap:10px;flex-shrink:0;border-bottom:1px solid var(--border)}
+.panel-head h2,.panel-head-title{font-size:15px;color:var(--text);font-weight:600}
 .panel-scroll{flex:1;overflow-y:auto;padding:0 16px 16px}
 
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.2)}
@@ -124,15 +124,52 @@ body{padding-bottom:32px}
 
 .badge-pending{background:rgba(230,126,34,.12);color:#e67e22}
 .badge-applied{background:rgba(46,204,113,.12);color:var(--green)}
+.badge-refunded{background:rgba(149,165,166,.15);color:#95a5a6}
 
-.tab-bar{display:flex;gap:4px;margin-right:auto;margin-left:12px}
-.tab-btn{padding:6px 12px;border:1px solid var(--border);border-radius:4px;background:var(--bg3);color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif}
+.tab-bar{display:flex;gap:4px;flex:1;min-width:0}
+.tab-btn{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;flex:1;min-height:40px;white-space:nowrap}
 .tab-btn.active{background:rgba(196,168,130,.15);color:var(--gold);border-color:rgba(196,168,130,.35)}
-.panel-view{display:none;flex-direction:column;height:100%;overflow:hidden}
+.panel-view{display:none;flex-direction:column;height:100%;overflow:hidden;min-height:0}
 .panel-view.active{display:flex}
+.panel-head-row{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;flex-wrap:wrap}
+.panel-head-title{font-size:15px;color:var(--text);font-weight:600;margin:0}
+.panel-tools{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.panel-search{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-size:12px;width:180px;max-width:100%;outline:none;font-family:inherit}
+.panel-search:focus{border-color:var(--gold)}
 
-@media(max-width:900px){.main{grid-template-columns:1fr}}
-@media(max-width:600px){.modal{width:calc(100vw - 20px)}.side-panel{width:100%}}
+.order-list{display:flex;flex-direction:column;gap:10px;padding:12px 0}
+.order-empty{text-align:center;padding:32px 16px;color:var(--text3);font-size:12px;background:var(--bg2);border:1px dashed var(--border);border-radius:10px}
+.order-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.order-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.order-code{font-weight:700;color:var(--gold);font-size:14px;line-height:1.3;word-break:break-all}
+.order-card-meta{display:grid;gap:4px;font-size:12px;color:var(--text2)}
+.order-card-meta strong{color:var(--text);font-weight:600}
+.order-card-date{font-size:10px;color:var(--text3)}
+.order-card-actions{margin-top:2px}
+.btn-action{width:100%;min-height:44px;font-size:13px;padding:10px 14px;border-radius:8px}
+
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+@media(max-width:900px){
+  .main{grid-template-columns:1fr}
+  .left-panel{display:none}
+  .panel-head{padding:10px 12px;flex-direction:column;align-items:stretch;gap:10px}
+  .panel-head-row{flex-wrap:nowrap}
+  .panel-head-title{font-size:14px}
+  .panel-scroll{padding:0 12px 16px}
+  .header{padding:0 12px}
+  .login-box{width:calc(100vw - 32px);max-width:360px;padding:32px 24px}
+  .tbl thead th,.tbl tbody td{padding:10px 8px;font-size:10px}
+  .btn-sm{min-height:36px;padding:6px 10px;font-size:10px}
+}
+@media(max-width:600px){
+  .modal{width:calc(100vw - 20px);padding:20px 16px}
+  .side-panel{width:100%}
+  .tab-btn{font-size:11px;padding:8px 6px}
+  .admin-legal-footer{font-size:10px;padding:10px 8px;line-height:1.5}
+  body{padding-bottom:44px}
+  .admin-name{display:none}
+}
 </style>
 </head>
 <body>
@@ -172,33 +209,42 @@ body{padding-bottom:32px}
     <div class="panel-head">
       <div class="tab-bar">
         <button type="button" class="tab-btn active" id="tabUsers" onclick="switchTab('users')">Tài khoản</button>
-        <button type="button" class="tab-btn" id="tabOrders" onclick="switchTab('orders')">Đơn chờ</button>
+        <button type="button" class="tab-btn" id="tabPending" onclick="switchTab('pending')">Chờ xử lý</button>
+        <button type="button" class="tab-btn" id="tabDone" onclick="switchTab('done')">Đã xử lý</button>
       </div>
-      <h2 id="panelTitle">Danh sách tài khoản</h2>
-      <div style="display:flex;gap:8px;align-items:center" id="panelUsersTools">
-        <input type="text" id="srch" placeholder="🔍 Tìm email..." oninput="R()" style="padding:5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--bg3);color:var(--text);font-size:11px;width:180px;outline:none">
-        <button class="btn btn-primary btn-sm" onclick="openAdd()">+ Thêm</button>
-      </div>
-      <div style="display:none;gap:8px;align-items:center" id="panelOrdersTools">
-        <button class="btn btn-outline btn-sm" onclick="loadPendingOrders()">↻ Làm mới</button>
+      <div class="panel-head-row">
+        <h2 class="panel-head-title" id="panelTitle">Danh sách tài khoản</h2>
+        <div class="panel-tools" id="panelUsersTools">
+          <input type="text" id="srch" class="panel-search" placeholder="Tìm email..." oninput="R()">
+          <button class="btn btn-primary btn-sm" onclick="openAdd()">+ Thêm</button>
+        </div>
+        <div class="panel-tools" id="panelPendingTools" style="display:none">
+          <button class="btn btn-outline btn-sm" onclick="loadPendingOrders()">↻ Làm mới</button>
+        </div>
+        <div class="panel-tools" id="panelDoneTools" style="display:none">
+          <button class="btn btn-outline btn-sm" onclick="loadDoneOrders()">↻ Làm mới</button>
+        </div>
       </div>
     </div>
     <div id="viewUsers" class="panel-view active">
     <div id="da" class="alert" style="margin:0 16px"></div>
-    <div class="panel-scroll">
+    <div class="panel-scroll tbl-scroll">
       <table class="tbl">
         <thead><tr><th>#</th><th>Email / Zalo</th><th>Quota</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead>
         <tbody id="utb"></tbody>
       </table>
     </div>
     </div>
-    <div id="viewOrders" class="panel-view">
-    <div id="oa" class="alert" style="margin:0 16px"></div>
+    <div id="viewPending" class="panel-view">
+    <div id="oa-pending" class="alert" style="margin:0 16px"></div>
     <div class="panel-scroll">
-      <table class="tbl">
-        <thead><tr><th>Mã đơn</th><th>Email</th><th>Gói</th><th>Số tiền</th><th>Ngày</th><th>Trạng thái</th><th></th></tr></thead>
-        <tbody id="otb"></tbody>
-      </table>
+      <div id="orderListPending" class="order-list"></div>
+    </div>
+    </div>
+    <div id="viewDone" class="panel-view">
+    <div id="oa-done" class="alert" style="margin:0 16px"></div>
+    <div class="panel-scroll">
+      <div id="orderListDone" class="order-list"></div>
     </div>
     </div>
   </div>
@@ -257,7 +303,7 @@ body{padding-bottom:32px}
 </div>
 
 <script>
-var TOKEN=null,API=window.location.origin,US=[],PENDING_ORDERS=[],activeTab='users';
+var TOKEN=null,API=window.location.origin,US=[],PENDING_ORDERS=[],DONE_ORDERS=[],activeTab='users';
 
 async function ap(m,p,b){var o={method:m,headers:{'Content-Type':'application/json'}};if(TOKEN)o.headers['Authorization']='Bearer '+TOKEN;if(b)o.body=JSON.stringify(b);try{var r=await fetch(API+p,o);var d=await r.json();return{ok:r.ok,data:d};}catch(e){return{ok:false,data:{error:'Không kết nối được server'}};}}
 
@@ -466,42 +512,86 @@ function dUFromSp(){if(!spEmail)return;dU(encodeURIComponent(spEmail));}
 function switchTab(tab){
   activeTab=tab;
   document.getElementById('tabUsers').classList.toggle('active',tab==='users');
-  document.getElementById('tabOrders').classList.toggle('active',tab==='orders');
+  document.getElementById('tabPending').classList.toggle('active',tab==='pending');
+  document.getElementById('tabDone').classList.toggle('active',tab==='done');
   document.getElementById('viewUsers').classList.toggle('active',tab==='users');
-  document.getElementById('viewOrders').classList.toggle('active',tab==='orders');
+  document.getElementById('viewPending').classList.toggle('active',tab==='pending');
+  document.getElementById('viewDone').classList.toggle('active',tab==='done');
   document.getElementById('panelUsersTools').style.display=tab==='users'?'flex':'none';
-  document.getElementById('panelOrdersTools').style.display=tab==='orders'?'flex':'none';
-  document.getElementById('panelTitle').textContent=tab==='users'?'Danh sách tài khoản':'Đơn chờ xác minh';
-  if(tab==='orders')loadPendingOrders();
+  document.getElementById('panelPendingTools').style.display=tab==='pending'?'flex':'none';
+  document.getElementById('panelDoneTools').style.display=tab==='done'?'flex':'none';
+  var titles={users:'Danh sách tài khoản',pending:'Chờ xử lý',done:'Đã xử lý'};
+  document.getElementById('panelTitle').textContent=titles[tab]||'';
+  if(tab==='pending')loadPendingOrders();
+  if(tab==='done')loadDoneOrders();
 }
 
 async function loadPendingOrders(){
   var r=await ap('GET','/api/admin/orders?status=pending');
-  if(!r.ok){showA('oa',r.data.error||'Lỗi tải đơn','err');return;}
+  if(!r.ok){showA('oa-pending',r.data.error||'Lỗi tải đơn','err');return;}
   PENDING_ORDERS=r.data.orders||[];
-  renderOrdersTbl();
+  renderOrderCards('orderListPending',PENDING_ORDERS,'pending');
 }
 
-function renderOrdersTbl(){
-  var tb=document.getElementById('otb');
-  if(!PENDING_ORDERS.length){
-    tb.innerHTML='<tr><td colspan="7" class="empty-row">Không có đơn chờ</td></tr>';
+async function loadDoneOrders(){
+  var r=await ap('GET','/api/admin/orders?status=processed');
+  if(!r.ok){showA('oa-done',r.data.error||'Lỗi tải đơn','err');return;}
+  DONE_ORDERS=r.data.orders||[];
+  renderOrderCards('orderListDone',DONE_ORDERS,'done');
+}
+
+function fmtOrderDt(iso){
+  if(!iso)return '—';
+  return String(iso).slice(0,16).replace('T',' ');
+}
+
+function renderOrderCards(containerId,orders,mode){
+  var el=document.getElementById(containerId);
+  if(!el)return;
+  if(!orders.length){
+    el.innerHTML='<div class="order-empty">'+(mode==='pending'?'Không có đơn chờ xử lý':'Chưa có đơn đã xử lý')+'</div>';
     return;
   }
-  tb.innerHTML=PENDING_ORDERS.map(function(o){
-    var dt=o.createdAt?String(o.createdAt).slice(0,16).replace('T',' '):'';
-    var badge='<span class="badge badge-pending">Chờ xác minh</span>';
+  el.innerHTML=orders.map(function(o){
+    var dt=fmtOrderDt(o.createdAt);
+    var price=escH(o.priceLabel||(o.amount!=null?o.amount.toLocaleString('vi-VN')+'đ':'—'));
     var oid=String(o.id);
-    return'<tr><td style="font-weight:600;color:var(--gold)">'+escH(o.orderCode)+'</td><td>'+escH(o.email)+'</td><td>'+escH(o.packageName)+'</td><td>'+escH(o.priceLabel||o.amount)+'</td><td style="color:var(--text3);font-size:10px">'+dt+'</td><td>'+badge+'</td><td><button class="btn btn-sm btn-primary" onclick="verifyOrder(\''+oid+'\')">Đã nhận tiền → kích hoạt</button></td></tr>';
+    var badge,action='';
+    if(mode==='pending'){
+      badge='<span class="badge badge-pending">Chờ xử lý</span>';
+      action='<button type="button" class="btn btn-primary btn-action" onclick="verifyOrder(\''+oid+'\')">Kích hoạt</button>';
+    }else if(o.status==='applied'){
+      badge='<span class="badge badge-applied">Đã kích hoạt</span>';
+      action='<button type="button" class="btn btn-danger btn-action" onclick="refundOrder(\''+oid+'\')">Hoàn trả</button>';
+    }else{
+      badge='<span class="badge badge-refunded">Đã hoàn trả</span>';
+      action='';
+    }
+    return '<article class="order-card">'+
+      '<div class="order-card-head"><span class="order-code">'+escH(o.orderCode)+'</span>'+badge+'</div>'+
+      '<div class="order-card-meta">'+
+        '<div><strong>Email:</strong> '+escH(o.email)+'</div>'+
+        '<div><strong>Gói:</strong> '+escH(o.packageName)+' · '+price+'</div>'+
+        '<div class="order-card-date">'+dt+'</div>'+
+      '</div>'+
+      (action?'<div class="order-card-actions">'+action+'</div>':'')+
+    '</article>';
   }).join('');
 }
 
 async function verifyOrder(id){
-  if(!confirm('Xác nhận đã nhận tiền và kích hoạt gói cho đơn này?'))return;
   var r=await ap('POST','/api/admin/orders/'+encodeURIComponent(id)+'/verify',{});
-  if(!r.ok){showA('oa',r.data.error||'Lỗi duyệt đơn','err');return;}
-  showA('oa','Đã kích hoạt cho '+r.data.user.email+' (+deck / +từ pool)','ok');
+  if(!r.ok){showA('oa-pending',r.data.error||'Lỗi kích hoạt','err');return;}
+  showA('oa-pending','Đã kích hoạt '+r.data.user.email,'ok');
   await loadPendingOrders();
+  await loadAll();
+}
+
+async function refundOrder(id){
+  var r=await ap('POST','/api/admin/orders/'+encodeURIComponent(id)+'/refund',{});
+  if(!r.ok){showA('oa-done',r.data.error||'Lỗi hoàn trả','err');return;}
+  showA('oa-done','Đã hoàn trả '+r.data.user.email,'ok');
+  await loadDoneOrders();
   await loadAll();
 }
 

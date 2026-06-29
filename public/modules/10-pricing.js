@@ -195,11 +195,14 @@
     emptyEl.hidden = true;
     listEl.hidden = false;
     listEl.innerHTML = orders.map(function (o) {
-      var isActivated = adOrderIsActivated(o);
-      var badgeClass = isActivated
+      var isRefunded = o.status === 'refunded';
+      var isActivated = !isRefunded && adOrderIsActivated(o);
+      var badgeClass = isRefunded
+        ? 'pr-order-card__badge--pending'
+        : isActivated
         ? 'pr-order-card__badge--verified'
         : 'pr-order-card__badge--pending';
-      var badgeText = isActivated ? 'Đã kích hoạt' : 'Chờ xác minh';
+      var badgeText = isRefunded ? 'Đã hoàn trả' : isActivated ? 'Đã kích hoạt' : 'Chờ xác minh';
       var priceLabel = o.priceLabel || (o.amount != null ? o.amount.toLocaleString('vi-VN') + 'đ' : '—');
       return (
         '<li class="pr-order-card">' +

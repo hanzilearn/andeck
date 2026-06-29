@@ -140,14 +140,21 @@ function serializeAdminOrder(order) {
     status: order.status,
     createdAt: order.createdAt,
     verifiedAt: order.verifiedAt,
-    appliedAt: order.appliedAt
+    appliedAt: order.appliedAt,
+    refundedAt: order.refundedAt
   };
+}
+
+function orderStatusFilter(status) {
+  if (status === 'all') return {};
+  if (status === 'processed') return { status: { $in: ['applied', 'refunded'] } };
+  return { status };
 }
 
 router.get('/orders', auth, adminOnly, async (req, res) => {
   try {
     const status = req.query.status || 'pending';
-    const filter = status === 'all' ? {} : { status };
+    const filter = orderStatusFilter(status);
     const orders = await Order.find(filter).sort({ createdAt: -1 }).limit(200);
     res.json({ orders: orders.map(serializeAdminOrder) });
   } catch (err) {
@@ -194,6 +201,46 @@ router.post('/orders/:id/verify', auth, adminOnly, async (req, res) => {
     });
   } catch (err) {
     console.error('POST /api/admin/orders/:id/verify:', err);
+    res.status(500).json({ error: 'Loi he thong' });
+  }
+});
+
+router.post('/orders/:id/refund', auth, adminOnly, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ error: 'Khong tim thay don' });
+    if (order.status !== 'applied') {
+      return res.status(400).json({ error: 'Chi hoan tra don da kich hoat' });
+    }
+
+    const pkg = getPackage(order.packageId);
+    if (!pkg) return res.status(400).json({ error: 'Goi khong hop le' });
+
+    const user = await User.findOne({ email: order.email });
+    if (!user) return res.status(404).json({ error: 'Khong tim thay user' });
+
+    const minTotal = DEFAULT_DECK_QUOTA * DEFAULT_WORD_QUOTA;
+    user.deckQuota = Math.max(DEFAULT_DECK_QUOTA, (user.deckQuota ?? DEFAULT_DECK_QUOTA) - pkg.deckAdd);
+    user.totalWordQuota = Math.max(minTotal, resolveTotalWordQuota(user) - pkg.wordAdd);
+    user.wordQuota = user.totalWordQuota;
+    await user.save();
+
+    order.status = 'refunded';
+    order.refundedAt = new Date();
+    await order.save();
+
+    res.json({
+      ok: true,
+      order: serializeAdminOrder(order),
+      user: {
+        email: user.email,
+        deckQuota: user.deckQuota,
+        wordQuota: user.wordQuota,
+        totalWordQuota: user.totalWordQuota
+      }
+    });
+  } catch (err) {
+    console.error('POST /api/admin/orders/:id/refund:', err);
     res.status(500).json({ error: 'Loi he thong' });
   }
 });
