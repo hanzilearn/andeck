@@ -17,10 +17,9 @@
 <link rel="stylesheet" href="stylecss/flashcard.css">
 <link rel="stylesheet" href="stylecss/timer.css">
 <link rel="stylesheet" href="stylecss/pricing.css">
-<link rel="stylesheet" href="stylecss/legal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
 </head>
-<body class="has-site-footer">
+<body>
 <noscript>Andeck cần bật JavaScript để hoạt động.</noscript>
 
 <!-- ==================== LOGIN ==================== -->
@@ -107,6 +106,14 @@
         <div class="avatar-dd-item" onclick="showChangePassword()">
           <span class="avatar-dd-icon" aria-hidden="true"><i class="ti ti-key"></i></span>
           Đổi mật khẩu
+        </div>
+        <div class="avatar-dd-divider" role="separator"></div>
+        <div class="avatar-dd-legal">
+          <a href="/terms.html" target="_blank" rel="noopener noreferrer">Điều khoản</a>
+          <span class="avatar-dd-legal-sep" aria-hidden="true">·</span>
+          <a href="/privacy.html" target="_blank" rel="noopener noreferrer">Bảo mật</a>
+          <span class="avatar-dd-legal-sep" aria-hidden="true">·</span>
+          <a href="/refund.html" target="_blank" rel="noopener noreferrer">Hoàn tiền</a>
         </div>
         <div class="avatar-dd-item danger" onclick="logout()">
           <span class="avatar-dd-icon" aria-hidden="true"><i class="ti ti-logout"></i></span>
@@ -905,14 +912,5 @@
 <script src="modules/deck-features/editor.js"></script>
 <script src="modules/deck-features/bootstrap.js"></script>
 <script src="modules/10-pricing.js"></script>
-
-<footer class="site-legal-footer">
-  <a href="/terms.html">Điều khoản</a> ·
-  <a href="/privacy.html">Bảo mật</a> ·
-  <a href="/refund.html">Hoàn tiền</a> ·
-  <a href="mailto:support@andeck.vn">support@andeck.vn</a> ·
-  Zalo: <a href="https://zalo.me/0792739257">0792 739 257</a> ·
-  MST: [Đang cập nhật]
-</footer>
 </body>
 </html>

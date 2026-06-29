@@ -189,6 +189,46 @@
 .avatar-dd-item:hover { background: rgba(122, 143, 166, 0.08); }
 .avatar-dd-item.danger { color: var(--wrong); }
 
+.avatar-dd-divider {
+  height: 1px;
+  background: rgba(122, 143, 166, 0.12);
+  margin: 0;
+}
+
+.avatar-dd-legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 6px;
+  padding: 10px 14px 8px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.avatar-dd-legal a {
+  color: var(--gray);
+  text-decoration: none;
+}
+
+.avatar-dd-legal a:hover {
+  color: var(--red-dark);
+  text-decoration: underline;
+}
+
+.avatar-dd-legal-sep {
+  color: rgba(122, 143, 166, 0.45);
+  user-select: none;
+}
+
+[data-theme="dark"] .avatar-dd-legal a {
+  color: rgba(200, 212, 224, 0.75);
+}
+
+[data-theme="dark"] .avatar-dd-legal a:hover {
+  color: var(--gold-light);
+}
+
 .theme-toggle-wrap {
   position: absolute;
   top: 14px;

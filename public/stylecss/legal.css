@@ -141,50 +141,11 @@ body.legal-page {
 
 .legal-footer a:hover { text-decoration: underline; }
 
-/* Footer trên index.html / admin */
-.site-legal-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 150;
-  text-align: center;
-  padding: 8px 12px;
-  font-size: 11px;
-  color: var(--gray, #8a9bac);
-  background: rgba(255, 255, 255, 0.96);
-  border-top: 1px solid rgba(122, 143, 166, 0.2);
-  line-height: 1.5;
-}
-
-.site-legal-footer a {
-  color: var(--red-dark, #3a4a5c);
-  text-decoration: none;
-  margin: 0 4px;
-}
-
-.site-legal-footer a:hover { text-decoration: underline; }
-
-[data-theme="dark"] .site-legal-footer {
-  background: rgba(28, 35, 45, 0.96);
-  color: #9ca0af;
-  border-top-color: rgba(255, 255, 255, 0.08);
-}
-
-[data-theme="dark"] .site-legal-footer a { color: var(--gold, #c4a882); }
-
-body.has-site-footer { padding-bottom: 52px; }
-
-body.has-site-footer .zalo-float {
-  bottom: 56px;
-}
-
 @media (max-width: 480px) {
   .legal-wrap { padding: 20px 16px 32px; }
   .legal-wrap h1 { font-size: 22px; }
   .legal-table { font-size: 13px; }
   .legal-table th,
   .legal-table td { padding: 8px 10px; }
-  .legal-footer,
-  .site-legal-footer { font-size: 10px; padding: 10px 8px; }
+  .legal-footer { font-size: 10px; padding: 10px 8px; }
 }
