@@ -9,6 +9,7 @@ window.AD = {
   decks: [],
   deckQuota: 3,
   wordQuota: 50,
+  totalWordQuota: null,
   totalWords: 0
 };
 
@@ -25,6 +26,7 @@ function adResetSessionState() {
   AD.decks = [];
   AD.deckQuota = 3;
   AD.wordQuota = 50;
+  AD.totalWordQuota = null;
   AD.totalWords = 0;
   adDecksLoadedOnce = false;
   adSessionEmail = null;
@@ -56,6 +58,11 @@ function adMaxTotalWords() {
   return AD.deckQuota * AD.wordQuota;
 }
 
+function adPoolWordQuota() {
+  if (AD.totalWordQuota != null) return AD.totalWordQuota;
+  return AD.deckQuota * AD.wordQuota;
+}
+
 function adLangLabel(langPair) {
   const p = adLangProfiles.find(function (x) {
     return x.langPair === langPair;
@@ -70,10 +77,10 @@ function renderAdHeaderQuota() {
   deckEl.closest('.mp-quota-pill')?.classList.remove('mp-quota-pill--loading');
   wordsEl.closest('.mp-quota-pill')?.classList.remove('mp-quota-pill--loading');
   const totalWords = AD.totalWords != null ? AD.totalWords : adSumDeckWords();
-  const maxWords = adMaxTotalWords();
+  const poolTotal = adPoolWordQuota();
   deckEl.textContent = AD.decks.length + '/' + AD.deckQuota + ' deck';
-  wordsEl.textContent = totalWords + '/' + maxWords + ' từ';
-  wordsEl.title = 'Tối đa ' + maxWords + ' từ (' + AD.deckQuota + ' deck × ' + AD.wordQuota + ' từ/deck)';
+  wordsEl.textContent = totalWords + '/' + poolTotal + ' từ';
+  wordsEl.title = 'Tổng từ tối đa trên tài khoản';
 }
 
 function renderAdHeaderQuotaSkeleton() {
@@ -590,6 +597,10 @@ function initAdModals() {
     if (e.target.id === 'adConfirmOverlay') adConfirmClose(false);
   });
   document.getElementById('adQuotaLimitCloseBtn')?.addEventListener('click', adCloseQuotaLimit);
+  document.getElementById('adQuotaLimitBuyBtn')?.addEventListener('click', function () {
+    adCloseQuotaLimit();
+    if (typeof adOpenUpgradeModal === 'function') adOpenUpgradeModal();
+  });
   document.getElementById('adQuotaLimitZaloBtn')?.addEventListener('click', function () {
     adCloseQuotaLimit();
     if (typeof showZaloContact === 'function') showZaloContact();

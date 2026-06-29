@@ -94,6 +94,52 @@
   letter-spacing: 0.02em;
 }
 
+/* Nút Nâng cấp hub — theme Stone / pricing */
+.mp-upgrade-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 20px;
+  padding: 5px 14px 5px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--red, #7a8fa6);
+  border: 0.5px solid rgba(122, 143, 166, 0.55);
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+}
+.mp-upgrade-btn:hover {
+  background: #6a7f96;
+  border-color: rgba(122, 143, 166, 0.75);
+}
+.mp-upgrade-btn:active {
+  transform: scale(0.98);
+}
+.mp-upgrade-btn:focus-visible {
+  outline: 2px solid rgba(122, 143, 166, 0.65);
+  outline-offset: 2px;
+}
+.mp-upgrade-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 15px;
+  line-height: 0;
+}
+.mp-upgrade-label {
+  padding-right: 2px;
+  letter-spacing: 0.02em;
+}
+
 .mp-quota {
   display: inline-flex; align-items: center; gap: 6px;
   background: rgba(196,168,130,0.08);
@@ -495,6 +541,19 @@
 [data-theme="dark"] .mp-upfile-icon {
   background: rgba(74, 144, 217, 0.32);
   color: #7eb8f0;
+}
+[data-theme="dark"] .mp-upgrade-btn {
+  background: #8a9fb6;
+  border-color: rgba(200, 212, 224, 0.35);
+  color: #1e2436;
+}
+[data-theme="dark"] .mp-upgrade-btn:hover {
+  background: #9ab0c8;
+  border-color: rgba(200, 212, 224, 0.5);
+}
+[data-theme="dark"] .mp-upgrade-icon {
+  background: rgba(30, 36, 54, 0.25);
+  color: #1e2436;
 }
 [data-theme="dark"] .mp-card-add {
   border-color: rgba(196, 168, 130, 0.55);

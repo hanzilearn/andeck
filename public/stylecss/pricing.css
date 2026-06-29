@@ -1,0 +1,631 @@
+/* pricing.css — Gói dung lượng (Mức 2) · Chat 1A shell */
+
+.pr-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(28, 43, 58, 0.45);
+  box-sizing: border-box;
+}
+
+.pr-overlay.is-open {
+  display: flex;
+}
+
+.pr-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  max-height: min(92vh, 720px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background-primary, #fff);
+  border: 1px solid var(--color-border-secondary, #d0d7de);
+  border-radius: 14px;
+  box-shadow: var(--shadow, 0 4px 24px rgba(28, 43, 58, 0.13));
+}
+
+.pr-modal--wide {
+  max-width: 480px;
+}
+
+.pr-modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 0;
+  flex-shrink: 0;
+}
+
+.pr-modal__title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink, #1c2b3a);
+  line-height: 1.35;
+}
+
+.pr-modal__sub {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--text-secondary, #5a6a7a);
+  line-height: 1.45;
+  font-weight: 400;
+}
+
+.pr-modal__close {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  margin: -4px -4px 0 0;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gray, #8a9bac);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pr-modal__close:hover {
+  background: rgba(122, 143, 166, 0.12);
+  color: var(--ink, #1c2b3a);
+}
+
+.pr-modal__body {
+  padding: 16px 20px 20px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Package grid (shell — nội dung Chat 1B) ── */
+.pr-package-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 400px) {
+  .pr-package-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pr-package-card {
+  position: relative;
+  min-height: 120px;
+  border-radius: 12px;
+  border: 1px dashed var(--color-border-secondary, #d0d7de);
+  background: var(--color-background-secondary, #f5f0e8);
+}
+
+.pr-package-card--selectable {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  width: 100%;
+  padding: 14px 12px;
+  border: 1.5px solid var(--color-border-secondary, #d0d7de);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.pr-package-card--selectable:hover {
+  border-color: var(--red, #7a8fa6);
+  box-shadow: 0 2px 12px rgba(122, 143, 166, 0.18);
+}
+
+.pr-package-card--selectable:focus-visible {
+  outline: 2px solid var(--red, #7a8fa6);
+  outline-offset: 2px;
+}
+
+.pr-package-card--selectable:active {
+  transform: scale(0.98);
+}
+
+.pr-package-card--featured {
+  border-color: rgba(122, 143, 166, 0.5);
+  background: rgba(122, 143, 166, 0.1);
+}
+
+.pr-package-card__badge {
+  align-self: flex-start;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--red, #7a8fa6);
+}
+
+.pr-package-card__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink, #1c2b3a);
+}
+
+.pr-package-card__price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink, #1c2b3a);
+  margin: 4px 0 10px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.pr-package-card__features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: var(--text-secondary, #5a6a7a);
+  line-height: 1.55;
+}
+
+.pr-package-card__features li + li {
+  margin-top: 4px;
+}
+
+.pr-note {
+  margin: 12px 0 0;
+  font-size: 11px;
+  color: var(--text-secondary, #5a6a7a);
+  line-height: 1.5;
+}
+
+/* ── Payment layout (shell — Chat 1C) ── */
+.pr-payment-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.pr-payment-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.pr-payment-row__label {
+  color: var(--text-secondary, #5a6a7a);
+}
+
+.pr-payment-row__value {
+  font-weight: 600;
+  color: var(--ink, #1c2b3a);
+  font-variant-numeric: tabular-nums;
+}
+
+.pr-payment-row__value--code {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.pr-payment-row--code {
+  align-items: flex-start;
+}
+
+.pr-payment-row__code-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 72%;
+}
+
+.pr-note--inline {
+  margin: 0 0 10px;
+  text-align: center;
+  font-style: italic;
+}
+
+.pr-note--zalo-hint {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(122, 143, 166, 0.08);
+  border: 1px solid rgba(122, 143, 166, 0.15);
+}
+
+.pr-btn--sm {
+  padding: 5px 10px;
+  font-size: 11px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.pr-consent a {
+  color: inherit;
+  text-decoration: underline;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.pr-qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-tertiary, #ede8dc);
+  background: #fff;
+}
+
+.pr-qr-wrap img {
+  display: block;
+  width: min(100%, 220px);
+  height: auto;
+  border-radius: 8px;
+}
+
+.pr-qr-caption {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-secondary, #5a6a7a);
+  text-align: center;
+  line-height: 1.45;
+}
+
+.pr-steps {
+  margin: 14px 0 0;
+  padding: 0 0 0 18px;
+  font-size: 12px;
+  color: var(--text-secondary, #5a6a7a);
+  line-height: 1.55;
+}
+
+.pr-steps li + li {
+  margin-top: 6px;
+}
+
+.pr-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.pr-actions--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.pr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.pr-btn:hover {
+  opacity: 0.92;
+}
+
+.pr-btn:active {
+  transform: scale(0.98);
+}
+
+.pr-btn--primary {
+  background: var(--red, #7a8fa6);
+  color: #fff;
+}
+
+.pr-btn--secondary {
+  background: transparent;
+  color: var(--ink, #1c2b3a);
+  border: 1px solid var(--color-border-secondary, #d0d7de);
+}
+
+.pr-btn--zalo {
+  background: #0068ff;
+  color: #fff;
+}
+
+.pr-btn--ghost {
+  background: rgba(122, 143, 166, 0.1);
+  color: var(--ink, #1c2b3a);
+}
+
+.pr-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--text-secondary, #5a6a7a);
+  line-height: 1.45;
+}
+
+.pr-consent input {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Orders panel (shell — Chat 1D) ── */
+.pr-orders-empty {
+  padding: 28px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary, #5a6a7a);
+  border-radius: 10px;
+  border: 1px dashed var(--color-border-secondary, #d0d7de);
+  background: var(--color-background-secondary, #f5f0e8);
+}
+
+.pr-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pr-order-card {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border-secondary, #d0d7de);
+  background: var(--color-background-secondary, #f5f0e8);
+}
+
+.pr-order-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.pr-order-card__code {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink, #1c2b3a);
+  word-break: break-all;
+  line-height: 1.35;
+}
+
+.pr-order-card__badge {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.pr-order-card__badge--pending {
+  color: #8a5a00;
+  background: rgba(230, 168, 0, 0.18);
+  border: 1px solid rgba(230, 168, 0, 0.35);
+}
+
+.pr-order-card__badge--verified {
+  color: #1a6b3a;
+  background: rgba(39, 174, 96, 0.15);
+  border: 1px solid rgba(39, 174, 96, 0.35);
+}
+
+.pr-order-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.pr-order-card__pkg {
+  font-weight: 500;
+  color: var(--ink, #1c2b3a);
+}
+
+.pr-order-card__price {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink, #1c2b3a);
+}
+
+.pr-order-card__date {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-secondary, #5a6a7a);
+}
+
+.pr-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pr-btn:disabled:active {
+  transform: none;
+}
+
+/* ── Dark theme ── */
+[data-theme="dark"] .pr-modal {
+  background: #1e2436;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="dark"] .pr-modal__title {
+  color: #e8dcc8;
+}
+
+[data-theme="dark"] .pr-modal__sub,
+[data-theme="dark"] .pr-note,
+[data-theme="dark"] .pr-payment-row__label,
+[data-theme="dark"] .pr-steps,
+[data-theme="dark"] .pr-qr-caption,
+[data-theme="dark"] .pr-consent,
+[data-theme="dark"] .pr-orders-empty {
+  color: rgba(200, 212, 224, 0.75);
+}
+
+[data-theme="dark"] .pr-payment-row__value {
+  color: #e8dcc8;
+}
+
+[data-theme="dark"] .pr-package-card,
+[data-theme="dark"] .pr-orders-empty,
+[data-theme="dark"] .pr-order-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .pr-order-card__code,
+[data-theme="dark"] .pr-order-card__pkg,
+[data-theme="dark"] .pr-order-card__price {
+  color: #e8dcc8;
+}
+
+[data-theme="dark"] .pr-order-card__date {
+  color: rgba(200, 212, 224, 0.65);
+}
+
+[data-theme="dark"] .pr-order-card__badge--pending {
+  color: #f0c060;
+  background: rgba(240, 192, 96, 0.12);
+  border-color: rgba(240, 192, 96, 0.3);
+}
+
+[data-theme="dark"] .pr-order-card__badge--verified {
+  color: #6fcf97;
+  background: rgba(111, 207, 151, 0.12);
+  border-color: rgba(111, 207, 151, 0.3);
+}
+
+[data-theme="dark"] .pr-package-card--selectable:hover {
+  border-color: rgba(200, 212, 224, 0.45);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .pr-package-card--featured {
+  background: rgba(122, 143, 166, 0.18);
+  border-color: rgba(200, 212, 224, 0.35);
+}
+
+[data-theme="dark"] .pr-package-card__name,
+[data-theme="dark"] .pr-package-card__price {
+  color: #e8dcc8;
+}
+
+[data-theme="dark"] .pr-package-card__features {
+  color: rgba(200, 212, 224, 0.75);
+}
+
+[data-theme="dark"] .pr-qr-wrap {
+  background: #fff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .pr-modal__close {
+  color: rgba(200, 212, 224, 0.6);
+}
+
+[data-theme="dark"] .pr-modal__close:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e8dcc8;
+}
+
+[data-theme="dark"] .pr-btn--secondary,
+[data-theme="dark"] .pr-btn--ghost {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e8dcc8;
+}
+
+[data-theme="dark"] .pr-note--zalo-hint {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 375px) {
+  .pr-modal__head {
+    padding: 14px 16px 0;
+  }
+
+  .pr-modal__body {
+    padding: 12px 16px 16px;
+  }
+
+  .pr-modal__title {
+    font-size: 16px;
+  }
+
+  .pr-package-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pr-package-card__price {
+    font-size: 18px;
+  }
+
+  .pr-payment-row__code-wrap {
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+
+  .pr-actions--row {
+    flex-direction: column;
+  }
+
+  .pr-btn {
+    width: 100%;
+  }
+}
+
+/* Quota limit overlay — nút Mua gói */
+#adQuotaLimitOverlay .dm-confirm-actions--quota {
+  flex-wrap: wrap;
+  justify-content: stretch;
+}
+
+#adQuotaLimitOverlay .dm-confirm-btn--buy {
+  padding: 7px 20px;
+  border: none;
+  background: var(--red, #7a8fa6);
+  color: #fff;
+  font-weight: 600;
+}
+
+@media (max-width: 420px) {
+  #adQuotaLimitOverlay .dm-confirm-actions--quota {
+    flex-direction: column;
+  }
+
+  #adQuotaLimitOverlay .dm-confirm-actions--quota .dm-confirm-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

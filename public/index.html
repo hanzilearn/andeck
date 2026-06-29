@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="stylecss/exam-quiz.css">
 <link rel="stylesheet" href="stylecss/flashcard.css">
 <link rel="stylesheet" href="stylecss/timer.css">
+<link rel="stylesheet" href="stylecss/pricing.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
 </head>
 <body>
@@ -94,6 +95,8 @@
       <button type="button" class="avatar-btn" id="avatar-btn" onclick="toggleAvatar()"></button>
       <div class="avatar-dropdown" id="avatar-dropdown">
         <div class="avatar-dd-email" id="dd-email"></div>
+        <div class="avatar-dd-item" id="adAvatarUpgradeBtn">⬆ Nâng cấp gói</div>
+        <div class="avatar-dd-item" id="adAvatarOrdersBtn">📋 Đơn hàng</div>
         <div class="avatar-dd-item" onclick="showChangePassword()">🔑 Đổi mật khẩu</div>
         <div class="avatar-dd-item danger" onclick="logout()">↪ Đăng xuất</div>
       </div>
@@ -119,6 +122,10 @@
         <button type="button" class="mp-upfile-btn" id="adUpfileBtn" title="Import từ vựng" aria-label="Import từ vựng">
           <span class="mp-upfile-icon" aria-hidden="true"><i class="ti ti-upload"></i></span>
           <span class="mp-upfile-label">upfile</span>
+        </button>
+        <button type="button" class="mp-upgrade-btn" id="adUpgradeBtn" title="Nâng cấp dung lượng" aria-label="Nâng cấp dung lượng">
+          <span class="mp-upgrade-icon" aria-hidden="true"><i class="ti ti-arrow-big-up-lines"></i></span>
+          <span class="mp-upgrade-label">Nâng cấp</span>
         </button>
       </div>
     </div>
@@ -721,9 +728,114 @@
     <div class="dm-confirm-title" id="adQuotaLimitTitle">Giới hạn</div>
     <div class="dm-confirm-text" id="adQuotaLimitText"></div>
     <div class="mp-quota-zalo-num" id="adQuotaLimitZaloNum">0792 739 257</div>
-    <div class="dm-confirm-actions">
+    <div class="dm-confirm-actions dm-confirm-actions--quota">
       <button type="button" class="dm-confirm-btn dm-confirm-btn--cancel" id="adQuotaLimitCloseBtn">Đóng</button>
+      <button type="button" class="dm-confirm-btn dm-confirm-btn--buy" id="adQuotaLimitBuyBtn">Mua gói</button>
       <button type="button" class="dm-confirm-btn dm-confirm-btn--warn" id="adQuotaLimitZaloBtn">Liên hệ Zalo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PRICING (Chat 1A — shell) ==================== -->
+
+<!-- Modal chọn gói — nội dung Gói 1/2: Chat 1B -->
+<div id="adUpgradeModal" class="pr-overlay" role="dialog" aria-modal="true" aria-labelledby="adUpgradeTitle" hidden>
+  <div class="pr-modal pr-modal--wide" onclick="event.stopPropagation()">
+    <div class="pr-modal__head">
+      <div>
+        <h2 class="pr-modal__title" id="adUpgradeTitle">Nâng cấp dung lượng</h2>
+        <p class="pr-modal__sub">Cộng dồn lên gói hiện tại · Từ dùng linh hoạt giữa các deck</p>
+      </div>
+      <button type="button" class="pr-modal__close" id="adUpgradeClose" aria-label="Đóng">✕</button>
+    </div>
+    <div class="pr-modal__body">
+      <div class="pr-package-grid" id="adPackageGrid">
+        <button type="button" class="pr-package-card pr-package-card--selectable" id="adPackageGoi1" data-package="goi1">
+          <span class="pr-package-card__name">Gói 1</span>
+          <span class="pr-package-card__price">17.000đ</span>
+          <ul class="pr-package-card__features">
+            <li>+10 deck</li>
+            <li>+1.000 từ tổng</li>
+          </ul>
+        </button>
+        <button type="button" class="pr-package-card pr-package-card--selectable pr-package-card--featured" id="adPackageGoi2" data-package="goi2">
+          <span class="pr-package-card__badge">Phổ biến</span>
+          <span class="pr-package-card__name">Gói 2</span>
+          <span class="pr-package-card__price">29.000đ</span>
+          <ul class="pr-package-card__features">
+            <li>+20 deck</li>
+            <li>+2.000 từ tổng</li>
+          </ul>
+        </button>
+      </div>
+      <p class="pr-note">Cộng dồn lên gói hiện tại · Từ dùng linh hoạt, không chia đều deck · Kích hoạt qua Zalo trong 24h</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal thanh toán — nội dung QR/Zalo: Chat 1C -->
+<div id="adPaymentModal" class="pr-overlay" role="dialog" aria-modal="true" aria-labelledby="adPaymentTitle" hidden>
+  <div class="pr-modal" onclick="event.stopPropagation()">
+    <div class="pr-modal__head">
+      <div>
+        <h2 class="pr-modal__title" id="adPaymentTitle">Thanh toán</h2>
+        <p class="pr-modal__sub" id="adPaymentPackageLabel"></p>
+      </div>
+      <button type="button" class="pr-modal__close" id="adPaymentClose" aria-label="Đóng">✕</button>
+    </div>
+    <div class="pr-modal__body">
+      <div class="pr-payment-meta">
+        <p class="pr-note pr-note--inline">Kích hoạt trong 24h (thường vài giờ)</p>
+        <div class="pr-payment-row pr-payment-row--code">
+          <span class="pr-payment-row__label">Mã đơn</span>
+          <div class="pr-payment-row__code-wrap">
+            <span class="pr-payment-row__value pr-payment-row__value--code" id="adOrderCode">—</span>
+            <button type="button" class="pr-btn pr-btn--secondary pr-btn--sm" id="adCopyOrderCode" aria-label="Copy mã đơn">Copy</button>
+          </div>
+        </div>
+        <div class="pr-payment-row">
+          <span class="pr-payment-row__label">Số tiền</span>
+          <span class="pr-payment-row__value" id="adPaymentAmount">—</span>
+        </div>
+      </div>
+      <p class="pr-note pr-note--zalo-hint">Zalo Pay không có ô nội dung chuyển khoản — gửi mã đơn qua tin nhắn Zalo sau khi chuyển.</p>
+      <div class="pr-qr-wrap">
+        <img id="adPaymentQr" src="img/zalo-pay-qr.png" alt="QR nhận tiền ZaloPay và ngân hàng" width="220" height="220">
+        <p class="pr-qr-caption">QR nhận tiền từ mọi app · DINH VAN AN</p>
+      </div>
+      <ol class="pr-steps" id="adPaymentSteps">
+        <li>Chuyển đúng số tiền qua Zalo Pay hoặc app ngân hàng</li>
+        <li>Chụp bill + chụp màn hình <strong>Đơn của tôi</strong> trên Andeck</li>
+        <li>Gửi Zalo kèm mã đơn và email tài khoản</li>
+      </ol>
+      <div class="pr-actions">
+        <div class="pr-actions pr-actions--row">
+          <button type="button" class="pr-btn pr-btn--ghost" id="adCopyZaloMsg">Copy tin nhắn Zalo</button>
+          <button type="button" class="pr-btn pr-btn--zalo" id="adOpenZaloBtn">Mở Zalo gửi xác minh</button>
+        </div>
+        <button type="button" class="pr-btn pr-btn--primary" id="adCreateOrderBtn">Tạo đơn chờ xác minh</button>
+      </div>
+      <label class="pr-consent">
+        <input type="checkbox" id="adPaymentConsent" disabled>
+        <span>Đồng ý <a href="#" tabindex="-1">điều khoản</a> và <a href="#" tabindex="-1">chính sách hoàn tiền</a> (Giai đoạn 3)</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- Panel đơn hàng — danh sách mock: Chat 1D -->
+<div id="adOrdersPanel" class="pr-overlay" role="dialog" aria-modal="true" aria-labelledby="adOrdersTitle" hidden>
+  <div class="pr-modal pr-modal--wide" onclick="event.stopPropagation()">
+    <div class="pr-modal__head">
+      <div>
+        <h2 class="pr-modal__title" id="adOrdersTitle">Đơn của tôi</h2>
+        <p class="pr-modal__sub">Chụp màn hình trang này gửi kèm bill khi xác minh Zalo</p>
+      </div>
+      <button type="button" class="pr-modal__close" id="adOrdersClose" aria-label="Đóng">✕</button>
+    </div>
+    <div class="pr-modal__body">
+      <ul class="pr-orders-list" id="adOrdersList" hidden></ul>
+      <div class="pr-orders-empty" id="adOrdersEmpty">Chưa có đơn hàng.</div>
     </div>
   </div>
 </div>
@@ -776,5 +888,6 @@
 <script src="modules/deck-features/import.js"></script>
 <script src="modules/deck-features/editor.js"></script>
 <script src="modules/deck-features/bootstrap.js"></script>
+<script src="modules/10-pricing.js"></script>
 </body>
 </html>
