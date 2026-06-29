@@ -126,19 +126,48 @@
     }
   }
 
-  function adLoadOrders() {
+  function adNormalizeEmail(email) {
+    return String(email || '').trim().toLowerCase();
+  }
+
+  function adLoadAllOrdersStore() {
     try {
       var raw = sessionStorage.getItem(ORDERS_KEY);
-      if (!raw) return [];
+      if (!raw) return {};
       var parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
+      if (Array.isArray(parsed)) {
+        var store = {};
+        parsed.forEach(function (o) {
+          var key = adNormalizeEmail(o.email) || '_unknown';
+          if (!store[key]) store[key] = [];
+          store[key].push(o);
+        });
+        sessionStorage.setItem(ORDERS_KEY, JSON.stringify(store));
+        return store;
+      }
+      return parsed && typeof parsed === 'object' ? parsed : {};
     } catch (e) {
-      return [];
+      return {};
     }
   }
 
+  function adSaveAllOrdersStore(store) {
+    sessionStorage.setItem(ORDERS_KEY, JSON.stringify(store));
+  }
+
+  function adLoadOrders() {
+    var email = adNormalizeEmail(adGetUserEmail());
+    if (!email) return [];
+    var store = adLoadAllOrdersStore();
+    return Array.isArray(store[email]) ? store[email] : [];
+  }
+
   function adSaveOrders(orders) {
-    sessionStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+    var email = adNormalizeEmail(adGetUserEmail());
+    if (!email) return;
+    var store = adLoadAllOrdersStore();
+    store[email] = orders;
+    adSaveAllOrdersStore(store);
   }
 
   function adFindOrderByCode(orderCode) {
@@ -148,9 +177,12 @@
   }
 
   function adSaveOrder(order) {
-    var orders = adLoadOrders();
-    orders.unshift(order);
-    adSaveOrders(orders);
+    var email = adNormalizeEmail(order.email);
+    if (!email) return;
+    var store = adLoadAllOrdersStore();
+    if (!store[email]) store[email] = [];
+    store[email].unshift(order);
+    adSaveAllOrdersStore(store);
   }
 
   function adFormatOrderDate(iso) {
