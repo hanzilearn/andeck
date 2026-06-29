@@ -9,6 +9,7 @@ const LANG_PROFILES = {
     meaningLabel: 'Nghĩa',
     requiredFields: ['primary', 'meaning'],
     hasReading: true,
+    hasReadingQuiz: true,
     readingRequired: false,
     ttsLang: 'zh-CN',
     speechLang: 'zh-CN',

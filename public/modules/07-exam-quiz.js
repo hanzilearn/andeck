@@ -10,11 +10,30 @@ function adExamProfile() {
   return typeof adGetLangProfile === 'function' ? adGetLangProfile() : null;
 }
 
+function adExamHasReadingQuiz() {
+  const profile = adExamProfile();
+  if (profile && profile.hasReadingQuiz === true) return true;
+  if (profile && profile.hasReadingQuiz === false) return false;
+  const pair = window._currentLangPair || profile?.langPair || '';
+  return pair.startsWith('zh');
+}
+
+function adExamSanitizeTypes(types) {
+  const list = Array.isArray(types) ? types.slice() : ['meaning'];
+  const filtered = list.filter(function (t) {
+    return t !== 'reading' || adExamHasReadingQuiz();
+  });
+  return filtered.length ? filtered : ['meaning'];
+}
+
 function adSyncExamSetupLabels() {
   const profile = adExamProfile();
   const primaryLbl = profile?.primaryLabel || 'Từ gốc';
   const readingLbl = profile?.readingLabel || 'Reading';
   const hasReading = profile?.hasReading !== false;
+  const hasReadingQuiz = adExamHasReadingQuiz();
+
+  examCfg.types = adExamSanitizeTypes(examCfg.types);
 
   const typeGroup = document.getElementById('exam-type-group');
   if (typeGroup) {
@@ -23,7 +42,8 @@ function adSyncExamSetupLabels() {
     if (btns[1]) btns[1].textContent = 'KT ' + primaryLbl.toLowerCase();
     if (btns[2]) {
       btns[2].textContent = 'KT ' + readingLbl.toLowerCase();
-      btns[2].style.display = hasReading ? '' : 'none';
+      btns[2].style.display = hasReadingQuiz ? '' : 'none';
+      if (!hasReadingQuiz) btns[2].classList.remove('active');
     }
   }
 
@@ -128,19 +148,20 @@ function setExamOpt(key, val, btn) {
 }
 
 function toggleExamType(type, btn) {
+  if (type === 'reading' && !adExamHasReadingQuiz()) return;
   btn.classList.toggle('active');
   const types = [];
   document.querySelectorAll('#exam-type-group .opt-btn').forEach(function (b, i) {
     if (b.style.display === 'none' || !b.classList.contains('active')) return;
     if (i === 0) types.push('meaning');
     else if (i === 1) types.push('primary');
-    else if (i === 2) types.push('reading');
+    else if (i === 2 && adExamHasReadingQuiz()) types.push('reading');
   });
   if (types.length === 0) {
     btn.classList.add('active');
-    types.push(type);
+    types.push(type === 'reading' && !adExamHasReadingQuiz() ? 'meaning' : type);
   }
-  examCfg.types = types;
+  examCfg.types = adExamSanitizeTypes(types);
   updateHideReadingState();
   validateExam();
 }
@@ -220,7 +241,7 @@ function startExam() {
   pool = pool.slice(0, cnt);
 
   quizQuestions = pool.map(function (idx) {
-    const types = examCfg.types || ['meaning'];
+    const types = adExamSanitizeTypes(examCfg.types || ['meaning']);
     return { idx: idx, qtype: types[Math.floor(Math.random() * types.length)] };
   });
   quizIdx = 0;
@@ -235,6 +256,7 @@ function renderQuiz() {
     return;
   }
   const q = quizQuestions[quizIdx];
+  if (q.qtype === 'reading' && !adExamHasReadingQuiz()) q.qtype = 'meaning';
   const w = VOCAB[q.idx];
   const total = quizQuestions.length;
   const profile = adExamProfile();
