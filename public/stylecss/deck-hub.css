@@ -48,53 +48,53 @@
   white-space: nowrap;
 }
 
-/* Nút tải file hub — nền đục, rõ là nút bấm */
+/* Nút tải file hub — đồng bộ upfile header (chữ nhật bo góc, gradient xanh) */
 .mp-upfile-btn:not(.mp-upfile-btn--header) {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  border-radius: 20px;
-  padding: 6px 16px 6px 6px;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 8px;
+  padding: 6px 10px;
   font-size: 12px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
   white-space: nowrap;
-  color: #1a5a9e;
-  background: #dceaf8;
-  border: 1.5px solid #7eb8ea;
-  box-shadow: 0 2px 6px rgba(74, 144, 217, 0.22);
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  color: #fff;
+  background: linear-gradient(90deg, #1a5c4a 0%, #2f9b7a 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(26, 92, 74, 0.45);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 .mp-upfile-btn:not(.mp-upfile-btn--header):hover {
-  background: #c8dff5;
-  border-color: #5aa3e0;
-  box-shadow: 0 4px 12px rgba(74, 144, 217, 0.3);
+  background: linear-gradient(90deg, #144a3b 0%, #268a6c 100%);
+  box-shadow: 0 4px 12px rgba(26, 92, 74, 0.55);
   transform: translateY(-1px);
 }
 .mp-upfile-btn:not(.mp-upfile-btn--header):active {
   transform: translateY(0) scale(0.98);
-  box-shadow: 0 1px 4px rgba(74, 144, 217, 0.2);
+  box-shadow: 0 1px 4px rgba(26, 92, 74, 0.35);
 }
 .mp-upfile-btn:not(.mp-upfile-btn--header):focus-visible {
-  outline: 2px solid rgba(74, 144, 217, 0.6);
+  outline: 2px solid rgba(47, 155, 122, 0.65);
   outline-offset: 2px;
 }
-.mp-upfile-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #4a90d9;
+.mp-upfile-btn:not(.mp-upfile-btn--header) .mp-upfile-icon {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: transparent;
   color: #fff;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 15px;
-  line-height: 0;
+  font-size: 14px;
+  line-height: 1;
 }
 .mp-upfile-label {
-  padding-right: 2px;
+  padding: 0;
   letter-spacing: 0.02em;
 }
 
@@ -704,18 +704,16 @@
   font-weight: 600;
 }
 [data-theme="dark"] .mp-upfile-btn:not(.mp-upfile-btn--header) {
-  color: #d6ebff;
-  background: #2a4a6e;
-  border-color: #4a7aad;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  background: linear-gradient(90deg, #1a5c4a 0%, #2f9b7a 100%);
+  box-shadow: 0 2px 10px rgba(47, 155, 122, 0.35);
 }
 [data-theme="dark"] .mp-upfile-btn:not(.mp-upfile-btn--header):hover {
-  background: #335880;
-  border-color: #5a8fc4;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  background: linear-gradient(90deg, #144a3b 0%, #268a6c 100%);
+  box-shadow: 0 4px 12px rgba(47, 155, 122, 0.45);
 }
-[data-theme="dark"] .mp-upfile-icon {
-  background: #4a90d9;
+[data-theme="dark"] .mp-upfile-btn:not(.mp-upfile-btn--header) .mp-upfile-icon {
+  background: transparent;
   color: #fff;
 }
 [data-theme="dark"] .mp-card-add {
