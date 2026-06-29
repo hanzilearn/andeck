@@ -1,12 +1,12 @@
 // server/routes/decks.routes.js
 const express = require('express');
 const crypto = require('crypto');
-const User = require('../models/user');
 const Deck = require('../models/deck');
 const Star = require('../models/star');
 const Item = require('../models/item');
 const { auth } = require('../middleware/auth');
 const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA } = require('../config');
+const { getUserQuotas, countUserTotalWords, wordInsertCapacity } = require('../services/quota');
 const { listLangProfiles, listLangPairs, isValidLangPair } = require('../config/lang-profiles');
 const { generateDeckId, generateWordId, deckLevelKey } = require('../services/deck-ids');
 const { filterValidWords, normalizeWordInput } = require('../services/word-validation');
@@ -21,12 +21,8 @@ router.get('/lang-profiles', (req, res) => {
   });
 });
 
-async function getUserQuotas(email) {
-  const user = await User.findOne({ email });
-  return {
-    deckQuota: user?.deckQuota ?? DEFAULT_DECK_QUOTA,
-    wordQuota: user?.wordQuota ?? DEFAULT_WORD_QUOTA
-  };
+async function getUserQuotasForEmail(email) {
+  return getUserQuotas(email);
 }
 
 async function cleanupDeckLevelData(email, deckId) {
@@ -97,12 +93,13 @@ router.get('/', auth, async (req, res) => {
       },
       { $sort: { updatedAt: -1 } }
     ]);
-    const { deckQuota, wordQuota } = await getUserQuotas(userEmail);
+    const { deckQuota, wordQuota, totalWordQuota } = await getUserQuotasForEmail(userEmail);
     const totalWords = decks.reduce((sum, d) => sum + (d.wordCount || 0), 0);
 
     res.json({
       deckQuota,
       wordQuota,
+      totalWordQuota,
       totalWords,
       decks
     });
@@ -114,7 +111,7 @@ router.get('/', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
   try {
-    const { deckQuota, wordQuota } = await getUserQuotas(req.user.email);
+    const { deckQuota, wordQuota, totalWordQuota } = await getUserQuotasForEmail(req.user.email);
     const count = await Deck.countDocuments({ email: req.user.email });
     if (count >= deckQuota) {
       return res.status(403).json({ error: 'Da dat toi da ' + deckQuota + ' deck', code: 'QUOTA_EXCEEDED' });
@@ -148,7 +145,8 @@ router.post('/', auth, async (req, res) => {
         createdAt: deck.createdAt
       },
       deckQuota,
-      wordQuota
+      wordQuota,
+      totalWordQuota
     });
   } catch (err) {
     console.error('POST /api/decks:', err);
@@ -159,7 +157,7 @@ router.post('/', auth, async (req, res) => {
 router.post('/import', auth, async (req, res) => {
   try {
     const userEmail = req.user.email;
-    const { deckQuota, wordQuota } = await getUserQuotas(userEmail);
+    const { deckQuota, totalWordQuota } = await getUserQuotasForEmail(userEmail);
     const deckCount = await Deck.countDocuments({ email: userEmail });
     if (deckCount >= deckQuota) {
       return res.status(403).json({ error: 'Da dat toi da ' + deckQuota + ' deck', code: 'QUOTA_EXCEEDED' });
@@ -188,12 +186,21 @@ router.post('/import', auth, async (req, res) => {
       return res.status(400).json({ error: 'Mang words qua dai (toi da ' + MAX_IMPORT_WORDS + ' phan tu)' });
     }
 
+    const totalWords = await countUserTotalWords(userEmail);
+    const remaining = wordInsertCapacity(totalWordQuota, totalWords, 0);
+    if (remaining <= 0) {
+      return res.status(403).json({
+        error: 'Da dat gioi han ' + totalWordQuota + ' tu tong.',
+        code: 'QUOTA_EXCEEDED'
+      });
+    }
+
     const { skipped, validWords } = filterValidWords(rawWords, langPair);
-    const toInsert = validWords.slice(0, wordQuota);
+    const toInsert = validWords.slice(0, remaining);
     if (toInsert.length === 0) {
       return res.status(400).json({ error: 'Khong co tu hop le de import' });
     }
-    const overQuota = Math.max(0, validWords.length - wordQuota);
+    const overQuota = Math.max(0, validWords.length - remaining);
 
     const deckId = crypto.randomUUID();
     await Deck.create({
@@ -337,10 +344,12 @@ router.post('/:id/words/bulk', auth, async (req, res) => {
     const deck = await Deck.findOne({ email: userEmail, deckId: req.params.id });
     if (!deck) return res.status(404).json({ error: 'Khong tim thay deck' });
 
-    const { wordQuota } = await getUserQuotas(userEmail);
-    const remaining = wordQuota - (deck.words?.length || 0);
+    const { totalWordQuota } = await getUserQuotasForEmail(userEmail);
+    const deckWordCount = deck.words?.length || 0;
+    const totalWords = await countUserTotalWords(userEmail);
+    const remaining = wordInsertCapacity(totalWordQuota, totalWords, deckWordCount);
     if (remaining <= 0) {
-      return res.status(400).json({ error: 'Da dat gioi han ' + wordQuota + ' tu/deck.' });
+      return res.status(400).json({ error: 'Da dat gioi han ' + totalWordQuota + ' tu tong.' });
     }
 
     const rawWords = req.body?.words;
@@ -382,9 +391,12 @@ router.post('/:id/words', auth, async (req, res) => {
     const deck = await Deck.findOne({ email: userEmail, deckId: req.params.id });
     if (!deck) return res.status(404).json({ error: 'Deck khong ton tai.' });
 
-    const { wordQuota } = await getUserQuotas(userEmail);
-    if ((deck.words?.length || 0) >= wordQuota) {
-      return res.status(400).json({ error: 'Da dat gioi han ' + wordQuota + ' tu/deck.' });
+    const { totalWordQuota } = await getUserQuotasForEmail(userEmail);
+    const deckWordCount = deck.words?.length || 0;
+    const totalWords = await countUserTotalWords(userEmail);
+    const remaining = wordInsertCapacity(totalWordQuota, totalWords, deckWordCount);
+    if (remaining <= 0) {
+      return res.status(400).json({ error: 'Da dat gioi han ' + totalWordQuota + ' tu tong.' });
     }
 
     const normalized = normalizeWordInput(req.body, deck.langPair);

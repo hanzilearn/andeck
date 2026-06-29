@@ -2,6 +2,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA } = require('../config');
+const { migrateTotalWordQuota } = require('../services/quota');
 
 async function ensureDefaults() {
   const defaults = [
@@ -21,16 +22,24 @@ async function ensureDefaults() {
     const exists = await User.findOne({ email: d.email });
     if (!exists) {
       const passwordHash = await bcrypt.hash(d.password, 10);
+      const deckQuota = d.deckQuota ?? DEFAULT_DECK_QUOTA;
+      const wordQuota = d.wordQuota ?? DEFAULT_WORD_QUOTA;
       await User.create({
         email: d.email,
         passwordHash,
         role: d.role,
         type: d.type,
-        deckQuota: d.deckQuota ?? DEFAULT_DECK_QUOTA,
-        wordQuota: d.wordQuota ?? DEFAULT_WORD_QUOTA
+        deckQuota,
+        wordQuota,
+        totalWordQuota: deckQuota * wordQuota
       });
       console.log('  ✅ Tạo TK: ' + d.email);
     }
+  }
+
+  const migrated = await migrateTotalWordQuota();
+  if (migrated > 0) {
+    console.log('  ✅ Migration totalWordQuota: ' + migrated + ' user');
   }
 }
 

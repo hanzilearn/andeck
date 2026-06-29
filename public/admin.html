@@ -122,6 +122,15 @@ table{width:100%;border-collapse:collapse}
 .admin-legal-footer a:hover{text-decoration:underline}
 body{padding-bottom:32px}
 
+.badge-pending{background:rgba(230,126,34,.12);color:#e67e22}
+.badge-applied{background:rgba(46,204,113,.12);color:var(--green)}
+
+.tab-bar{display:flex;gap:4px;margin-right:auto;margin-left:12px}
+.tab-btn{padding:6px 12px;border:1px solid var(--border);border-radius:4px;background:var(--bg3);color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif}
+.tab-btn.active{background:rgba(196,168,130,.15);color:var(--gold);border-color:rgba(196,168,130,.35)}
+.panel-view{display:none;flex-direction:column;height:100%;overflow:hidden}
+.panel-view.active{display:flex}
+
 @media(max-width:900px){.main{grid-template-columns:1fr}}
 @media(max-width:600px){.modal{width:calc(100vw - 20px)}.side-panel{width:100%}}
 </style>
@@ -161,18 +170,36 @@ body{padding-bottom:32px}
   </div>
   <div class="right-panel">
     <div class="panel-head">
-      <h2>Danh sách tài khoản</h2>
-      <div style="display:flex;gap:8px;align-items:center">
+      <div class="tab-bar">
+        <button type="button" class="tab-btn active" id="tabUsers" onclick="switchTab('users')">Tài khoản</button>
+        <button type="button" class="tab-btn" id="tabOrders" onclick="switchTab('orders')">Đơn chờ</button>
+      </div>
+      <h2 id="panelTitle">Danh sách tài khoản</h2>
+      <div style="display:flex;gap:8px;align-items:center" id="panelUsersTools">
         <input type="text" id="srch" placeholder="🔍 Tìm email..." oninput="R()" style="padding:5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--bg3);color:var(--text);font-size:11px;width:180px;outline:none">
         <button class="btn btn-primary btn-sm" onclick="openAdd()">+ Thêm</button>
       </div>
+      <div style="display:none;gap:8px;align-items:center" id="panelOrdersTools">
+        <button class="btn btn-outline btn-sm" onclick="loadPendingOrders()">↻ Làm mới</button>
+      </div>
     </div>
+    <div id="viewUsers" class="panel-view active">
     <div id="da" class="alert" style="margin:0 16px"></div>
     <div class="panel-scroll">
       <table class="tbl">
         <thead><tr><th>#</th><th>Email / Zalo</th><th>Quota</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead>
         <tbody id="utb"></tbody>
       </table>
+    </div>
+    </div>
+    <div id="viewOrders" class="panel-view">
+    <div id="oa" class="alert" style="margin:0 16px"></div>
+    <div class="panel-scroll">
+      <table class="tbl">
+        <thead><tr><th>Mã đơn</th><th>Email</th><th>Gói</th><th>Số tiền</th><th>Ngày</th><th>Trạng thái</th><th></th></tr></thead>
+        <tbody id="otb"></tbody>
+      </table>
+    </div>
     </div>
   </div>
 </div>
@@ -230,7 +257,7 @@ body{padding-bottom:32px}
 </div>
 
 <script>
-var TOKEN=null,API=window.location.origin,US=[];
+var TOKEN=null,API=window.location.origin,US=[],PENDING_ORDERS=[],activeTab='users';
 
 async function ap(m,p,b){var o={method:m,headers:{'Content-Type':'application/json'}};if(TOKEN)o.headers['Authorization']='Bearer '+TOKEN;if(b)o.body=JSON.stringify(b);try{var r=await fetch(API+p,o);var d=await r.json();return{ok:r.ok,data:d};}catch(e){return{ok:false,data:{error:'Không kết nối được server'}};}}
 
@@ -285,7 +312,7 @@ function rTbl(){
   tb.innerHTML=USF.map(function(u,i){
     var isAdmin=u.role==='admin';
     var nm=u.email+(u.zalo?' <span style="color:var(--text3);font-size:9px">· '+escH(u.zalo)+'</span>':'')+(isAdmin?' <span class="badge badge-admin">Admin</span>':'');
-    var quota=(u.deckQuota??3)+' deck · '+(u.wordQuota??50)+' từ/deck';
+    var quota=(u.deckQuota??3)+' deck · '+(u.totalWordQuota!=null?u.totalWordQuota:(u.deckQuota??3)*(u.wordQuota??50))+' từ';
     var em=encodeURIComponent(u.email);
     var acts='';
     if(!isAdmin){acts='<button class="btn btn-sm btn-outline" onclick="openSp(\''+em+'\')">Chi tiết</button><button class="btn btn-sm btn-danger" onclick="dU(\''+em+'\')">Xóa</button>';}
@@ -435,6 +462,48 @@ async function doRstSp(){
 }
 
 function dUFromSp(){if(!spEmail)return;dU(encodeURIComponent(spEmail));}
+
+function switchTab(tab){
+  activeTab=tab;
+  document.getElementById('tabUsers').classList.toggle('active',tab==='users');
+  document.getElementById('tabOrders').classList.toggle('active',tab==='orders');
+  document.getElementById('viewUsers').classList.toggle('active',tab==='users');
+  document.getElementById('viewOrders').classList.toggle('active',tab==='orders');
+  document.getElementById('panelUsersTools').style.display=tab==='users'?'flex':'none';
+  document.getElementById('panelOrdersTools').style.display=tab==='orders'?'flex':'none';
+  document.getElementById('panelTitle').textContent=tab==='users'?'Danh sách tài khoản':'Đơn chờ xác minh';
+  if(tab==='orders')loadPendingOrders();
+}
+
+async function loadPendingOrders(){
+  var r=await ap('GET','/api/admin/orders?status=pending');
+  if(!r.ok){showA('oa',r.data.error||'Lỗi tải đơn','err');return;}
+  PENDING_ORDERS=r.data.orders||[];
+  renderOrdersTbl();
+}
+
+function renderOrdersTbl(){
+  var tb=document.getElementById('otb');
+  if(!PENDING_ORDERS.length){
+    tb.innerHTML='<tr><td colspan="7" class="empty-row">Không có đơn chờ</td></tr>';
+    return;
+  }
+  tb.innerHTML=PENDING_ORDERS.map(function(o){
+    var dt=o.createdAt?String(o.createdAt).slice(0,16).replace('T',' '):'';
+    var badge='<span class="badge badge-pending">Chờ xác minh</span>';
+    var oid=String(o.id);
+    return'<tr><td style="font-weight:600;color:var(--gold)">'+escH(o.orderCode)+'</td><td>'+escH(o.email)+'</td><td>'+escH(o.packageName)+'</td><td>'+escH(o.priceLabel||o.amount)+'</td><td style="color:var(--text3);font-size:10px">'+dt+'</td><td>'+badge+'</td><td><button class="btn btn-sm btn-primary" onclick="verifyOrder(\''+oid+'\')">Đã nhận tiền → kích hoạt</button></td></tr>';
+  }).join('');
+}
+
+async function verifyOrder(id){
+  if(!confirm('Xác nhận đã nhận tiền và kích hoạt gói cho đơn này?'))return;
+  var r=await ap('POST','/api/admin/orders/'+encodeURIComponent(id)+'/verify',{});
+  if(!r.ok){showA('oa',r.data.error||'Lỗi duyệt đơn','err');return;}
+  showA('oa','Đã kích hoạt cho '+r.data.user.email+' (+deck / +từ pool)','ok');
+  await loadPendingOrders();
+  await loadAll();
+}
 
 function cm(id){document.getElementById(id).classList.remove('show');}
 function showA(id,msg,t){var e=document.getElementById(id);e.className='alert '+t;e.textContent=msg;e.style.display='block';setTimeout(function(){e.style.display='none';},3000);}

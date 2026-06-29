@@ -112,19 +112,20 @@ function adSetAppHeaderLabel(deckName, wordCount) {
 }
 
 function adIsDeckWordAtQuota() {
-  return adGetCurrentDeckWordCount() >= AD.wordQuota;
+  return adGetCurrentDeckWordCount() >= adPoolWordQuota() || adIsTotalWordsAtQuota();
 }
 
 function adIsTotalWordsAtQuota() {
   const total = AD.totalWords != null ? AD.totalWords : adSumDeckWords();
-  return total >= adMaxTotalWords();
+  return total >= adPoolWordQuota();
 }
 
 function adDeckWordRemaining() {
   const deckCount = adGetCurrentDeckWordCount();
-  const deckRem = Math.max(0, AD.wordQuota - deckCount);
+  const poolTotal = adPoolWordQuota();
+  const deckRem = Math.max(0, poolTotal - deckCount);
   const total = AD.totalWords != null ? AD.totalWords : adSumDeckWords();
-  const globalRem = Math.max(0, adMaxTotalWords() - total);
+  const globalRem = Math.max(0, poolTotal - total);
   return Math.min(deckRem, globalRem);
 }
 

@@ -352,20 +352,20 @@ Hub quota pool display (mock). QA checklist §1D. Chưa backend. Tick checklist 
 
 **Deliverables:**
 
-- [ ] `server/config/packages.js` — `goi1` / `goi2` (`deckAdd`, `wordAdd`, giá)
-- [ ] `User.totalWordQuota` + migration mặc định = `deckQuota × wordQuota` cho user cũ
-- [ ] `server/models/order.js` — `pending` → `verified` → `applied`
-- [ ] API: `GET /api/packages` · `POST /api/orders` · `GET /api/orders/mine` · `POST /api/admin/orders/:id/verify`
-- [ ] Sửa quota: hub + import + backend enforce **tổng từ pool** (`totalWordQuota` từ API → pill `x/y Từ`)
-- [ ] `admin.html`: tab **Đơn chờ** + nút *Đã nhận tiền → kích hoạt*
-- [ ] **Nối UI Phase 1 với API (bỏ mock)** — chi tiết bắt buộc:
-  - [ ] `#adCreateOrderBtn` (**Đã thanh toán**) → `POST /api/orders` (JWT), server sinh `AD-…` · trạng thái `pending`
-  - [ ] Không tạo trùng đơn pending cùng `orderCode`/session — idempotent hoặc reuse đơn pending (giữ logic G1)
-  - [ ] `#adCopyZaloMsg` chỉ copy khi đã có đơn `pending`/`verified` (giữ toast *Bạn chưa ấn thanh toán*)
-  - [ ] Template copy/deep link 3 dòng: `Mã đơn` · `Email:` · `Gói: … — giá` (không *Email Andeck*)
-  - [ ] `#adOrdersPanel` + avatar **Đơn hàng** → `GET /api/orders/mine` (theo user, **không** `sessionStorage`)
-  - [ ] Xóa / tắt mock `andeck_mock_orders` khi API sẵn sàng
-  - [ ] Modal giới hạn + hub pills: giữ UI §0.3.2; chỉ thay số quota từ `/api/me` hoặc `/api/decks`
+- [x] `server/config/packages.js` — `goi1` / `goi2` (`deckAdd`, `wordAdd`, giá)
+- [x] `User.totalWordQuota` + migration mặc định = `deckQuota × wordQuota` cho user cũ
+- [x] `server/models/order.js` — `pending` → `verified` → `applied`
+- [x] API: `GET /api/packages` · `POST /api/orders` · `GET /api/orders/mine` · `POST /api/admin/orders/:id/verify`
+- [x] Sửa quota: hub + import + backend enforce **tổng từ pool** (`totalWordQuota` từ API → pill `x/y Từ`)
+- [x] `admin.html`: tab **Đơn chờ** + nút *Đã nhận tiền → kích hoạt*
+- [x] **Nối UI Phase 1 với API (bỏ mock)** — chi tiết bắt buộc:
+  - [x] `#adCreateOrderBtn` (**Đã thanh toán**) → `POST /api/orders` (JWT), server sinh `AD-…` · trạng thái `pending`
+  - [x] Không tạo trùng đơn pending cùng `orderCode`/session — idempotent hoặc reuse đơn pending (giữ logic G1)
+  - [x] `#adCopyZaloMsg` chỉ copy khi đã có đơn `pending`/`verified` (giữ toast *Bạn chưa ấn thanh toán*)
+  - [x] Template copy/deep link 3 dòng: `Mã đơn` · `Email:` · `Gói: … — giá` (không *Email Andeck*)
+  - [x] `#adOrdersPanel` + avatar **Đơn hàng** → `GET /api/orders/mine` (theo user, **không** `sessionStorage`)
+  - [x] Xóa / tắt mock `andeck_mock_orders` khi API sẵn sàng
+  - [x] Modal giới hạn + hub pills: giữ UI §0.3.2; chỉ thay số quota từ `/api/me` hoặc `/api/decks`
 
 **Checklist trước bật production:**
 
@@ -853,6 +853,7 @@ Soạn terms.html, privacy.html, refund.html + footer. Link checkbox register + 
 | 29/06/2026 | **Chat 1D xong:** `10-pricing.js`, mock orders sessionStorage, panel Đơn của tôi, hub quota pool UI — **Giai đoạn 1 hoàn tất** |
 | 29/06/2026 | **UI polish sau 1D:** hub Tải lên File, bỏ Nâng cấp hub, modal quota mới, payment **Đã thanh toán** + Copy gate, mock đơn theo email |
 | 29/06/2026 | **Roadmap G2 cập nhật:** §0.3.2 UI chốt, checklist nối API, template Zalo `Email:`, test đa tài khoản |
+| 29/06/2026 | **Giai đoạn 2 xong:** packages.js, Order model, totalWordQuota + migration, API orders/admin verify, pool quota backend, admin tab Đơn chờ, `10-pricing.js` nối API (bỏ sessionStorage mock) |
 
 ---
 

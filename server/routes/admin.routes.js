@@ -8,6 +8,9 @@ const Item = require('../models/item');
 const { auth, adminOnly } = require('../middleware/auth');
 const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA } = require('../config');
 const { deckLevelKey } = require('../services/deck-ids');
+const Order = require('../models/order');
+const { getPackage } = require('../config/packages');
+const { resolveTotalWordQuota } = require('../services/quota');
 
 const router = express.Router();
 
@@ -17,6 +20,7 @@ router.get('/users', auth, adminOnly, async (req, res) => {
     const o = u.toObject();
     o.deckQuota = u.deckQuota ?? DEFAULT_DECK_QUOTA;
     o.wordQuota = u.wordQuota ?? DEFAULT_WORD_QUOTA;
+    o.totalWordQuota = resolveTotalWordQuota(u);
     return o;
   }));
 });
@@ -34,6 +38,7 @@ router.post('/users', auth, adminOnly, async (req, res) => {
     type: 'user',
     deckQuota: deckQuota ?? DEFAULT_DECK_QUOTA,
     wordQuota: wordQuota ?? DEFAULT_WORD_QUOTA,
+    totalWordQuota: (deckQuota ?? DEFAULT_DECK_QUOTA) * (wordQuota ?? DEFAULT_WORD_QUOTA),
     zalo: zalo || ''
   });
   res.json({ message: 'Tao TK "' + email + '" thanh cong!' });
@@ -53,13 +58,23 @@ router.put('/users/:email/reset-password', auth, adminOnly, async (req, res) => 
 
 router.put('/users/:email/quota', auth, adminOnly, async (req, res) => {
   try {
-    const { deckQuota, wordQuota } = req.body;
+    const { deckQuota, wordQuota, totalWordQuota } = req.body;
     const user = await User.findOne({ email: decodeURIComponent(req.params.email) });
     if (!user) return res.status(404).json({ error: 'Khong tim thay TK' });
     if (deckQuota !== undefined) user.deckQuota = parseInt(deckQuota, 10);
     if (wordQuota !== undefined) user.wordQuota = parseInt(wordQuota, 10);
+    if (totalWordQuota !== undefined) {
+      user.totalWordQuota = parseInt(totalWordQuota, 10);
+    } else if (deckQuota !== undefined || wordQuota !== undefined) {
+      user.totalWordQuota = user.deckQuota * user.wordQuota;
+    }
     await user.save();
-    res.json({ ok: true, deckQuota: user.deckQuota, wordQuota: user.wordQuota });
+    res.json({
+      ok: true,
+      deckQuota: user.deckQuota,
+      wordQuota: user.wordQuota,
+      totalWordQuota: resolveTotalWordQuota(user)
+    });
   } catch (err) {
     console.error('PUT /api/admin/users/:email/quota:', err);
     res.status(500).json({ error: 'Loi he thong' });
@@ -109,6 +124,76 @@ router.delete('/decks/:deckId', auth, adminOnly, async (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     console.error('DELETE /api/admin/decks/:deckId:', err);
+    res.status(500).json({ error: 'Loi he thong' });
+  }
+});
+
+function serializeAdminOrder(order) {
+  return {
+    id: order._id,
+    orderCode: order.orderCode,
+    email: order.email,
+    packageId: order.packageId,
+    packageName: order.packageName,
+    amount: order.amount,
+    priceLabel: order.amount.toLocaleString('vi-VN') + 'đ',
+    status: order.status,
+    createdAt: order.createdAt,
+    verifiedAt: order.verifiedAt,
+    appliedAt: order.appliedAt
+  };
+}
+
+router.get('/orders', auth, adminOnly, async (req, res) => {
+  try {
+    const status = req.query.status || 'pending';
+    const filter = status === 'all' ? {} : { status };
+    const orders = await Order.find(filter).sort({ createdAt: -1 }).limit(200);
+    res.json({ orders: orders.map(serializeAdminOrder) });
+  } catch (err) {
+    console.error('GET /api/admin/orders:', err);
+    res.status(500).json({ error: 'Loi he thong' });
+  }
+});
+
+router.post('/orders/:id/verify', auth, adminOnly, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ error: 'Khong tim thay don' });
+    if (order.status !== 'pending') {
+      return res.status(400).json({ error: 'Don da xu ly (trang thai: ' + order.status + ')' });
+    }
+
+    const pkg = getPackage(order.packageId);
+    if (!pkg) return res.status(400).json({ error: 'Goi khong hop le' });
+
+    const user = await User.findOne({ email: order.email });
+    if (!user) return res.status(404).json({ error: 'Khong tim thay user' });
+
+    user.deckQuota = (user.deckQuota ?? DEFAULT_DECK_QUOTA) + pkg.deckAdd;
+    const currentTotal = resolveTotalWordQuota(user);
+    user.totalWordQuota = currentTotal + pkg.wordAdd;
+    user.wordQuota = user.totalWordQuota;
+    await user.save();
+
+    const now = new Date();
+    order.status = 'applied';
+    order.verifiedAt = now;
+    order.appliedAt = now;
+    await order.save();
+
+    res.json({
+      ok: true,
+      order: serializeAdminOrder(order),
+      user: {
+        email: user.email,
+        deckQuota: user.deckQuota,
+        wordQuota: user.wordQuota,
+        totalWordQuota: user.totalWordQuota
+      }
+    });
+  } catch (err) {
+    console.error('POST /api/admin/orders/:id/verify:', err);
     res.status(500).json({ error: 'Loi he thong' });
   }
 });

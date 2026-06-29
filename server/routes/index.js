@@ -4,6 +4,7 @@ const adminRoutes = require('./admin.routes');
 const decksRoutes = require('./decks.routes');
 const labelsRoutes = require('./labels.routes');
 const starsRoutes = require('./stars.routes');
+const ordersRoutes = require('./orders.routes');
 
 function registerRoutes(app) {
   app.get('/api/health', (req, res) => {
@@ -15,6 +16,7 @@ function registerRoutes(app) {
   app.use('/api/decks', decksRoutes);
   app.use('/api', labelsRoutes);
   app.use('/api', starsRoutes);
+  app.use('/api', ordersRoutes);
 }
 
 module.exports = registerRoutes;

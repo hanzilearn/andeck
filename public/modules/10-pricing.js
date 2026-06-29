@@ -1,10 +1,8 @@
 /* ============================================================
-   ANDECK PRICING — Giai đoạn 1 mock (Chat 1A→1D)
-   Orders: sessionStorage key andeck_mock_orders
+   ANDECK PRICING — Giai đoạn 2 (API)
    ============================================================ */
 (function () {
   var AD_ZALO_CSKH = '0792739257';
-  var ORDERS_KEY = 'andeck_mock_orders';
 
   var AD_PACKAGES = {
     goi1: {
@@ -26,6 +24,17 @@
   };
 
   var adPaymentSession = null;
+  var adOrdersCache = [];
+
+  function adAuthHeaders(json) {
+    var headers = {};
+    if (typeof getAuthToken === 'function') {
+      var token = getAuthToken();
+      if (token) headers.Authorization = 'Bearer ' + token;
+    }
+    if (json) headers['Content-Type'] = 'application/json';
+    return headers;
+  }
 
   function openPrOverlay(id) {
     var el = document.getElementById(id);
@@ -47,19 +56,6 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
-  }
-
-  function adGenOrderCode() {
-    var d = new Date();
-    var y = d.getFullYear();
-    var m = String(d.getMonth() + 1).padStart(2, '0');
-    var day = String(d.getDate()).padStart(2, '0');
-    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    var suffix = '';
-    for (var i = 0; i < 4; i++) {
-      suffix += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return 'AD-' + y + m + day + '-' + suffix;
   }
 
   function adGetUserEmail() {
@@ -126,65 +122,6 @@
     }
   }
 
-  function adNormalizeEmail(email) {
-    return String(email || '').trim().toLowerCase();
-  }
-
-  function adLoadAllOrdersStore() {
-    try {
-      var raw = sessionStorage.getItem(ORDERS_KEY);
-      if (!raw) return {};
-      var parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        var store = {};
-        parsed.forEach(function (o) {
-          var key = adNormalizeEmail(o.email) || '_unknown';
-          if (!store[key]) store[key] = [];
-          store[key].push(o);
-        });
-        sessionStorage.setItem(ORDERS_KEY, JSON.stringify(store));
-        return store;
-      }
-      return parsed && typeof parsed === 'object' ? parsed : {};
-    } catch (e) {
-      return {};
-    }
-  }
-
-  function adSaveAllOrdersStore(store) {
-    sessionStorage.setItem(ORDERS_KEY, JSON.stringify(store));
-  }
-
-  function adLoadOrders() {
-    var email = adNormalizeEmail(adGetUserEmail());
-    if (!email) return [];
-    var store = adLoadAllOrdersStore();
-    return Array.isArray(store[email]) ? store[email] : [];
-  }
-
-  function adSaveOrders(orders) {
-    var email = adNormalizeEmail(adGetUserEmail());
-    if (!email) return;
-    var store = adLoadAllOrdersStore();
-    store[email] = orders;
-    adSaveAllOrdersStore(store);
-  }
-
-  function adFindOrderByCode(orderCode) {
-    return adLoadOrders().find(function (o) {
-      return o.orderCode === orderCode;
-    });
-  }
-
-  function adSaveOrder(order) {
-    var email = adNormalizeEmail(order.email);
-    if (!email) return;
-    var store = adLoadAllOrdersStore();
-    if (!store[email]) store[email] = [];
-    store[email].unshift(order);
-    adSaveAllOrdersStore(store);
-  }
-
   function adFormatOrderDate(iso) {
     var d = new Date(iso);
     if (isNaN(d.getTime())) return '—';
@@ -197,12 +134,57 @@
     });
   }
 
+  function adOrderIsActive(o) {
+    return o.status === 'pending' || o.status === 'verified';
+  }
+
+  function adOrderIsActivated(o) {
+    return o.status === 'applied' || o.status === 'verified';
+  }
+
+  function adFindSessionOrder() {
+    if (!adPaymentSession || !adPaymentSession.orderCode) return null;
+    return adOrdersCache.find(function (o) {
+      return o.orderCode === adPaymentSession.orderCode;
+    }) || null;
+  }
+
+  function adFindPendingForPackage(packageId) {
+    return adOrdersCache.find(function (o) {
+      return o.packageId === packageId && o.status === 'pending';
+    }) || null;
+  }
+
+  async function adFetchOrders() {
+    if (typeof getAuthToken !== 'function' || !getAuthToken()) {
+      adOrdersCache = [];
+      return [];
+    }
+    try {
+      var res = await fetch('/api/orders/mine', {
+        headers: adAuthHeaders(),
+        cache: 'no-store'
+      });
+      if (!res.ok) {
+        adOrdersCache = [];
+        return [];
+      }
+      var data = await res.json();
+      adOrdersCache = data.orders || [];
+      return adOrdersCache;
+    } catch (e) {
+      console.error('adFetchOrders:', e);
+      adOrdersCache = [];
+      return [];
+    }
+  }
+
   function adRenderOrdersList() {
     var listEl = document.getElementById('adOrdersList');
     var emptyEl = document.getElementById('adOrdersEmpty');
     if (!listEl || !emptyEl) return;
 
-    var orders = adLoadOrders();
+    var orders = adOrdersCache;
     if (!orders.length) {
       listEl.hidden = true;
       listEl.innerHTML = '';
@@ -213,11 +195,12 @@
     emptyEl.hidden = true;
     listEl.hidden = false;
     listEl.innerHTML = orders.map(function (o) {
-      var isVerified = o.status === 'verified';
-      var badgeClass = isVerified
+      var isActivated = adOrderIsActivated(o);
+      var badgeClass = isActivated
         ? 'pr-order-card__badge--verified'
         : 'pr-order-card__badge--pending';
-      var badgeText = isVerified ? 'Đã kích hoạt' : 'Chờ xác minh';
+      var badgeText = isActivated ? 'Đã kích hoạt' : 'Chờ xác minh';
+      var priceLabel = o.priceLabel || (o.amount != null ? o.amount.toLocaleString('vi-VN') + 'đ' : '—');
       return (
         '<li class="pr-order-card">' +
           '<div class="pr-order-card__head">' +
@@ -226,7 +209,7 @@
           '</div>' +
           '<div class="pr-order-card__row">' +
             '<span class="pr-order-card__pkg">' + adEscapeHtml(o.packageName) + '</span>' +
-            '<span class="pr-order-card__price">' + adEscapeHtml(o.priceLabel) + '</span>' +
+            '<span class="pr-order-card__price">' + adEscapeHtml(priceLabel) + '</span>' +
           '</div>' +
           '<time class="pr-order-card__date" datetime="' + adEscapeHtml(o.createdAt) + '">' +
             adFormatOrderDate(o.createdAt) +
@@ -237,8 +220,8 @@
   }
 
   function adHasPaidOrder() {
-    if (!adPaymentSession) return false;
-    return !!adFindOrderByCode(adPaymentSession.orderCode);
+    var order = adFindSessionOrder();
+    return !!(order && adOrderIsActive(order));
   }
 
   function adNotifyUnpaid() {
@@ -252,10 +235,18 @@
   function adSyncPaymentActions() {
     var paidBtn = document.getElementById('adCreateOrderBtn');
     var copyBtn = document.getElementById('adCopyZaloMsg');
+    var codeEl = document.getElementById('adOrderCode');
     if (!adPaymentSession) return;
-    var existing = adFindOrderByCode(adPaymentSession.orderCode);
+
+    var existing = adFindSessionOrder();
+    var hasOrder = !!(existing && adOrderIsActive(existing));
+
+    if (codeEl) {
+      codeEl.textContent = hasOrder ? adPaymentSession.orderCode : '—';
+    }
+
     if (paidBtn) {
-      if (existing) {
+      if (hasOrder) {
         paidBtn.disabled = true;
         paidBtn.textContent = 'Đã ghi nhận đơn';
       } else {
@@ -264,7 +255,7 @@
       }
     }
     if (copyBtn) {
-      if (existing) {
+      if (hasOrder) {
         copyBtn.classList.remove('pr-btn--locked');
         copyBtn.removeAttribute('aria-disabled');
       } else {
@@ -274,28 +265,61 @@
     }
   }
 
-  function adCreateOrder() {
+  async function adCreateOrder() {
     if (!adPaymentSession) return;
 
-    var existing = adFindOrderByCode(adPaymentSession.orderCode);
-    if (existing) {
+    if (adHasPaidOrder()) {
       adSyncPaymentActions();
       return;
     }
 
-    adSaveOrder({
-      orderCode: adPaymentSession.orderCode,
-      packageId: adPaymentSession.pkg.id,
-      packageName: adPaymentSession.pkg.name,
-      priceLabel: adPaymentSession.pkg.priceLabel,
-      email: adPaymentSession.email,
-      status: 'pending',
-      createdAt: new Date().toISOString()
-    });
+    if (typeof getAuthToken !== 'function' || !getAuthToken()) {
+      adNotify('Vui lòng đăng nhập để tạo đơn.', 'err');
+      return;
+    }
 
-    adSyncPaymentActions();
+    var paidBtn = document.getElementById('adCreateOrderBtn');
+    if (paidBtn) {
+      paidBtn.disabled = true;
+      paidBtn.textContent = 'Đang ghi nhận…';
+    }
+
+    try {
+      var res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: adAuthHeaders(true),
+        body: JSON.stringify({ packageId: adPaymentSession.pkg.id })
+      });
+      var data = await res.json().catch(function () { return {}; });
+      if (!res.ok) {
+        adNotify(data.error || 'Không tạo được đơn.', 'err');
+        adSyncPaymentActions();
+        return;
+      }
+
+      var order = data.order;
+      adPaymentSession.orderCode = order.orderCode;
+      adPaymentSession.orderId = order.id;
+
+      await adFetchOrders();
+      adSyncPaymentActions();
+
+      if (typeof showLabelToast === 'function') {
+        showLabelToast('Đã ghi nhận đơn — gửi bill qua Zalo nhé', '#27ae60');
+      }
+    } catch (e) {
+      console.error('adCreateOrder:', e);
+      adNotify('Không thể kết nối server.', 'err');
+      adSyncPaymentActions();
+    }
+  }
+
+  function adNotify(msg, type) {
+    var color = type === 'ok' ? '#27ae60' : type === 'err' ? '#e74c3c' : '#95a5a6';
     if (typeof showLabelToast === 'function') {
-      showLabelToast('Đã ghi nhận đơn — gửi bill qua Zalo nhé', '#27ae60');
+      showLabelToast(msg, color);
+    } else {
+      alert(msg);
     }
   }
 
@@ -303,7 +327,8 @@
     openPrOverlay('adUpgradeModal');
   };
 
-  window.adOpenOrdersPanel = function () {
+  window.adOpenOrdersPanel = async function () {
+    await adFetchOrders();
     adRenderOrdersList();
     openPrOverlay('adOrdersPanel');
   };
@@ -320,25 +345,35 @@
     closePrOverlay('adPaymentModal');
   };
 
-  window.adOpenPaymentModal = function (packageId) {
+  window.adOpenPaymentModal = async function (packageId) {
     var pkg = AD_PACKAGES[packageId];
     if (!pkg) return;
+
     adPaymentSession = {
       pkg: pkg,
-      orderCode: adGenOrderCode(),
+      orderCode: null,
+      orderId: null,
       email: adGetUserEmail() || 'email@andeck.vn'
     };
+
     var labelEl = document.getElementById('adPaymentPackageLabel');
-    var codeEl = document.getElementById('adOrderCode');
     var amountEl = document.getElementById('adPaymentAmount');
     if (labelEl) labelEl.textContent = pkg.label;
-    if (codeEl) codeEl.textContent = adPaymentSession.orderCode;
     if (amountEl) amountEl.textContent = pkg.priceLabel;
+
     var phoneEl = document.getElementById('adPaymentZaloPhone');
     if (phoneEl) {
       phoneEl.textContent =
         typeof getZaloAdminNum === 'function' ? getZaloAdminNum() : '0792 739 257';
     }
+
+    await adFetchOrders();
+    var pending = adFindPendingForPackage(packageId);
+    if (pending) {
+      adPaymentSession.orderCode = pending.orderCode;
+      adPaymentSession.orderId = pending.id;
+    }
+
     adSyncPaymentActions();
     adCloseUpgradeModal();
     openPrOverlay('adPaymentModal');
@@ -371,7 +406,10 @@
     adOpenPaymentModal('goi2');
   });
   document.getElementById('adCopyOrderCode')?.addEventListener('click', function () {
-    if (!adPaymentSession) return;
+    if (!adPaymentSession || !adPaymentSession.orderCode) {
+      adNotifyUnpaid();
+      return;
+    }
     adCopyText(adPaymentSession.orderCode, document.getElementById('adCopyOrderCode'));
   });
   document.getElementById('adCopyZaloMsg')?.addEventListener('click', function () {
@@ -384,6 +422,10 @@
   });
   document.getElementById('adOpenZaloBtn')?.addEventListener('click', function () {
     if (!adPaymentSession) return;
+    if (!adHasPaidOrder()) {
+      adNotifyUnpaid();
+      return;
+    }
     window.open(adBuildZaloDeepLink(adPaymentSession), '_blank', 'noopener,noreferrer');
   });
   document.getElementById('adCreateOrderBtn')?.addEventListener('click', adCreateOrder);

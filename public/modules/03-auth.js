@@ -77,9 +77,11 @@ async function refreshUserProfile() {
     currentUser.role = data.role;
     currentUser.deckQuota = data.deckQuota;
     currentUser.wordQuota = data.wordQuota;
+    currentUser.totalWordQuota = data.totalWordQuota;
     if (window.AD) {
       if (data.deckQuota != null) window.AD.deckQuota = data.deckQuota;
       if (data.wordQuota != null) window.AD.wordQuota = data.wordQuota;
+      if (data.totalWordQuota != null) window.AD.totalWordQuota = data.totalWordQuota;
     }
     try {
       localStorage.setItem('andeck_user', JSON.stringify(currentUser));
@@ -192,8 +194,12 @@ async function doLogin() {
         email: data.email,
         role: data.role,
         deckQuota: data.deckQuota,
-        wordQuota: data.wordQuota
+        wordQuota: data.wordQuota,
+        totalWordQuota: data.totalWordQuota
       };
+      if (window.AD && data.totalWordQuota != null) {
+        window.AD.totalWordQuota = data.totalWordQuota;
+      }
       window._currentDeckId = null;
       if (typeof adResetSessionState === 'function') adResetSessionState();
 
@@ -276,6 +282,10 @@ function logout() {
         if (data) {
           currentUser.deckQuota = data.deckQuota;
           currentUser.wordQuota = data.wordQuota;
+          currentUser.totalWordQuota = data.totalWordQuota;
+          if (window.AD && data.totalWordQuota != null) {
+            window.AD.totalWordQuota = data.totalWordQuota;
+          }
         }
         if (!window._authToken) return;
         showOnly('deck-hub-screen');

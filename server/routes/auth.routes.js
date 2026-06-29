@@ -6,6 +6,7 @@ const { JWT_SECRET, DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA } = require('../confi
 const User = require('../models/user');
 const { auth } = require('../middleware/auth');
 const { loginLimiter, registerLimiter, checkRateLimit } = require('../middleware/rate-limit');
+const { resolveTotalWordQuota } = require('../services/quota');
 
 const router = express.Router();
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -39,7 +40,8 @@ router.post('/register', registerLimiter, async (req, res) => {
       role: 'user',
       type: 'user',
       deckQuota: DEFAULT_DECK_QUOTA,
-      wordQuota: DEFAULT_WORD_QUOTA
+      wordQuota: DEFAULT_WORD_QUOTA,
+      totalWordQuota: DEFAULT_DECK_QUOTA * DEFAULT_WORD_QUOTA
     });
 
     res.json({ message: 'Đăng ký thành công! Vui lòng đăng nhập.' });
@@ -80,7 +82,8 @@ router.post('/login', loginLimiter, async (req, res) => {
       role: user.role,
       type: user.type,
       deckQuota: user.deckQuota ?? DEFAULT_DECK_QUOTA,
-      wordQuota: user.wordQuota ?? DEFAULT_WORD_QUOTA
+      wordQuota: user.wordQuota ?? DEFAULT_WORD_QUOTA,
+      totalWordQuota: resolveTotalWordQuota(user)
     });
   } catch (err) {
     console.error('Login error:', err);
@@ -97,6 +100,7 @@ router.get('/me', auth, async (req, res) => {
     type: user.type,
     deckQuota: user.deckQuota ?? DEFAULT_DECK_QUOTA,
     wordQuota: user.wordQuota ?? DEFAULT_WORD_QUOTA,
+    totalWordQuota: resolveTotalWordQuota(user),
     zalo: user.zalo || ''
   });
 });

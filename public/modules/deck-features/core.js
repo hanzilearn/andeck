@@ -55,7 +55,7 @@ function adSumDeckWords() {
 }
 
 function adMaxTotalWords() {
-  return AD.deckQuota * AD.wordQuota;
+  return adPoolWordQuota();
 }
 
 function adPoolWordQuota() {
@@ -555,6 +555,7 @@ async function loadAdDecks() {
     if (sessionEmail) adSessionEmail = sessionEmail;
     if (data.deckQuota != null) AD.deckQuota = data.deckQuota;
     if (data.wordQuota != null) AD.wordQuota = data.wordQuota;
+    if (data.totalWordQuota != null) AD.totalWordQuota = data.totalWordQuota;
     AD.totalWords = data.totalWords != null ? data.totalWords : adSumDeckWords();
     adDecksLoadedOnce = true;
     renderAdHeaderQuota();

@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   type: { type: String, enum: ['user', 'ctv', 'admin'], default: 'user' },
   deckQuota: { type: Number, default: DEFAULT_DECK_QUOTA },
   wordQuota: { type: Number, default: DEFAULT_WORD_QUOTA },
+  totalWordQuota: { type: Number },
   zalo: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now }
 });

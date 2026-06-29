@@ -205,15 +205,16 @@ function adImportGetAppendContext() {
     return d.deckId === id;
   });
   const deckWords = adGetCurrentDeckWordCount ? adGetCurrentDeckWordCount() : adWordCount(deck || {});
-  const deckRem = Math.max(0, AD.wordQuota - deckWords);
+  const poolTotal = adPoolWordQuota();
+  const deckRem = Math.max(0, poolTotal - deckWords);
   const total = AD.totalWords != null ? AD.totalWords : adSumDeckWords();
-  const globalRem = Math.max(0, adMaxTotalWords() - total);
+  const globalRem = Math.max(0, poolTotal - total);
   return {
     deckId: id,
     deckName: (deck && deck.name) || 'Deck',
     total: deckWords,
     remaining: Math.min(deckRem, globalRem),
-    wordQuota: AD.wordQuota
+    wordQuota: poolTotal
   };
 }
 
@@ -259,11 +260,11 @@ function adImportRefreshPrompt() {
 function adImportUpdateQuotaDisplay() {
   const el = document.getElementById('importQuotaInfo');
   if (!el) return;
-  const maxWords = adMaxTotalWords();
+  const maxWords = adPoolWordQuota();
   if (adImportMode === 'append') {
     const ctx = adImportGetAppendContext();
     if (!ctx) {
-      el.textContent = 'Quota: 0/' + AD.wordQuota + ' t\u1eeb';
+      el.textContent = 'Quota: 0/' + maxWords + ' t\u1eeb';
       return;
     }
     el.textContent =
@@ -474,14 +475,14 @@ async function adImportSubmitAppend(parsed, submitBtn, submitLabel) {
 
 async function adImportSubmitCreate(parsed, submitBtn, submitLabel) {
   const total = AD.totalWords != null ? AD.totalWords : adSumDeckWords();
-  const remainingGlobal = adMaxTotalWords() - total;
+  const poolTotal = adPoolWordQuota();
+  const remainingGlobal = poolTotal - total;
   if (remainingGlobal <= 0) {
     adImportCloseModal();
     adShowQuotaLimit('word');
     return;
   }
-  const perDeckCap = AD.wordQuota;
-  const cap = Math.min(remainingGlobal, perDeckCap);
+  const cap = remainingGlobal;
   const willInsert = Math.min(parsed.count, cap);
   const over = parsed.count - willInsert;
   if (over > 0) {
