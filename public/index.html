@@ -108,16 +108,16 @@
           Đổi mật khẩu
         </div>
         <div class="avatar-dd-divider" role="separator"></div>
+        <div class="avatar-dd-item danger" onclick="logout()">
+          <span class="avatar-dd-icon" aria-hidden="true"><i class="ti ti-logout"></i></span>
+          Đăng xuất
+        </div>
         <div class="avatar-dd-legal">
           <a href="/terms.html" target="_blank" rel="noopener noreferrer">Điều khoản</a>
           <span class="avatar-dd-legal-sep" aria-hidden="true">·</span>
           <a href="/privacy.html" target="_blank" rel="noopener noreferrer">Bảo mật</a>
           <span class="avatar-dd-legal-sep" aria-hidden="true">·</span>
           <a href="/refund.html" target="_blank" rel="noopener noreferrer">Hoàn tiền</a>
-        </div>
-        <div class="avatar-dd-item danger" onclick="logout()">
-          <span class="avatar-dd-icon" aria-hidden="true"><i class="ti ti-logout"></i></span>
-          Đăng xuất
         </div>
       </div>
     </div>
@@ -768,7 +768,6 @@
     <div class="pr-modal__head">
       <div>
         <h2 class="pr-modal__title" id="adUpgradeTitle">Nâng cấp dung lượng</h2>
-        <p class="pr-modal__sub">Cộng dồn lên gói hiện tại · Từ dùng linh hoạt giữa các deck</p>
       </div>
       <button type="button" class="pr-modal__close" id="adUpgradeClose" aria-label="Đóng">✕</button>
     </div>
@@ -792,7 +791,6 @@
           </ul>
         </button>
       </div>
-      <p class="pr-note">Cộng dồn lên gói hiện tại · Từ dùng linh hoạt, không chia đều deck · Kích hoạt qua Zalo trong 24h</p>
     </div>
   </div>
 </div>
@@ -809,13 +807,6 @@
     </div>
     <div class="pr-modal__body">
       <div class="pr-payment-meta">
-        <div class="pr-payment-row pr-payment-row--code">
-          <span class="pr-payment-row__label">Mã đơn</span>
-          <div class="pr-payment-row__code-wrap">
-            <span class="pr-payment-row__value pr-payment-row__value--code" id="adOrderCode">Chưa có — bấm Đã thanh toán</span>
-            <button type="button" class="pr-btn pr-btn--secondary pr-btn--sm" id="adCopyOrderCode" aria-label="Copy mã đơn">Copy</button>
-          </div>
-        </div>
         <div class="pr-payment-row">
           <span class="pr-payment-row__label">Số tiền</span>
           <span class="pr-payment-row__value" id="adPaymentAmount">—</span>

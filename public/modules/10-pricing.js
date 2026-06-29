@@ -256,19 +256,10 @@
   function adSyncPaymentActions() {
     var paidBtn = document.getElementById('adCreateOrderBtn');
     var copyBtn = document.getElementById('adCopyZaloMsg');
-    var codeEl = document.getElementById('adOrderCode');
     if (!adPaymentSession) return;
 
     var existing = adFindSessionOrder();
     var hasOrder = !!(existing && adOrderIsActive(existing));
-
-    if (codeEl) {
-      if (hasOrder && adPaymentSession.orderCode) {
-        codeEl.textContent = adPaymentSession.orderCode;
-      } else {
-        codeEl.textContent = 'Chưa có — bấm Đã thanh toán';
-      }
-    }
 
     if (paidBtn) {
       if (hasOrder) {
@@ -435,13 +426,6 @@
   });
   document.getElementById('adPackageGoi2')?.addEventListener('click', function () {
     adOpenPaymentModal('goi2');
-  });
-  document.getElementById('adCopyOrderCode')?.addEventListener('click', function () {
-    if (!adPaymentSession || !adPaymentSession.orderCode) {
-      adNotifyUnpaid();
-      return;
-    }
-    adCopyText(adPaymentSession.orderCode, document.getElementById('adCopyOrderCode'));
   });
   document.getElementById('adCopyZaloMsg')?.addEventListener('click', function () {
     if (!adPaymentSession) return;
