@@ -210,10 +210,10 @@
     var existing = adFindOrderByCode(adPaymentSession.orderCode);
     if (existing) {
       btn.disabled = true;
-      btn.textContent = 'Đã tạo đơn — xem Đơn của tôi';
+      btn.textContent = 'Đã ghi nhận đơn';
     } else {
       btn.disabled = false;
-      btn.textContent = 'Tạo đơn chờ xác minh';
+      btn.textContent = 'Đã thanh toán';
     }
   }
 
@@ -222,8 +222,7 @@
 
     var existing = adFindOrderByCode(adPaymentSession.orderCode);
     if (existing) {
-      adClosePaymentModal();
-      adOpenOrdersPanel();
+      adSyncCreateOrderBtn();
       return;
     }
 
@@ -238,8 +237,9 @@
     });
 
     adSyncCreateOrderBtn();
-    adClosePaymentModal();
-    adOpenOrdersPanel();
+    if (typeof showLabelToast === 'function') {
+      showLabelToast('Đã ghi nhận đơn — gửi bill qua Zalo nhé', '#27ae60');
+    }
   }
 
   window.adOpenUpgradeModal = function () {
@@ -277,6 +277,11 @@
     if (labelEl) labelEl.textContent = pkg.label;
     if (codeEl) codeEl.textContent = adPaymentSession.orderCode;
     if (amountEl) amountEl.textContent = pkg.priceLabel;
+    var phoneEl = document.getElementById('adPaymentZaloPhone');
+    if (phoneEl) {
+      phoneEl.textContent =
+        typeof getZaloAdminNum === 'function' ? getZaloAdminNum() : '0792 739 257';
+    }
     adSyncCreateOrderBtn();
     adCloseUpgradeModal();
     openPrOverlay('adPaymentModal');

@@ -78,8 +78,8 @@ function renderAdHeaderQuota() {
   wordsEl.closest('.mp-quota-pill')?.classList.remove('mp-quota-pill--loading');
   const totalWords = AD.totalWords != null ? AD.totalWords : adSumDeckWords();
   const poolTotal = adPoolWordQuota();
-  deckEl.textContent = AD.decks.length + '/' + AD.deckQuota + ' deck';
-  wordsEl.textContent = totalWords + '/' + poolTotal + ' từ';
+  deckEl.textContent = AD.decks.length + '/' + AD.deckQuota + ' Deck';
+  wordsEl.textContent = totalWords + '/' + poolTotal + ' Từ';
   wordsEl.title = 'Tổng từ tối đa trên tài khoản';
 }
 
@@ -89,8 +89,8 @@ function renderAdHeaderQuotaSkeleton() {
   if (!deckEl || !wordsEl) return;
   deckEl.closest('.mp-quota-pill')?.classList.add('mp-quota-pill--loading');
   wordsEl.closest('.mp-quota-pill')?.classList.add('mp-quota-pill--loading');
-  deckEl.textContent = '—/— deck';
-  wordsEl.textContent = '—/— từ';
+  deckEl.textContent = '—/— Deck';
+  wordsEl.textContent = '—/— Từ';
   wordsEl.removeAttribute('title');
 }
 
@@ -138,23 +138,28 @@ function adIsDeckAtQuota() {
   return AD.decks.length >= AD.deckQuota;
 }
 
+function adQuotaLimitMessageHtml(type, limit) {
+  const kindLabel = type === 'deck' ? 'Deck' : 'Từ';
+  return (
+    'Số <span class="ad-quota-limit-kw">' + kindLabel + '</span> của bạn đã đến giới hạn (' + limit + '). ' +
+    '<span class="ad-quota-limit-kw ad-quota-limit-kw--upgrade">Nâng Cấp</span> gói hoặc liên hệ Zalo Admin.'
+  );
+}
+
 function adShowQuotaLimit(type) {
   const ov = document.getElementById('adQuotaLimitOverlay');
   const textEl = document.getElementById('adQuotaLimitText');
   const zaloWrap = document.getElementById('adQuotaLimitZaloWrap');
   const zalo = typeof getZaloAdminNum === 'function' ? getZaloAdminNum() : '0792 739 257';
+  const limit = type === 'deck' ? AD.deckQuota : adPoolWordQuota();
   if (!ov || !textEl) {
-    const limit = type === 'deck' ? AD.deckQuota : adPoolWordQuota();
-    const kind = type === 'deck' ? 'deck' : 'từ';
+    const kind = type === 'deck' ? 'Deck' : 'Từ';
     alert(
-      'Số ' + kind + ' của bạn đã đến giới hạn (' + limit + '). Nâng cấp gói hoặc liên hệ Zalo Admin: ' + zalo
+      'Số ' + kind + ' của bạn đã đến giới hạn (' + limit + '). Nâng Cấp gói hoặc liên hệ Zalo Admin: ' + zalo
     );
     return;
   }
-  const limit = type === 'deck' ? AD.deckQuota : adPoolWordQuota();
-  const kind = type === 'deck' ? 'deck' : 'từ';
-  textEl.textContent =
-    'Số ' + kind + ' của bạn đã đến giới hạn (' + limit + '). Nâng cấp gói hoặc liên hệ Zalo Admin.';
+  textEl.innerHTML = adQuotaLimitMessageHtml(type, limit);
   const zaloEl = document.getElementById('adQuotaLimitZaloNum');
   if (zaloEl) zaloEl.textContent = zalo;
   if (zaloWrap) zaloWrap.hidden = true;

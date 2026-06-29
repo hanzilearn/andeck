@@ -113,15 +113,15 @@
       <div class="mp-quota-stats" id="adQuotaStats">
         <div class="mp-quota-pill">
           <span class="mp-quota-icon" aria-hidden="true"><i class="ti ti-cards"></i></span>
-          <span class="mp-quota-text" id="adQuotaDecks">0/3 deck</span>
+          <span class="mp-quota-text" id="adQuotaDecks">0/3 Deck</span>
         </div>
         <div class="mp-quota-pill">
           <span class="mp-quota-icon" aria-hidden="true"><i class="ti ti-book-2"></i></span>
-          <span class="mp-quota-text" id="adQuotaWords">0/150 từ</span>
+          <span class="mp-quota-text" id="adQuotaWords">0/150 Từ</span>
         </div>
-        <button type="button" class="mp-upfile-btn" id="adUpfileBtn" title="Import từ vựng từ file" aria-label="Import từ vựng từ file">
+        <button type="button" class="mp-upfile-btn" id="adUpfileBtn" title="Tải lên file từ vựng" aria-label="Tải lên file từ vựng">
           <span class="mp-upfile-icon" aria-hidden="true"><i class="ti ti-upload"></i></span>
-          <span class="mp-upfile-label">Nhập file</span>
+          <span class="mp-upfile-label">Tải lên File</span>
         </button>
       </div>
     </div>
@@ -723,19 +723,19 @@
   <div class="ad-quota-limit-box" onclick="event.stopPropagation()">
     <button type="button" class="ad-quota-limit-close" id="adQuotaLimitCloseBtn" aria-label="Đóng">✕</button>
     <p class="ad-quota-limit-message" id="adQuotaLimitText"></p>
-    <div class="ad-quota-limit-zalo" id="adQuotaLimitZaloWrap" hidden>
-      <span class="ad-quota-limit-zalo-label">Zalo Admin</span>
-      <span class="ad-quota-limit-zalo-num" id="adQuotaLimitZaloNum">0792 739 257</span>
-    </div>
     <div class="ad-quota-limit-actions">
       <button type="button" class="ad-quota-limit-btn ad-quota-limit-btn--upgrade" id="adQuotaLimitBuyBtn">
         <i class="ti ti-arrow-big-up-lines" aria-hidden="true"></i>
-        Nâng cấp
+        Nâng Cấp
       </button>
       <button type="button" class="ad-quota-limit-btn ad-quota-limit-btn--zalo" id="adQuotaLimitZaloBtn">
         <i class="ti ti-phone" aria-hidden="true"></i>
         Liên hệ Zalo
       </button>
+    </div>
+    <div class="ad-quota-limit-zalo" id="adQuotaLimitZaloWrap" hidden>
+      <span class="ad-quota-limit-zalo-label">Zalo Admin</span>
+      <span class="ad-quota-limit-zalo-num" id="adQuotaLimitZaloNum">0792 739 257</span>
     </div>
   </div>
 </div>
@@ -789,7 +789,6 @@
     </div>
     <div class="pr-modal__body">
       <div class="pr-payment-meta">
-        <p class="pr-note pr-note--inline">Kích hoạt trong 24h (thường vài giờ)</p>
         <div class="pr-payment-row pr-payment-row--code">
           <span class="pr-payment-row__label">Mã đơn</span>
           <div class="pr-payment-row__code-wrap">
@@ -802,22 +801,22 @@
           <span class="pr-payment-row__value" id="adPaymentAmount">—</span>
         </div>
       </div>
-      <p class="pr-note pr-note--zalo-hint">Zalo Pay không có ô nội dung chuyển khoản — gửi mã đơn qua tin nhắn Zalo sau khi chuyển.</p>
       <div class="pr-qr-wrap">
         <img id="adPaymentQr" src="img/zalo-pay-qr.png" alt="QR nhận tiền ZaloPay và ngân hàng" width="220" height="220">
         <p class="pr-qr-caption">QR nhận tiền từ mọi app · DINH VAN AN</p>
       </div>
+      <p class="pr-steps-heading">Sau khi chuyển tiền xong</p>
       <ol class="pr-steps" id="adPaymentSteps">
-        <li>Chuyển đúng số tiền qua Zalo Pay hoặc app ngân hàng</li>
-        <li>Chụp bill + chụp màn hình <strong>Đơn của tôi</strong> trên Andeck</li>
-        <li>Gửi Zalo kèm mã đơn và email tài khoản</li>
+        <li>Chuyển khoản <strong>đúng</strong> số tiền xong ấn <strong>Đã thanh toán</strong>.</li>
+        <li>Chụp bill + ấn <strong>Copy tin nhắn Zalo</strong> gửi qua Zalo Admin: <strong id="adPaymentZaloPhone">0792 739 257</strong> hoặc ấn <strong>Mở Zalo gửi xác minh</strong>.</li>
+        <li>Chờ admin duyệt đơn nhé!</li>
       </ol>
       <div class="pr-actions">
+        <button type="button" class="pr-btn pr-btn--paid" id="adCreateOrderBtn">Đã thanh toán</button>
         <div class="pr-actions pr-actions--row">
           <button type="button" class="pr-btn pr-btn--ghost" id="adCopyZaloMsg">Copy tin nhắn Zalo</button>
           <button type="button" class="pr-btn pr-btn--zalo" id="adOpenZaloBtn">Mở Zalo gửi xác minh</button>
         </div>
-        <button type="button" class="pr-btn pr-btn--primary" id="adCreateOrderBtn">Tạo đơn chờ xác minh</button>
       </div>
       <label class="pr-consent">
         <input type="checkbox" id="adPaymentConsent" disabled>
