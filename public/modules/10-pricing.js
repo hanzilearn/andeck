@@ -73,7 +73,7 @@
   function adBuildZaloMsg(session) {
     return (
       'Mã đơn: ' + session.orderCode + '\n' +
-      'Email Andeck: ' + session.email + '\n' +
+      'Email: ' + session.email + '\n' +
       'Gói: ' + session.pkg.name + ' — ' + session.pkg.priceLabel
     );
   }
@@ -236,16 +236,41 @@
     }).join('');
   }
 
-  function adSyncCreateOrderBtn() {
-    var btn = document.getElementById('adCreateOrderBtn');
-    if (!btn || !adPaymentSession) return;
-    var existing = adFindOrderByCode(adPaymentSession.orderCode);
-    if (existing) {
-      btn.disabled = true;
-      btn.textContent = 'Đã ghi nhận đơn';
+  function adHasPaidOrder() {
+    if (!adPaymentSession) return false;
+    return !!adFindOrderByCode(adPaymentSession.orderCode);
+  }
+
+  function adNotifyUnpaid() {
+    if (typeof showLabelToast === 'function') {
+      showLabelToast('Bạn chưa ấn thanh toán', '#e67e22');
     } else {
-      btn.disabled = false;
-      btn.textContent = 'Đã thanh toán';
+      alert('Bạn chưa ấn thanh toán');
+    }
+  }
+
+  function adSyncPaymentActions() {
+    var paidBtn = document.getElementById('adCreateOrderBtn');
+    var copyBtn = document.getElementById('adCopyZaloMsg');
+    if (!adPaymentSession) return;
+    var existing = adFindOrderByCode(adPaymentSession.orderCode);
+    if (paidBtn) {
+      if (existing) {
+        paidBtn.disabled = true;
+        paidBtn.textContent = 'Đã ghi nhận đơn';
+      } else {
+        paidBtn.disabled = false;
+        paidBtn.textContent = 'Đã thanh toán';
+      }
+    }
+    if (copyBtn) {
+      if (existing) {
+        copyBtn.classList.remove('pr-btn--locked');
+        copyBtn.removeAttribute('aria-disabled');
+      } else {
+        copyBtn.classList.add('pr-btn--locked');
+        copyBtn.setAttribute('aria-disabled', 'true');
+      }
     }
   }
 
@@ -254,7 +279,7 @@
 
     var existing = adFindOrderByCode(adPaymentSession.orderCode);
     if (existing) {
-      adSyncCreateOrderBtn();
+      adSyncPaymentActions();
       return;
     }
 
@@ -268,7 +293,7 @@
       createdAt: new Date().toISOString()
     });
 
-    adSyncCreateOrderBtn();
+    adSyncPaymentActions();
     if (typeof showLabelToast === 'function') {
       showLabelToast('Đã ghi nhận đơn — gửi bill qua Zalo nhé', '#27ae60');
     }
@@ -314,7 +339,7 @@
       phoneEl.textContent =
         typeof getZaloAdminNum === 'function' ? getZaloAdminNum() : '0792 739 257';
     }
-    adSyncCreateOrderBtn();
+    adSyncPaymentActions();
     adCloseUpgradeModal();
     openPrOverlay('adPaymentModal');
   };
@@ -351,6 +376,10 @@
   });
   document.getElementById('adCopyZaloMsg')?.addEventListener('click', function () {
     if (!adPaymentSession) return;
+    if (!adHasPaidOrder()) {
+      adNotifyUnpaid();
+      return;
+    }
     adCopyText(adBuildZaloMsg(adPaymentSession), document.getElementById('adCopyZaloMsg'));
   });
   document.getElementById('adOpenZaloBtn')?.addEventListener('click', function () {

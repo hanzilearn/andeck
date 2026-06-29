@@ -407,6 +407,17 @@
   box-shadow: 0 4px 16px rgba(230, 126, 34, 0.55);
 }
 
+.pr-btn--copy-zalo.pr-btn--locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pr-btn--copy-zalo.pr-btn--locked:hover {
+  background: #e67e22;
+  box-shadow: none;
+}
+
 .pr-btn--secondary {
   background: transparent;
   color: var(--ink, #1c2b3a);
