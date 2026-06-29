@@ -170,8 +170,10 @@ function _openFlashcardSetup() {
   fcFilterIds = [];
   fcHideReading = false;
   document.getElementById('fc-reading-toggle').className = 'toggle-switch';
-  document.querySelectorAll('#fc-setup-screen .setup-section .option-group .opt-btn').forEach(function (b, i) {
-    b.classList.toggle('active', i === 0);
+  document.querySelectorAll('#fc-setup-screen .setup-section .option-group').forEach(function (group) {
+    group.querySelectorAll('.opt-btn').forEach(function (b, i) {
+      b.classList.toggle('active', i === 0);
+    });
   });
   document.getElementById('fc-custom-count').value = '';
   fcSaveLabelId = activeLabelId || userLabels[0]?.id || 'lbl_default';
