@@ -6,7 +6,7 @@
 <title>Andeck · Quản trị</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f1117;--bg2:#181b23;--bg3:#1e222d;--bg4:#262b38;--border:#2a2f3d;--border2:#353b4d;--text:#e4e6ed;--text2:#9ca0af;--text3:#6b7084;--red:#e74c3c;--gold:#C4A882;--gold2:#a8895c;--green:#2ecc71;--wrong:#e74c3c;--blue:#4da6e8;--blue2:#2980b9;--blue-bg:rgba(77,166,232,.08);--blue-border:rgba(77,166,232,.15)}
+:root{--bg:#0f1117;--bg2:#181b23;--bg3:#1e222d;--bg4:#262b38;--border:#2a2f3d;--border2:#353b4d;--text:#e4e6ed;--text2:#9ca0af;--text3:#6b7084;--red:#e74c3c;--gold:#C4A882;--gold2:#a8895c;--green:#2ecc71;--wrong:#e74c3c;--blue:#4da6e8;--orange:#e67e22;--blue-bg:rgba(77,166,232,.08);--blue-border:rgba(77,166,232,.15)}
 *{box-sizing:border-box;margin:0;padding:0;scrollbar-width:thin;scrollbar-color:#353b4d transparent}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#353b4d;border-radius:3px}
 body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
@@ -32,12 +32,27 @@ body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);colo
 .btn-logout{background:var(--bg3);color:var(--text2);border:1px solid var(--border);border-radius:4px;padding:5px 12px;font-size:10px;font-weight:600;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif}
 .btn-logout:hover{color:var(--wrong);border-color:var(--wrong)}
 
-.main{height:calc(100vh - 44px);overflow:hidden;display:grid;grid-template-columns:270px 1fr}
+.main{height:calc(100vh - 44px);overflow:hidden;display:grid;grid-template-columns:260px 1fr}
 .left-panel{padding:14px;overflow-y:auto;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
-.right-panel{display:flex;flex-direction:column;height:100%;overflow:hidden}
-.panel-head{padding:10px 16px 8px;display:flex;flex-direction:column;align-items:stretch;gap:10px;flex-shrink:0;border-bottom:1px solid var(--border)}
-.panel-head h2,.panel-head-title{font-size:15px;color:var(--text);font-weight:600}
-.panel-scroll{flex:1;overflow-y:auto;padding:0 16px 16px}
+.right-panel{display:flex;flex-direction:column;height:100%;overflow:hidden;min-width:0}
+.panel-head{padding:12px 16px 0;flex-shrink:0;border-bottom:1px solid var(--border);background:var(--bg2)}
+.panel-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-bottom:10px}
+.panel-head-title{font-size:15px;color:var(--text);font-weight:600;margin:0;flex-shrink:0}
+.panel-toolbar-actions{display:flex;align-items:center;gap:8px;flex:1;justify-content:flex-end;min-width:0}
+.panel-search{flex:1;min-width:0;max-width:280px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg3);color:var(--text);font-size:13px;outline:none;font-family:inherit}
+.panel-search:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(196,168,130,.12)}
+.panel-search::placeholder{color:var(--text3)}
+
+.nav-tabs{display:flex;align-items:center;gap:4px;padding:0 0 10px;flex-wrap:wrap}
+.nav-tab{background:none;border:none;padding:6px 2px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;font-family:inherit;transition:color .15s;white-space:nowrap}
+.nav-tab:hover{color:var(--text2)}
+.nav-tab.active{color:var(--gold);font-weight:700}
+.nav-tab.nav-tab--pending.active{color:var(--orange)}
+.nav-tab.nav-tab--done.active{color:var(--green)}
+.nav-tab-sep{color:var(--border2);font-size:11px;user-select:none;padding:0 2px}
+.nav-tab-count{display:inline-block;margin-left:4px;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:rgba(230,126,34,.18);color:var(--orange);vertical-align:middle}
+
+.panel-scroll{flex:1;overflow-y:auto;padding:0 16px 16px;-webkit-overflow-scrolling:touch}
 
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.2)}
 .card-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
@@ -122,20 +137,12 @@ table{width:100%;border-collapse:collapse}
 .admin-legal-footer a:hover{text-decoration:underline}
 body{padding-bottom:32px}
 
-.badge-pending{background:rgba(230,126,34,.12);color:#e67e22}
+.badge-pending{background:rgba(230,126,34,.12);color:var(--orange)}
 .badge-applied{background:rgba(46,204,113,.12);color:var(--green)}
 .badge-refunded{background:rgba(149,165,166,.15);color:#95a5a6}
 
-.tab-bar{display:flex;gap:4px;flex:1;min-width:0}
-.tab-btn{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;flex:1;min-height:40px;white-space:nowrap}
-.tab-btn.active{background:rgba(196,168,130,.15);color:var(--gold);border-color:rgba(196,168,130,.35)}
 .panel-view{display:none;flex-direction:column;height:100%;overflow:hidden;min-height:0}
 .panel-view.active{display:flex}
-.panel-head-row{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;flex-wrap:wrap}
-.panel-head-title{font-size:15px;color:var(--text);font-weight:600;margin:0}
-.panel-tools{display:flex;gap:8px;align-items:center;flex-shrink:0}
-.panel-search{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-size:12px;width:180px;max-width:100%;outline:none;font-family:inherit}
-.panel-search:focus{border-color:var(--gold)}
 
 .order-list{display:flex;flex-direction:column;gap:10px;padding:12px 0}
 .order-empty{text-align:center;padding:32px 16px;color:var(--text3);font-size:12px;background:var(--bg2);border:1px dashed var(--border);border-radius:10px}
@@ -150,25 +157,48 @@ body{padding-bottom:32px}
 
 .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
+.card--chart .chart-bar-group{height:72px}
+
 @media(max-width:900px){
-  .main{grid-template-columns:1fr}
-  .left-panel{display:none}
-  .panel-head{padding:10px 12px;flex-direction:column;align-items:stretch;gap:10px}
-  .panel-head-row{flex-wrap:nowrap}
-  .panel-head-title{font-size:14px}
+  .main{
+    grid-template-columns:1fr;
+    grid-template-rows:auto 1fr;
+    height:calc(100vh - 44px - 32px);
+    height:calc(100dvh - 44px - 32px);
+  }
+  .left-panel{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    padding:10px 12px;
+    border-right:none;
+    border-bottom:1px solid var(--border);
+    overflow:visible;
+    flex-shrink:0;
+  }
+  .card--chart{grid-column:1/-1}
+  .card--chart .chart-bar-group{height:64px}
+  .stat-num{font-size:18px}
+  .panel-head{padding:10px 12px 0}
+  .panel-toolbar{flex-wrap:nowrap;padding-bottom:8px}
+  .panel-head-title{font-size:14px;display:none}
+  .panel-search{max-width:none;flex:1;font-size:14px;min-height:40px}
+  .panel-toolbar-actions{width:100%}
+  .btn-sm#btnAddUser{min-height:40px;padding:8px 12px;flex-shrink:0}
   .panel-scroll{padding:0 12px 16px}
   .header{padding:0 12px}
   .login-box{width:calc(100vw - 32px);max-width:360px;padding:32px 24px}
   .tbl thead th,.tbl tbody td{padding:10px 8px;font-size:10px}
   .btn-sm{min-height:36px;padding:6px 10px;font-size:10px}
+  .nav-tab{font-size:14px;padding:8px 4px}
 }
 @media(max-width:600px){
   .modal{width:calc(100vw - 20px);padding:20px 16px}
   .side-panel{width:100%}
-  .tab-btn{font-size:11px;padding:8px 6px}
   .admin-legal-footer{font-size:10px;padding:10px 8px;line-height:1.5}
   body{padding-bottom:44px}
   .admin-name{display:none}
+  .left-panel{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -203,28 +233,24 @@ body{padding-bottom:32px}
         <div id="ds-compare"></div>
       </div>
     </div>
-    <div class="card"><div class="card-title">TK mới theo tháng</div><div class="chart-bar-group" id="chart"></div></div>
+    <div class="card card--chart"><div class="card-title">TK mới theo tháng</div><div class="chart-bar-group" id="chart"></div></div>
   </div>
   <div class="right-panel">
     <div class="panel-head">
-      <div class="tab-bar">
-        <button type="button" class="tab-btn active" id="tabUsers" onclick="switchTab('users')">Tài khoản</button>
-        <button type="button" class="tab-btn" id="tabPending" onclick="switchTab('pending')">Chờ xử lý</button>
-        <button type="button" class="tab-btn" id="tabDone" onclick="switchTab('done')">Đã xử lý</button>
-      </div>
-      <div class="panel-head-row">
+      <div class="panel-toolbar">
         <h2 class="panel-head-title" id="panelTitle">Danh sách tài khoản</h2>
-        <div class="panel-tools" id="panelUsersTools">
-          <input type="text" id="srch" class="panel-search" placeholder="Tìm email..." oninput="R()">
-          <button class="btn btn-primary btn-sm" onclick="openAdd()">+ Thêm</button>
-        </div>
-        <div class="panel-tools" id="panelPendingTools" style="display:none">
-          <button class="btn btn-outline btn-sm" onclick="loadPendingOrders()">↻ Làm mới</button>
-        </div>
-        <div class="panel-tools" id="panelDoneTools" style="display:none">
-          <button class="btn btn-outline btn-sm" onclick="loadDoneOrders()">↻ Làm mới</button>
+        <div class="panel-toolbar-actions">
+          <input type="search" id="srch" class="panel-search" placeholder="Tìm email..." oninput="onSearch()" autocomplete="off">
+          <button type="button" class="btn btn-primary btn-sm" id="btnAddUser" onclick="openAdd()" title="Thêm tài khoản">+ Thêm</button>
         </div>
       </div>
+      <nav class="nav-tabs" aria-label="Phân loại">
+        <button type="button" class="nav-tab active" id="tabUsers" onclick="switchTab('users')">Tài khoản</button>
+        <span class="nav-tab-sep" aria-hidden="true">·</span>
+        <button type="button" class="nav-tab nav-tab--pending" id="tabPending" onclick="switchTab('pending')">Chờ xử lý<span class="nav-tab-count" id="pendingCount" hidden></span></button>
+        <span class="nav-tab-sep" aria-hidden="true">·</span>
+        <button type="button" class="nav-tab nav-tab--done" id="tabDone" onclick="switchTab('done')">Đã xử lý</button>
+      </nav>
     </div>
     <div id="viewUsers" class="panel-view active">
     <div id="da" class="alert" style="margin:0 16px"></div>
@@ -338,7 +364,37 @@ function doLogout(){
 async function loadAll(){
   var r=await ap('GET','/api/admin/users');
   if(r.ok)US=r.data;
-  R();
+  rSt();rCh();
+  await Promise.all([loadPendingOrders(true),loadDoneOrders(true)]);
+  refreshCurrentView();
+}
+
+function getSearchQuery(){
+  return ((document.getElementById('srch')||{}).value||'').trim().toLowerCase();
+}
+
+function onSearch(){
+  refreshCurrentView();
+}
+
+function refreshCurrentView(){
+  if(activeTab==='users')rTbl();
+  else if(activeTab==='pending')renderOrderCards('orderListPending',filterOrders(PENDING_ORDERS),'pending');
+  else if(activeTab==='done')renderOrderCards('orderListDone',filterOrders(DONE_ORDERS),'done');
+}
+
+function filterOrders(list){
+  var sq=getSearchQuery();
+  if(!sq)return list;
+  return list.filter(function(o){return(o.email||'').toLowerCase().includes(sq);});
+}
+
+function updatePendingBadge(){
+  var el=document.getElementById('pendingCount');
+  if(!el)return;
+  var n=PENDING_ORDERS.length;
+  if(n>0){el.textContent=n;el.hidden=false;}
+  else el.hidden=true;
 }
 
 function uo(){return US.filter(function(u){return u.role!=='admin';});}
@@ -351,7 +407,7 @@ function R(){rTbl();rSt();rCh();}
 
 function rTbl(){
   var tb=document.getElementById('utb');
-  var sq=(document.getElementById('srch')||{}).value||'';sq=sq.trim().toLowerCase();
+  var sq=getSearchQuery();
   var USF=sq?US.filter(function(u){return u.email.toLowerCase().includes(sq);}):US.slice();
   USF=USF.sort(function(a,b){return(b.createdAt||'').localeCompare(a.createdAt||'');});
   if(!USF.length){tb.innerHTML='<tr><td colspan="5" class="empty-row">'+(sq?'Không tìm thấy':'Chưa có')+'</td></tr>';return;}
@@ -517,27 +573,34 @@ function switchTab(tab){
   document.getElementById('viewUsers').classList.toggle('active',tab==='users');
   document.getElementById('viewPending').classList.toggle('active',tab==='pending');
   document.getElementById('viewDone').classList.toggle('active',tab==='done');
-  document.getElementById('panelUsersTools').style.display=tab==='users'?'flex':'none';
-  document.getElementById('panelPendingTools').style.display=tab==='pending'?'flex':'none';
-  document.getElementById('panelDoneTools').style.display=tab==='done'?'flex':'none';
-  var titles={users:'Danh sách tài khoản',pending:'Chờ xử lý',done:'Đã xử lý'};
+  var titles={users:'Danh sách tài khoản',pending:'Đơn chờ xử lý',done:'Đơn đã xử lý'};
   document.getElementById('panelTitle').textContent=titles[tab]||'';
-  if(tab==='pending')loadPendingOrders();
-  if(tab==='done')loadDoneOrders();
+  var ph={users:'Tìm email tài khoản...',pending:'Tìm email đơn chờ...',done:'Tìm email đơn đã xử lý...'};
+  document.getElementById('srch').placeholder=ph[tab]||'Tìm email...';
+  if(tab==='pending'&&!PENDING_ORDERS.length)loadPendingOrders();
+  else if(tab==='done'&&!DONE_ORDERS.length)loadDoneOrders();
+  refreshCurrentView();
 }
 
-async function loadPendingOrders(){
+async function loadPendingOrders(silent){
   var r=await ap('GET','/api/admin/orders?status=pending');
-  if(!r.ok){showA('oa-pending',r.data.error||'Lỗi tải đơn','err');return;}
+  if(!r.ok){
+    if(!silent)showA('oa-pending',r.data.error||'Lỗi tải đơn','err');
+    return;
+  }
   PENDING_ORDERS=r.data.orders||[];
-  renderOrderCards('orderListPending',PENDING_ORDERS,'pending');
+  updatePendingBadge();
+  if(activeTab==='pending')renderOrderCards('orderListPending',filterOrders(PENDING_ORDERS),'pending');
 }
 
-async function loadDoneOrders(){
+async function loadDoneOrders(silent){
   var r=await ap('GET','/api/admin/orders?status=processed');
-  if(!r.ok){showA('oa-done',r.data.error||'Lỗi tải đơn','err');return;}
+  if(!r.ok){
+    if(!silent)showA('oa-done',r.data.error||'Lỗi tải đơn','err');
+    return;
+  }
   DONE_ORDERS=r.data.orders||[];
-  renderOrderCards('orderListDone',DONE_ORDERS,'done');
+  if(activeTab==='done')renderOrderCards('orderListDone',filterOrders(DONE_ORDERS),'done');
 }
 
 function fmtOrderDt(iso){
@@ -548,8 +611,12 @@ function fmtOrderDt(iso){
 function renderOrderCards(containerId,orders,mode){
   var el=document.getElementById(containerId);
   if(!el)return;
+  var sq=getSearchQuery();
   if(!orders.length){
-    el.innerHTML='<div class="order-empty">'+(mode==='pending'?'Không có đơn chờ xử lý':'Chưa có đơn đã xử lý')+'</div>';
+    var emptyMsg=mode==='pending'
+      ?(sq?'Không có đơn chờ khớp email':'Không có đơn chờ xử lý')
+      :(sq?'Không có đơn đã xử lý khớp email':'Chưa có đơn đã xử lý');
+    el.innerHTML='<div class="order-empty">'+emptyMsg+'</div>';
     return;
   }
   el.innerHTML=orders.map(function(o){
@@ -583,7 +650,6 @@ async function verifyOrder(id){
   var r=await ap('POST','/api/admin/orders/'+encodeURIComponent(id)+'/verify',{});
   if(!r.ok){showA('oa-pending',r.data.error||'Lỗi kích hoạt','err');return;}
   showA('oa-pending','Đã kích hoạt '+r.data.user.email,'ok');
-  await loadPendingOrders();
   await loadAll();
 }
 
@@ -591,7 +657,6 @@ async function refundOrder(id){
   var r=await ap('POST','/api/admin/orders/'+encodeURIComponent(id)+'/refund',{});
   if(!r.ok){showA('oa-done',r.data.error||'Lỗi hoàn trả','err');return;}
   showA('oa-done','Đã hoàn trả '+r.data.user.email,'ok');
-  await loadDoneOrders();
   await loadAll();
 }
 
@@ -618,8 +683,12 @@ document.querySelectorAll('.m-ov').forEach(function(el){el.addEventListener('cli
 
 <footer class="admin-legal-footer">
   <a href="/">← Về app</a> ·
-  <a href="/terms">Điều khoản</a> ·
-  <a href="/privacy">Bảo mật</a>
+  <a href="/terms.html">Điều khoản</a> ·
+  <a href="/privacy.html">Bảo mật</a> ·
+  <a href="/refund.html">Hoàn tiền</a> ·
+  <a href="mailto:support@andeck.vn">support@andeck.vn</a> ·
+  Zalo: <a href="https://zalo.me/0792739257">0792 739 257</a> ·
+  MST: [Đang cập nhật]
 </footer>
 </body>
 </html>

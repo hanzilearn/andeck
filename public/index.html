@@ -17,9 +17,10 @@
 <link rel="stylesheet" href="stylecss/flashcard.css">
 <link rel="stylesheet" href="stylecss/timer.css">
 <link rel="stylesheet" href="stylecss/pricing.css">
+<link rel="stylesheet" href="stylecss/legal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
 </head>
-<body>
+<body class="has-site-footer">
 <noscript>Andeck cần bật JavaScript để hoạt động.</noscript>
 
 <!-- ==================== LOGIN ==================== -->
@@ -72,7 +73,7 @@
     </div>
     <label class="register-consent">
       <input type="checkbox" id="reg-consent">
-      <span>Tôi đồng ý Điều khoản sử dụng và Chính sách bảo mật.</span>
+      <span>Tôi đồng ý <a href="/terms.html" target="_blank" rel="noopener noreferrer">Điều khoản sử dụng</a> và <a href="/privacy.html" target="_blank" rel="noopener noreferrer">Chính sách bảo mật</a>.</span>
     </label>
     <button type="button" class="btn-login" onclick="doRegister()">ĐĂNG KÝ</button>
     <div class="login-error" id="register-error"></div>
@@ -95,10 +96,22 @@
       <button type="button" class="avatar-btn" id="avatar-btn" onclick="toggleAvatar()"></button>
       <div class="avatar-dropdown" id="avatar-dropdown">
         <div class="avatar-dd-email" id="dd-email"></div>
-        <div class="avatar-dd-item" id="adAvatarUpgradeBtn">⬆ Nâng cấp gói</div>
-        <div class="avatar-dd-item" id="adAvatarOrdersBtn">📋 Đơn hàng</div>
-        <div class="avatar-dd-item" onclick="showChangePassword()">🔑 Đổi mật khẩu</div>
-        <div class="avatar-dd-item danger" onclick="logout()">↪ Đăng xuất</div>
+        <div class="avatar-dd-item" id="adAvatarUpgradeBtn">
+          <span class="avatar-dd-icon" aria-hidden="true"><i class="ti ti-arrow-big-up-lines"></i></span>
+          Nâng cấp gói
+        </div>
+        <div class="avatar-dd-item" id="adAvatarOrdersBtn">
+          <span class="avatar-dd-icon" aria-hidden="true"><i class="ti ti-receipt"></i></span>
+          Đơn hàng
+        </div>
+        <div class="avatar-dd-item" onclick="showChangePassword()">
+          <span class="avatar-dd-icon" aria-hidden="true"><i class="ti ti-key"></i></span>
+          Đổi mật khẩu
+        </div>
+        <div class="avatar-dd-item danger" onclick="logout()">
+          <span class="avatar-dd-icon" aria-hidden="true"><i class="ti ti-logout"></i></span>
+          Đăng xuất
+        </div>
       </div>
     </div>
   </div>
@@ -819,8 +832,8 @@
         </div>
       </div>
       <label class="pr-consent">
-        <input type="checkbox" id="adPaymentConsent" disabled>
-        <span>Đồng ý <a href="#" tabindex="-1">điều khoản</a> và <a href="#" tabindex="-1">chính sách hoàn tiền</a> (Giai đoạn 3)</span>
+        <input type="checkbox" id="adPaymentConsent">
+        <span>Đồng ý <a href="/terms.html" target="_blank" rel="noopener noreferrer">điều khoản</a> và <a href="/refund.html" target="_blank" rel="noopener noreferrer">chính sách hoàn tiền</a></span>
       </label>
     </div>
   </div>
@@ -892,5 +905,14 @@
 <script src="modules/deck-features/editor.js"></script>
 <script src="modules/deck-features/bootstrap.js"></script>
 <script src="modules/10-pricing.js"></script>
+
+<footer class="site-legal-footer">
+  <a href="/terms.html">Điều khoản</a> ·
+  <a href="/privacy.html">Bảo mật</a> ·
+  <a href="/refund.html">Hoàn tiền</a> ·
+  <a href="mailto:support@andeck.vn">support@andeck.vn</a> ·
+  Zalo: <a href="https://zalo.me/0792739257">0792 739 257</a> ·
+  MST: [Đang cập nhật]
+</footer>
 </body>
 </html>

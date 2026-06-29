@@ -235,6 +235,24 @@
     }
   }
 
+  function adNotifyConsentRequired() {
+    if (typeof showLabelToast === 'function') {
+      showLabelToast('Vui lòng đồng ý điều khoản và chính sách hoàn tiền', '#e67e22');
+    } else {
+      alert('Vui lòng đồng ý điều khoản và chính sách hoàn tiền');
+    }
+  }
+
+  function adHasPaymentConsent() {
+    var el = document.getElementById('adPaymentConsent');
+    return !!(el && el.checked);
+  }
+
+  function adResetPaymentConsent() {
+    var el = document.getElementById('adPaymentConsent');
+    if (el) el.checked = false;
+  }
+
   function adSyncPaymentActions() {
     var paidBtn = document.getElementById('adCreateOrderBtn');
     var copyBtn = document.getElementById('adCopyZaloMsg');
@@ -278,6 +296,11 @@
 
     if (typeof getAuthToken !== 'function' || !getAuthToken()) {
       adNotify('Vui lòng đăng nhập để tạo đơn.', 'err');
+      return;
+    }
+
+    if (!adHasPaymentConsent()) {
+      adNotifyConsentRequired();
       return;
     }
 
@@ -377,6 +400,7 @@
       adPaymentSession.orderId = pending.id;
     }
 
+    adResetPaymentConsent();
     adSyncPaymentActions();
     adCloseUpgradeModal();
     openPrOverlay('adPaymentModal');

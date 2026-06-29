@@ -1,0 +1,190 @@
+/* legal.css — Trang Terms / Privacy / Refund (Stone theme) */
+:root {
+  --legal-bg: #f5f0e8;
+  --legal-paper: #fff;
+  --legal-ink: #1c2b3a;
+  --legal-muted: #5a6a7a;
+  --legal-accent: #3a4a5c;
+  --legal-gold: #c4a882;
+  --legal-border: rgba(122, 143, 166, 0.22);
+  --legal-font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body.legal-page {
+  font-family: var(--legal-font);
+  background: var(--legal-bg);
+  color: var(--legal-ink);
+  line-height: 1.65;
+  font-size: 15px;
+  min-height: 100vh;
+  padding-bottom: 88px;
+}
+
+.legal-header {
+  background: var(--legal-paper);
+  border-bottom: 1px solid var(--legal-border);
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.legal-header a {
+  color: var(--legal-accent);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.legal-header a:hover { text-decoration: underline; }
+
+.legal-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 20px 40px;
+}
+
+.legal-wrap h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--legal-accent);
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.legal-meta {
+  font-size: 13px;
+  color: var(--legal-muted);
+  margin-bottom: 28px;
+}
+
+.legal-wrap h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--legal-ink);
+  margin: 28px 0 10px;
+}
+
+.legal-wrap p,
+.legal-wrap li {
+  margin-bottom: 10px;
+  color: var(--legal-ink);
+}
+
+.legal-wrap ul {
+  padding-left: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.legal-wrap a {
+  color: var(--legal-accent);
+}
+
+.legal-box {
+  background: var(--legal-paper);
+  border: 1px solid var(--legal-border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 12px 0 16px;
+  background: var(--legal-paper);
+  border: 1px solid var(--legal-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.legal-table th,
+.legal-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--legal-border);
+  vertical-align: top;
+}
+
+.legal-table th {
+  background: #ede8dc;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.legal-table tr:last-child td { border-bottom: none; }
+
+.legal-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  text-align: center;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--legal-muted);
+  background: var(--legal-paper);
+  border-top: 1px solid var(--legal-border);
+  line-height: 1.5;
+}
+
+.legal-footer a {
+  color: var(--legal-accent);
+  text-decoration: none;
+  margin: 0 4px;
+}
+
+.legal-footer a:hover { text-decoration: underline; }
+
+/* Footer trên index.html / admin */
+.site-legal-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--gray, #8a9bac);
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid rgba(122, 143, 166, 0.2);
+  line-height: 1.5;
+}
+
+.site-legal-footer a {
+  color: var(--red-dark, #3a4a5c);
+  text-decoration: none;
+  margin: 0 4px;
+}
+
+.site-legal-footer a:hover { text-decoration: underline; }
+
+[data-theme="dark"] .site-legal-footer {
+  background: rgba(28, 35, 45, 0.96);
+  color: #9ca0af;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .site-legal-footer a { color: var(--gold, #c4a882); }
+
+body.has-site-footer { padding-bottom: 52px; }
+
+body.has-site-footer .zalo-float {
+  bottom: 56px;
+}
+
+@media (max-width: 480px) {
+  .legal-wrap { padding: 20px 16px 32px; }
+  .legal-wrap h1 { font-size: 22px; }
+  .legal-table { font-size: 13px; }
+  .legal-table th,
+  .legal-table td { padding: 8px 10px; }
+  .legal-footer,
+  .site-legal-footer { font-size: 10px; padding: 10px 8px; }
+}

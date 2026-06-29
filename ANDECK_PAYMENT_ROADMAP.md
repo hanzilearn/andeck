@@ -381,12 +381,12 @@ Hub quota pool display (mock). QA checklist §1D. Chưa backend. Tick checklist 
 
 **Deliverables:**
 
-- [ ] `public/terms.html` — Điều khoản sử dụng
-- [ ] `public/privacy.html` — Chính sách bảo mật (Luật BVDLCN 2026)
-- [ ] `public/refund.html` — Hoàn tiền (chưa kích hoạt / lỗi hệ thống / đã dùng pool)
-- [ ] Footer `index.html` + `admin.html`: link 3 trang + email + Zalo (+ placeholder MST nếu chưa có HKD)
-- [ ] Checkbox bắt buộc trước **Đã thanh toán** (đổi từ *Tạo đơn* — G3)
-- [ ] Cập nhật link checkbox **Đăng ký** → trang thật
+- [x] `public/terms.html` — Điều khoản sử dụng
+- [x] `public/privacy.html` — Chính sách bảo mật (Luật BVDLCN 2026)
+- [x] `public/refund.html` — Hoàn tiền (chưa kích hoạt / lỗi hệ thống / đã dùng pool)
+- [x] Footer `index.html` + `admin.html`: link 3 trang + email + Zalo (+ placeholder MST nếu chưa có HKD)
+- [x] Checkbox bắt buộc trước **Đã thanh toán** (đổi từ *Tạo đơn* — G3)
+- [x] Cập nhật link checkbox **Đăng ký** → trang thật
 
 **Go-live tối thiểu:** Giai đoạn **2 + 3** xong. Giai đoạn 1 có thể deploy riêng để preview UI.
 
@@ -854,6 +854,7 @@ Soạn terms.html, privacy.html, refund.html + footer. Link checkbox register + 
 | 29/06/2026 | **UI polish sau 1D:** hub Tải lên File, bỏ Nâng cấp hub, modal quota mới, payment **Đã thanh toán** + Copy gate, mock đơn theo email |
 | 29/06/2026 | **Roadmap G2 cập nhật:** §0.3.2 UI chốt, checklist nối API, template Zalo `Email:`, test đa tài khoản |
 | 29/06/2026 | **Giai đoạn 2 xong:** packages.js, Order model, totalWordQuota + migration, API orders/admin verify, pool quota backend, admin tab Đơn chờ, `10-pricing.js` nối API (bỏ sessionStorage mock) |
+| 29/06/2026 | **Giai đoạn 3 xong:** terms.html, privacy.html, refund.html, legal.css, footer index/admin, checkbox đăng ký + thanh toán (consent bắt buộc trước POST đơn) |
 
 ---
 

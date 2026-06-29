@@ -172,8 +172,20 @@
   transition: background 0.15s;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
+.avatar-dd-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--gold);
+}
+.avatar-dd-item.danger .avatar-dd-icon { color: var(--wrong); }
 .avatar-dd-item:hover { background: rgba(122, 143, 166, 0.08); }
 .avatar-dd-item.danger { color: var(--wrong); }
 
@@ -244,6 +256,8 @@
   color: var(--color-text-secondary);
 }
 [data-theme="dark"] .avatar-dd-item { color: var(--ink); }
+[data-theme="dark"] .avatar-dd-icon { color: var(--gold-light); }
+[data-theme="dark"] .avatar-dd-item.danger .avatar-dd-icon { color: var(--wrong); }
 
 @media (max-width: 600px) {
   .login-card {
