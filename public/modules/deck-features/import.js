@@ -347,13 +347,20 @@ function adImportOpenModal(mode) {
   adImportApplyModeUI();
   adImportUpdateWordCountDisplay();
   const overlay = document.getElementById('importWordOverlay');
-  if (overlay) overlay.style.display = 'flex';
-  document.getElementById('importJsonInput')?.focus();
+  if (overlay) {
+    overlay.style.display = 'flex';
+    const body = overlay.querySelector('.iw-body');
+    if (body) body.scrollTop = 0;
+  }
 }
 
 function adImportCloseModal() {
   const overlay = document.getElementById('importWordOverlay');
-  if (overlay) overlay.style.display = 'none';
+  if (overlay) {
+    overlay.style.display = 'none';
+    const body = overlay.querySelector('.iw-body');
+    if (body) body.scrollTop = 0;
+  }
   const input = document.getElementById('importJsonInput');
   if (input) input.value = '';
   const nameInput = document.getElementById('importDeckNameInput');
