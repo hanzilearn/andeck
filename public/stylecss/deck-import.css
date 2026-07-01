@@ -333,7 +333,7 @@
 }
 
 [data-theme="dark"] .iw-step-num {
-  background: var(--red-light);
+  background: var(--gold);
   color: #fff;
 }
 
@@ -345,9 +345,9 @@
 }
 
 [data-theme="dark"] .iw-notice {
-  background: rgba(122, 143, 166, 0.12);
-  color: var(--color-text-secondary);
-  border-color: rgba(122, 143, 166, 0.35);
+  background: rgba(241, 196, 15, 0.14);
+  color: #e8dcc8;
+  border-color: rgba(212, 160, 23, 0.4);
 }
 
 [data-theme="dark"] .iw-prompt-preview {

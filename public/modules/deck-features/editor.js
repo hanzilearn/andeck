@@ -333,8 +333,15 @@ function awOpenEdit(wordId) {
   document.getElementById('aw-primary').focus();
 }
 
+function awIsWordModalOpen() {
+  const el = document.getElementById('addWordOverlay');
+  return !!el && el.style.display === 'flex';
+}
+
 function awClose() {
   document.getElementById('addWordOverlay').style.display = 'none';
+  awModalPointerDownEl = null;
+  awBackdropPointerDown = false;
   awSetModalMode('add');
 }
 
@@ -613,13 +620,68 @@ async function adExportDeckJson() {
   }
 }
 
+function awCancelClick() {
+  if (awModalPointerDownEl) {
+    const tag = awModalPointerDownEl.tagName;
+    if (
+      tag === 'INPUT' ||
+      tag === 'TEXTAREA' ||
+      (awModalPointerDownEl.closest && awModalPointerDownEl.closest('.aw-input'))
+    ) {
+      return;
+    }
+  }
+  awClose();
+}
+
+let awModalPointerDownEl = null;
+let awBackdropPointerDown = false;
+
 function initEditorModals() {
   if (adEditorInited) return;
   adEditorInited = true;
 
-  document.getElementById('addWordOverlay')?.addEventListener('click', function (e) {
-    if (e.target.id === 'addWordOverlay') awClose();
+  const overlay = document.getElementById('addWordOverlay');
+  const modal = document.getElementById('addWordModal');
+
+  modal?.addEventListener('mousedown', function (e) {
+    awModalPointerDownEl = e.target;
   });
+
+  overlay?.addEventListener('mousedown', function (e) {
+    awBackdropPointerDown = e.target.id === 'addWordOverlay';
+  });
+
+  overlay?.addEventListener('click', function (e) {
+    if (e.target.id === 'addWordOverlay' && awBackdropPointerDown) awClose();
+    awBackdropPointerDown = false;
+  });
+
+  overlay?.addEventListener('auxclick', function (e) {
+    if (e.button === 3 || e.button === 4) e.preventDefault();
+  });
+
+  document.addEventListener(
+    'keydown',
+    function (e) {
+      if (!awIsWordModalOpen()) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        awClose();
+        return;
+      }
+      if (e.key !== 'Backspace' && e.key !== 'Delete') return;
+      const t = e.target;
+      const inField =
+        t &&
+        (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') &&
+        t.closest('#addWordModal');
+      if (inField) return;
+      e.preventDefault();
+    },
+    true
+  );
+
   document.getElementById('deleteConfirmOverlay')?.addEventListener('click', function (e) {
     if (e.target.id === 'deleteConfirmOverlay') dmCancelDialog();
   });
