@@ -7,7 +7,6 @@ let adImportModalInited = false;
 let adImportSaving = false;
 let adImportMode = 'create';
 let adImportPromptText = '';
-let adImportActiveTab = 'ai';
 
 function adBuildImportPrompt(profile) {
   if (!profile) {
@@ -219,38 +218,6 @@ function adImportGetAppendContext() {
   };
 }
 
-function adImportSetTab(tab) {
-  adImportActiveTab = tab === 'file' ? 'file' : 'ai';
-  const aiTab = document.getElementById('importTabAi');
-  const fileTab = document.getElementById('importTabFile');
-  const aiPanel = document.getElementById('importAiPanel');
-  const filePanel = document.getElementById('importFilePanel');
-  const subtitleEl = document.querySelector('#importWordOverlay .iw-subtitle');
-
-  if (aiTab) {
-    aiTab.classList.toggle('is-active', adImportActiveTab === 'ai');
-    aiTab.setAttribute('aria-selected', adImportActiveTab === 'ai' ? 'true' : 'false');
-  }
-  if (fileTab) {
-    fileTab.classList.toggle('is-active', adImportActiveTab === 'file');
-    fileTab.setAttribute('aria-selected', adImportActiveTab === 'file' ? 'true' : 'false');
-  }
-  if (aiPanel) aiPanel.hidden = adImportActiveTab !== 'ai';
-  if (filePanel) filePanel.hidden = adImportActiveTab !== 'file';
-
-  if (subtitleEl) {
-    const isAppend = adImportMode === 'append';
-    subtitleEl.textContent =
-      adImportActiveTab === 'file'
-        ? 'Upload CSV, Excel, JSON hoặc PDF bảng — map cột và lưu thẳng'
-        : isAppend
-          ? 'Import JSON vào deck đang học'
-          : 'Dùng AI để chuyển file Excel/Sheet về đúng định dạng Andeck';
-  }
-
-  adImportUpdateWordCountDisplay();
-}
-
 function adImportApplyModeUI() {
   const isAppend = adImportMode === 'append';
   const nameBlock = document.getElementById('importDeckNameBlock');
@@ -265,15 +232,12 @@ function adImportApplyModeUI() {
   }
   if (subtitleEl) {
     subtitleEl.textContent = isAppend
-      ? 'Import JSON vào deck đang học'
-      : adImportActiveTab === 'file'
-        ? 'Upload CSV, Excel, JSON hoặc PDF bảng — map cột và lưu thẳng'
-        : 'Dùng AI để chuyển file Excel/Sheet về đúng định dạng Andeck';
+      ? 'Import JSON v\u00e0o deck \u0111ang h\u1ecdc'
+      : 'D\u00f9ng AI \u0111\u1ec3 chuy\u1ec3n file Excel/Sheet v\u1ec1 \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng Andeck';
   }
 
   adImportRefreshPrompt();
   adImportUpdateQuotaDisplay();
-  adImportSetTab(adImportActiveTab);
 }
 
 function adImportRefreshPrompt() {
@@ -324,10 +288,6 @@ function adImportUpdateQuotaDisplay() {
 }
 
 function adImportUpdateWordCountDisplay() {
-  if (adImportActiveTab === 'file') {
-    if (typeof adFileUpdatePreview === 'function') adFileUpdatePreview();
-    return;
-  }
   const span = document.getElementById('importWordCount');
   const input = document.getElementById('importJsonInput');
   if (!span || !input) return;
@@ -405,8 +365,6 @@ function adImportCloseModal() {
   if (input) input.value = '';
   const nameInput = document.getElementById('importDeckNameInput');
   if (nameInput) nameInput.value = '';
-  adImportActiveTab = 'ai';
-  if (typeof adFileResetState === 'function') adFileResetState(true);
   adImportMode = 'create';
   adImportApplyModeUI();
   adImportUpdateWordCountDisplay();
@@ -630,25 +588,15 @@ async function adImportSubmit() {
   if (adImportSaving) return;
   const submitBtn = document.getElementById('importSubmitBtn');
   const submitLabel = submitBtn?.textContent || 'Xem tr\u01b0\u1edbc & L\u01b0u';
+  const input = document.getElementById('importJsonInput');
   const langPair = adImportGetLangPairForParse();
-  let parsed;
-
-  if (adImportActiveTab === 'file') {
-    parsed = typeof adImportFileGetParsed === 'function' ? adImportFileGetParsed() : { ok: false, count: 0 };
-  } else {
-    const input = document.getElementById('importJsonInput');
-    parsed = adImportParseJson(input?.value || '', langPair);
-  }
+  const parsed = adImportParseJson(input?.value || '', langPair);
   if (parsed.error === 'legacy-zh-only') {
     alert('JSON format Hanzi legacy (hanzi/pinyin) chỉ import được vào deck zh-vi.');
     return;
   }
   if (!parsed.ok || parsed.count === 0) {
-    alert(
-      adImportActiveTab === 'file'
-        ? 'Chưa có từ hợp lệ. Chọn file và map cột primary + meaning.'
-        : 'Kh\u00f4ng c\u00f3 t\u1eeb h\u1ee3p l\u1ec7, vui l\u00f2ng ki\u1ec3m tra l\u1ea1i'
-    );
+    alert('Kh\u00f4ng c\u00f3 t\u1eeb h\u1ee3p l\u1ec7, vui l\u00f2ng ki\u1ec3m tra l\u1ea1i');
     return;
   }
   if (adImportMode === 'append') {
@@ -680,15 +628,7 @@ function initAdImportModal() {
   document.getElementById('importLangPairSelect')?.addEventListener('change', function () {
     adImportRefreshPrompt();
     adImportUpdateWordCountDisplay();
-    if (typeof adFileUpdatePreview === 'function') adFileUpdatePreview();
   });
-  document.getElementById('importTabAi')?.addEventListener('click', function () {
-    adImportSetTab('ai');
-  });
-  document.getElementById('importTabFile')?.addEventListener('click', function () {
-    adImportSetTab('file');
-  });
-  if (typeof initAdImportFileTab === 'function') initAdImportFileTab();
   document.getElementById('importWordOverlay')?.addEventListener('click', function (e) {
     if (e.target.id === 'importWordOverlay') adImportCloseModal();
   });
