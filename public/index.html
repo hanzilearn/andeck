@@ -623,6 +623,22 @@
       <button type="button" class="iw-close" id="importModalClose" aria-label="Đóng"><i class="ti ti-x"></i></button>
     </header>
     <div class="iw-body">
+      <div class="iw-tabs" role="tablist" aria-label="Cách import">
+        <button type="button" class="iw-tab is-active" id="importTabAi" role="tab" aria-selected="true" aria-controls="importAiPanel">AI / JSON</button>
+        <button type="button" class="iw-tab" id="importTabFile" role="tab" aria-selected="false" aria-controls="importFilePanel">Chọn file</button>
+      </div>
+      <div class="iw-notice" role="note">⚠️ Kiểm tra giới hạn từ trước khi up file — liên hệ admin để gia hạn số lượng từ</div>
+      <div class="iw-block" id="importLangPairBlock">
+        <label class="iw-label" for="importLangPairSelect">Cặp ngôn ngữ</label>
+        <select id="importLangPairSelect" class="iw-name-input">
+          <option value="" disabled selected>Đang tải...</option>
+        </select>
+      </div>
+      <div class="iw-block" id="importDeckNameBlock">
+        <label class="iw-label" for="importDeckNameInput">Tên deck</label>
+        <input type="text" id="importDeckNameInput" class="iw-name-input" maxlength="50" placeholder="Để trống = tự động (Import ngày-tháng-năm)" autocomplete="off">
+      </div>
+      <div id="importAiPanel" class="iw-tab-panel" role="tabpanel">
       <ol class="iw-steps">
         <li class="iw-step">
           <span class="iw-step-num">1</span>
@@ -646,13 +662,6 @@
           </div>
         </li>
       </ol>
-      <div class="iw-notice" role="note">⚠️ Kiểm tra giới hạn từ trước khi up file — liên hệ admin để gia hạn số lượng từ</div>
-      <div class="iw-block" id="importLangPairBlock">
-        <label class="iw-label" for="importLangPairSelect">Cặp ngôn ngữ</label>
-        <select id="importLangPairSelect" class="iw-name-input">
-          <option value="" disabled selected>Đang tải...</option>
-        </select>
-      </div>
       <div class="iw-block">
         <div class="iw-block-head">
           <label class="iw-label" for="importPromptPreview">Prompt mẫu</label>
@@ -660,16 +669,32 @@
         </div>
         <pre id="importPromptPreview" class="iw-prompt-preview" aria-readonly="true"></pre>
       </div>
-      <div class="iw-block" id="importDeckNameBlock">
-        <label class="iw-label" for="importDeckNameInput">Tên deck</label>
-        <input type="text" id="importDeckNameInput" class="iw-name-input" maxlength="50" placeholder="Để trống = tự động (Import ngày-tháng-năm)" autocomplete="off">
-      </div>
       <div class="iw-block">
         <div class="iw-block-head">
           <label class="iw-label" for="importJsonInput">Dán JSON vào đây</label>
           <span class="iw-word-count" id="importWordCount">0 từ hợp lệ</span>
         </div>
         <textarea id="importJsonInput" class="iw-json-input" rows="10" spellcheck="false" placeholder='[{"primary":"hello","reading":"","meaning":"xin chào",...}]'></textarea>
+      </div>
+      </div>
+      <div id="importFilePanel" class="iw-tab-panel" role="tabpanel" hidden>
+        <p class="iw-file-intro">Upload CSV, Excel, JSON hoặc PDF bảng từ — không cần AI. Map cột rồi lưu.</p>
+        <input type="file" id="importFileInput" class="iw-file-input-hidden" accept=".csv,.tsv,.txt,.json,.xlsx,.xls,.pdf" aria-hidden="true">
+        <div class="iw-file-drop" id="importFileDrop">
+          <span class="iw-file-drop-icon" aria-hidden="true"><i class="ti ti-file-upload"></i></span>
+          <p class="iw-file-drop-title">Kéo thả file vào đây</p>
+          <p class="iw-file-drop-hint">CSV · TSV · Excel · JSON · PDF (bảng text)</p>
+          <button type="button" class="iw-copy-btn" id="importFilePickBtn">Chọn file</button>
+        </div>
+        <p class="iw-file-status" id="importFileStatus" aria-live="polite"></p>
+        <div id="importFileMapping" class="iw-file-mapping" style="display:none"></div>
+        <div class="iw-block">
+          <div class="iw-block-head">
+            <span class="iw-label">Xem trước</span>
+            <span class="iw-word-count" id="importFileWordCount">0 từ hợp lệ</span>
+          </div>
+          <div id="importFilePreview" class="iw-file-preview"></div>
+        </div>
       </div>
     </div>
     <footer class="iw-footer">
@@ -898,6 +923,7 @@
 <script src="modules/08-flashcard.js"></script>
 <script src="modules/09-timer.js"></script>
 <script src="modules/deck-features/core.js"></script>
+<script src="modules/deck-features/import-file.js"></script>
 <script src="modules/deck-features/import.js"></script>
 <script src="modules/deck-features/editor.js"></script>
 <script src="modules/deck-features/bootstrap.js"></script>
