@@ -2,7 +2,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET, DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA } = require('../config');
+const { JWT_SECRET, DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA, DEFAULT_TOTAL_WORD_QUOTA } = require('../config');
 const User = require('../models/user');
 const { auth } = require('../middleware/auth');
 const { loginLimiter, registerLimiter, checkRateLimit } = require('../middleware/rate-limit');
@@ -40,8 +40,8 @@ router.post('/register', registerLimiter, async (req, res) => {
       role: 'user',
       type: 'user',
       deckQuota: DEFAULT_DECK_QUOTA,
-      wordQuota: DEFAULT_WORD_QUOTA,
-      totalWordQuota: DEFAULT_DECK_QUOTA * DEFAULT_WORD_QUOTA
+      wordQuota: DEFAULT_TOTAL_WORD_QUOTA,
+      totalWordQuota: DEFAULT_TOTAL_WORD_QUOTA
     });
 
     res.json({ message: 'Đăng ký thành công! Vui lòng đăng nhập.' });

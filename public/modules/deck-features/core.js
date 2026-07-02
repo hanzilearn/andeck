@@ -8,8 +8,8 @@ const AD_DEFAULT_NAME = 'Deck mới';
 window.AD = {
   decks: [],
   deckQuota: 3,
-  wordQuota: 50,
-  totalWordQuota: null,
+  wordQuota: 80,
+  totalWordQuota: 80,
   totalWords: 0
 };
 
@@ -25,8 +25,8 @@ let adModalsInited = false;
 function adResetSessionState() {
   AD.decks = [];
   AD.deckQuota = 3;
-  AD.wordQuota = 50;
-  AD.totalWordQuota = null;
+  AD.wordQuota = 80;
+  AD.totalWordQuota = 80;
   AD.totalWords = 0;
   adDecksLoadedOnce = false;
   adSessionEmail = null;

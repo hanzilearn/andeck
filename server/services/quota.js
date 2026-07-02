@@ -1,10 +1,10 @@
 // server/services/quota.js — pool từ tổng (totalWordQuota)
 const User = require('../models/user');
 const Deck = require('../models/deck');
-const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA } = require('../config');
+const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA, DEFAULT_TOTAL_WORD_QUOTA } = require('../config');
 
 function resolveTotalWordQuota(user) {
-  if (!user) return DEFAULT_DECK_QUOTA * DEFAULT_WORD_QUOTA;
+  if (!user) return DEFAULT_TOTAL_WORD_QUOTA;
   if (user.totalWordQuota != null && user.totalWordQuota >= 0) {
     return user.totalWordQuota;
   }

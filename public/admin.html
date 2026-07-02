@@ -278,7 +278,7 @@ table{width:100%;border-collapse:collapse}
   <div class="field"><label>Zalo (tuỳ chọn)</label><input type="text" id="a-zalo" placeholder="vd: 0901234567"></div>
   <div class="sp-quota-row">
     <div class="field"><label>Giới hạn deck</label><input type="number" id="a-dq" min="0" value="3"></div>
-    <div class="field"><label>Từ / deck</label><input type="number" id="a-wq" min="0" value="50"></div>
+    <div class="field"><label>Từ / deck</label><input type="number" id="a-wq" min="0" value="80"></div>
   </div>
   <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="doAdd()">Tạo tài khoản</button>
 </div></div>
@@ -409,7 +409,7 @@ function rTbl(){
   tb.innerHTML=USF.map(function(u,i){
     var isAdmin=u.role==='admin';
     var nm=u.email+(u.zalo?' <span style="color:var(--text3);font-size:9px">· '+escH(u.zalo)+'</span>':'')+(isAdmin?' <span class="badge badge-admin">Admin</span>':'');
-    var quota=(u.deckQuota??3)+' deck · '+(u.totalWordQuota!=null?u.totalWordQuota:(u.deckQuota??3)*(u.wordQuota??50))+' từ';
+    var quota=(u.deckQuota??3)+' deck · '+(u.totalWordQuota!=null?u.totalWordQuota:(u.deckQuota??3)*(u.wordQuota??80))+' từ';
     var em=encodeURIComponent(u.email);
     var acts='';
     if(!isAdmin){acts='<button class="btn btn-sm btn-outline" onclick="openSp(\''+em+'\')">Chi tiết</button><button class="btn btn-sm btn-danger" onclick="dU(\''+em+'\')">Xóa</button>';}
@@ -447,7 +447,7 @@ function openAdd(){
   document.getElementById('a-pw').value='';
   document.getElementById('a-zalo').value='';
   document.getElementById('a-dq').value='3';
-  document.getElementById('a-wq').value='50';
+  document.getElementById('a-wq').value='80';
   document.getElementById('a-al').className='alert';
   document.getElementById('m-add').classList.add('show');
 }
@@ -457,7 +457,7 @@ async function doAdd(){
   var dq=parseInt(document.getElementById('a-dq').value,10),wq=parseInt(document.getElementById('a-wq').value,10);
   if(!em||!em.includes('@')){al.className='alert err';al.textContent='Email không hợp lệ';return;}
   if(!pw||pw.length<4){al.className='alert err';al.textContent='MK tối thiểu 4 ký tự';return;}
-  var r=await ap('POST','/api/admin/users',{email:em,password:pw,zalo:zl,deckQuota:isNaN(dq)?3:dq,wordQuota:isNaN(wq)?50:wq});
+  var r=await ap('POST','/api/admin/users',{email:em,password:pw,zalo:zl,deckQuota:isNaN(dq)?3:dq,wordQuota:isNaN(wq)?80:wq});
   if(!r.ok){al.className='alert err';al.textContent=r.data.error;return;}
   al.className='alert ok';al.textContent=r.data.message;
   setTimeout(async function(){cm('m-add');await loadAll();},1200);
@@ -492,7 +492,7 @@ function setSpDeckCount(n){document.getElementById('input-deck-count').value=n!=
 function setSpQuota(u){
   if(!u){document.getElementById('input-deck-quota').value='';document.getElementById('input-word-quota').value='';setSpDeckCount(0);return;}
   document.getElementById('input-deck-quota').value=u.deckQuota??3;
-  document.getElementById('input-word-quota').value=u.wordQuota??50;
+  document.getElementById('input-word-quota').value=u.wordQuota??80;
 }
 
 async function openSp(emEnc){

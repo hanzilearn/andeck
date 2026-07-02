@@ -6,7 +6,7 @@ const Deck = require('../models/deck');
 const Star = require('../models/star');
 const Item = require('../models/item');
 const { auth, adminOnly } = require('../middleware/auth');
-const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA } = require('../config');
+const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA, DEFAULT_TOTAL_WORD_QUOTA } = require('../config');
 const { deckLevelKey } = require('../services/deck-ids');
 const Order = require('../models/order');
 const { getPackage } = require('../config/packages');
@@ -31,14 +31,16 @@ router.post('/users', auth, adminOnly, async (req, res) => {
   if (password.length < 4) return res.status(400).json({ error: 'MK toi thieu 4 ky tu' });
   const exists = await User.findOne({ email });
   if (exists) return res.status(409).json({ error: 'Email da ton tai' });
+  const dq = deckQuota ?? DEFAULT_DECK_QUOTA;
+  const tq = wordQuota ?? DEFAULT_TOTAL_WORD_QUOTA;
   await User.create({
     email,
     passwordHash: await bcrypt.hash(password, 10),
     role: 'user',
     type: 'user',
-    deckQuota: deckQuota ?? DEFAULT_DECK_QUOTA,
-    wordQuota: wordQuota ?? DEFAULT_WORD_QUOTA,
-    totalWordQuota: (deckQuota ?? DEFAULT_DECK_QUOTA) * (wordQuota ?? DEFAULT_WORD_QUOTA),
+    deckQuota: dq,
+    wordQuota: tq,
+    totalWordQuota: tq,
     zalo: zalo || ''
   });
   res.json({ message: 'Tao TK "' + email + '" thanh cong!' });
@@ -219,7 +221,7 @@ router.post('/orders/:id/refund', auth, adminOnly, async (req, res) => {
     const user = await User.findOne({ email: order.email });
     if (!user) return res.status(404).json({ error: 'Khong tim thay user' });
 
-    const minTotal = DEFAULT_DECK_QUOTA * DEFAULT_WORD_QUOTA;
+    const minTotal = DEFAULT_TOTAL_WORD_QUOTA;
     user.deckQuota = Math.max(DEFAULT_DECK_QUOTA, (user.deckQuota ?? DEFAULT_DECK_QUOTA) - pkg.deckAdd);
     user.totalWordQuota = Math.max(minTotal, resolveTotalWordQuota(user) - pkg.wordAdd);
     user.wordQuota = user.totalWordQuota;

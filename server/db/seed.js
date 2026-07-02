@@ -1,7 +1,7 @@
 // server/db/seed.js — admin mặc định (không HSK)
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA } = require('../config');
+const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA, DEFAULT_TOTAL_WORD_QUOTA } = require('../config');
 const { migrateTotalWordQuota } = require('../services/quota');
 
 async function ensureDefaults() {
@@ -14,7 +14,7 @@ async function ensureDefaults() {
       role: 'user',
       type: 'user',
       deckQuota: DEFAULT_DECK_QUOTA,
-      wordQuota: DEFAULT_WORD_QUOTA
+      wordQuota: DEFAULT_TOTAL_WORD_QUOTA
     }
   ];
 
@@ -23,7 +23,7 @@ async function ensureDefaults() {
     if (!exists) {
       const passwordHash = await bcrypt.hash(d.password, 10);
       const deckQuota = d.deckQuota ?? DEFAULT_DECK_QUOTA;
-      const wordQuota = d.wordQuota ?? DEFAULT_WORD_QUOTA;
+      const wordQuota = d.wordQuota ?? DEFAULT_TOTAL_WORD_QUOTA;
       await User.create({
         email: d.email,
         passwordHash,
@@ -31,7 +31,7 @@ async function ensureDefaults() {
         type: d.type,
         deckQuota,
         wordQuota,
-        totalWordQuota: deckQuota * wordQuota
+        totalWordQuota: DEFAULT_TOTAL_WORD_QUOTA
       });
       console.log('  ✅ Tạo TK: ' + d.email);
     }
