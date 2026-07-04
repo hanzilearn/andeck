@@ -12,9 +12,10 @@ function adBuildImportPrompt(profile) {
   if (!profile) {
     return (
       'H\u00e3y chuy\u1ec3n b\u1ea3ng t\u1eeb v\u1ef1ng th\u00e0nh JSON array.\n' +
+      'Ngu\u1ed3n c\u00f3 th\u1ec3 l\u00e0 Excel/Sheet ho\u1eb7c \u1ea3nh ch\u1ee5p b\u1ea3ng t\u1eeb (JPG, PNG\u2026); v\u1edbi \u1ea3nh, \u0111\u00ednh k\u00e8m file \u1ea3nh v\u00e0o chat thay v\u00ec d\u00e1n text.\n' +
       'M\u1ed7i t\u1eeb l\u00e0 object: primary, reading, meaning, exPrimary, exReading, exMeaning, pos, note.\n' +
       'Ch\u1ec9 tr\u1ea3 v\u1ec1 JSON array thu\u1ea7n, kh\u00f4ng markdown.\n\n' +
-      'D\u1eef li\u1ec7u c\u1ea7n chuy\u1ec3n \u0111\u1ed5i:\n[D\u00c1N N\u1ed8I DUNG V\u00c0O \u0110\u00c2Y]'
+      'D\u1eef li\u1ec7u c\u1ea7n chuy\u1ec3n \u0111\u1ed5i:\n[D\u00c1N N\u1ed8I DUNG EXCEL/SHEET V\u00c0O \u0110\u00c2Y \u2014 HO\u1eb6C \u0110\u00cdNH K\u00c8M \u1ea2NH B\u1ea2NG T\u1eeb]'
     );
   }
 
@@ -41,7 +42,8 @@ function adBuildImportPrompt(profile) {
   return (
     'H\u00e3y chuy\u1ec3n b\u1ea3ng t\u1eeb v\u1ef1ng ' +
     profile.label +
-    ' d\u01b0\u1edbi \u0111\u00e2y th\u00e0nh JSON array.\n' +
+    ' th\u00e0nh JSON array.\n' +
+    'Ngu\u1ed3n c\u00f3 th\u1ec3 l\u00e0 Excel/Sheet ho\u1eb7c \u1ea3nh ch\u1ee5p b\u1ea3ng t\u1eeb (JPG, PNG\u2026); v\u1edbi \u1ea3nh, \u0111\u00ednh k\u00e8m file \u1ea3nh v\u00e0o chat thay v\u00ec d\u00e1n text.\n' +
     'M\u1ed7i t\u1eeb l\u00e0 m\u1ed9t object v\u1edbi c\u00e1c tr\u01b0\u1eddng: ' +
     fields.join(', ') +
     '.\n' +
@@ -52,7 +54,7 @@ function adBuildImportPrompt(profile) {
     '\nN\u1ebfu thi\u1ebfu tr\u01b0\u1eddng n\u00e0o th\u00ec \u0111\u1ec3 chu\u1ed7i r\u1ed7ng "".\n' +
     'Ch\u1ec9 tr\u1ea3 v\u1ec1 JSON array thu\u1ea7n, kh\u00f4ng gi\u1ea3i th\u00edch, kh\u00f4ng markdown, kh\u00f4ng ```json.' +
     extra +
-    '\n\nD\u1eef li\u1ec7u c\u1ea7n chuy\u1ec3n \u0111\u1ed5i:\n[D\u00c1N N\u1ed8I DUNG FILE EXCEL/SHEET V\u00c0O \u0110\u00c2Y]'
+    '\n\nD\u1eef li\u1ec7u c\u1ea7n chuy\u1ec3n \u0111\u1ed5i:\n[D\u00c1N N\u1ed8I DUNG EXCEL/SHEET V\u00c0O \u0110\u00c2Y \u2014 HO\u1eb6C \u0110\u00cdNH K\u00c8M \u1ea2NH B\u1ea2NG T\u1eeb]'
   );
 }
 
@@ -233,7 +235,7 @@ function adImportApplyModeUI() {
   if (subtitleEl) {
     subtitleEl.textContent = isAppend
       ? 'Import JSON v\u00e0o deck \u0111ang h\u1ecdc'
-      : 'D\u00f9ng AI \u0111\u1ec3 chuy\u1ec3n file Excel/Sheet v\u1ec1 \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng Andeck';
+      : 'D\u00f9ng AI \u0111\u1ec3 chuy\u1ec3n Excel/Sheet ho\u1eb7c \u1ea3nh b\u1ea3ng t\u1eeb v\u1ec1 \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng Andeck';
   }
 
   adImportRefreshPrompt();
