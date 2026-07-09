@@ -624,6 +624,8 @@ body[data-lang-pair="ko-vi"] .td-hanzi { font-size: 20px; }
 .vocab-input:disabled { opacity: .6; cursor: default; }
 
 .hint-answer { font-size: 12px; color: var(--correct); margin-top: 4px; }
+.hint-reading { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.hint-reading .reading-token { font-style: italic; }
 
 .td-result { width: 36px; text-align: center; font-size: 17px; }
 .result-icon { display: inline-block; }

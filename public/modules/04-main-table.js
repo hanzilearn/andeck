@@ -31,6 +31,32 @@ function adHasReadingColumn() {
   return !p || p.hasReading !== false;
 }
 
+function adRevealAnswerReading(row, w) {
+  if (!row || !w) return;
+  const reading = String(w.reading || '').trim();
+  if (!reading) return;
+
+  const speakText = esc(w.primary);
+  const speakBtn =
+    '<button class="speak-btn" onclick="speak(\'' +
+    speakText +
+    '\')" title="Ph\u00e1t \u00e2m">\uD83D\uDD0A</button>';
+  const readingHtml = adFormatReadingHtml(w.reading, false);
+
+  if (adHasReadingColumn()) {
+    const inner = row.querySelector('.td-pinyin .td-pinyin-inner');
+    if (inner) inner.innerHTML = speakBtn + readingHtml;
+  } else {
+    const inputCell = row.querySelector('.td-input');
+    if (inputCell && !inputCell.querySelector('.hint-reading')) {
+      const rh = document.createElement('div');
+      rh.className = 'hint-reading';
+      rh.innerHTML = readingHtml;
+      inputCell.appendChild(rh);
+    }
+  }
+}
+
 function adFormatDetailHtml(w) {
   const hasEx = !!(w.exPrimary && String(w.exPrimary).trim());
   const hasNote = !!(w.note && String(w.note).trim());
@@ -461,7 +487,7 @@ function render() {
       '<button class="speak-btn" onclick="speak(\'' +
       speakText +
       '\')" title="Ph\u00e1t \u00e2m">\uD83D\uDD0A</button>';
-    const readingText = adFormatReadingHtml(w.reading, readingHidden);
+    const readingText = adFormatReadingHtml(w.reading, readingHidden && !a);
     const wordId = w.id || '';
     const rowOn = deckRowOn(wordId);
     const rowCls = deckRowClass(rc);
@@ -692,7 +718,13 @@ function check(idx, input, type) {
     ic.classList.add('pop');
   }
 
-  if (typeof playFeedbackSound === 'function') playFeedbackSound(correct);
+  if (correct) {
+    if (typeof adSpeakReadingIfEnabled === 'function') adSpeakReadingIfEnabled(w);
+  } else if (typeof playWrongSound === 'function') {
+    playWrongSound();
+  }
+
+  adRevealAnswerReading(row, w);
 
   if (!correct) {
     let hint = row && row.querySelector('.hint-answer');

@@ -89,6 +89,7 @@ function toggleSound() {
 }
 
 function speak(text) {
+  if (!text || !String(text).trim()) return;
   const lang = adGetTtsLang();
   const langPrefix = lang.split('-')[0];
 
@@ -120,6 +121,12 @@ function speak(text) {
       .play()
       .catch(function () {});
   } catch (e) {}
+}
+
+function adSpeakReadingIfEnabled(word) {
+  if (!_soundEnabled || !word) return;
+  const text = String(word.reading || '').trim() || String(word.primary || '').trim();
+  if (text) speak(text);
 }
 
 var _pronRecognition = null;
