@@ -8,7 +8,7 @@
     goi1: {
       id: 'goi1',
       name: 'Gói 1',
-      priceLabel: '17.000đ',
+      priceLabel: '10.000đ',
       label: 'Gói 1 — +10 Deck, +1000 Từ',
       deckAdd: 10,
       wordAdd: 1000
@@ -16,7 +16,7 @@
     goi2: {
       id: 'goi2',
       name: 'Gói 2',
-      priceLabel: '29.000đ',
+      priceLabel: '18.000đ',
       label: 'Gói 2 — +20 Deck, +2000 Từ',
       deckAdd: 20,
       wordAdd: 2000
