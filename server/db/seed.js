@@ -2,7 +2,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { DEFAULT_DECK_QUOTA, DEFAULT_WORD_QUOTA, DEFAULT_TOTAL_WORD_QUOTA } = require('../config');
-const { migrateTotalWordQuota } = require('../services/quota');
+const { migrateTotalWordQuota, resetLegacyFreePoolQuota } = require('../services/quota');
 
 async function ensureDefaults() {
   const defaults = [
@@ -40,6 +40,11 @@ async function ensureDefaults() {
   const migrated = await migrateTotalWordQuota();
   if (migrated > 0) {
     console.log('  ✅ Migration totalWordQuota: ' + migrated + ' user');
+  }
+
+  const reset = await resetLegacyFreePoolQuota();
+  if (reset > 0) {
+    console.log('  ✅ Reset quota free 150→80: ' + reset + ' user');
   }
 }
 

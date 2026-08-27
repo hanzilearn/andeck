@@ -5,6 +5,6 @@ module.exports = {
   MONGO_URI: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/andeck',
   ROOT_DIR: require('path').join(__dirname, '..'),
   DEFAULT_DECK_QUOTA: 3,
-  DEFAULT_WORD_QUOTA: 50,
+  DEFAULT_WORD_QUOTA: 80,
   DEFAULT_TOTAL_WORD_QUOTA: 80
 };

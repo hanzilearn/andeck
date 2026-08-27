@@ -8,9 +8,7 @@ function resolveTotalWordQuota(user) {
   if (user.totalWordQuota != null && user.totalWordQuota >= 0) {
     return user.totalWordQuota;
   }
-  const deckQuota = user.deckQuota ?? DEFAULT_DECK_QUOTA;
-  const wordQuota = user.wordQuota ?? DEFAULT_WORD_QUOTA;
-  return deckQuota * wordQuota;
+  return user.wordQuota ?? DEFAULT_TOTAL_WORD_QUOTA;
 }
 
 async function getUserQuotas(email) {
@@ -43,11 +41,24 @@ async function migrateTotalWordQuota() {
 
   let updated = 0;
   for (const user of users) {
-    user.totalWordQuota = (user.deckQuota ?? DEFAULT_DECK_QUOTA) * (user.wordQuota ?? DEFAULT_WORD_QUOTA);
+    user.totalWordQuota = user.wordQuota ?? DEFAULT_TOTAL_WORD_QUOTA;
+    if (user.wordQuota == null) user.wordQuota = DEFAULT_TOTAL_WORD_QUOTA;
     await user.save();
     updated++;
   }
   return updated;
+}
+
+async function resetLegacyFreePoolQuota() {
+  const result = await User.updateMany(
+    {
+      deckQuota: DEFAULT_DECK_QUOTA,
+      totalWordQuota: DEFAULT_DECK_QUOTA * 50,
+      wordQuota: 50
+    },
+    { $set: { totalWordQuota: DEFAULT_TOTAL_WORD_QUOTA, wordQuota: DEFAULT_TOTAL_WORD_QUOTA } }
+  );
+  return result.modifiedCount || 0;
 }
 
 module.exports = {
@@ -55,5 +66,6 @@ module.exports = {
   getUserQuotas,
   countUserTotalWords,
   wordInsertCapacity,
-  migrateTotalWordQuota
+  migrateTotalWordQuota,
+  resetLegacyFreePoolQuota
 };
