@@ -8,16 +8,18 @@
     goi1: {
       id: 'goi1',
       name: 'Gói 1',
-      priceLabel: '10.000đ',
+      priceLabel: '15.000đ',
       label: 'Gói 1 — +10 Deck, +1000 Từ',
+      qrSrc: 'img/qr-sepay15.png',
       deckAdd: 10,
       wordAdd: 1000
     },
     goi2: {
       id: 'goi2',
       name: 'Gói 2',
-      priceLabel: '18.000đ',
+      priceLabel: '28.000đ',
       label: 'Gói 2 — +20 Deck, +2000 Từ',
+      qrSrc: 'img/qr-sepay28.png',
       deckAdd: 20,
       wordAdd: 2000
     }
@@ -379,8 +381,13 @@
 
     var labelEl = document.getElementById('adPaymentPackageLabel');
     var amountEl = document.getElementById('adPaymentAmount');
+    var qrEl = document.getElementById('adPaymentQr');
     if (labelEl) labelEl.textContent = pkg.label;
     if (amountEl) amountEl.textContent = pkg.priceLabel;
+    if (qrEl && pkg.qrSrc) {
+      qrEl.src = pkg.qrSrc;
+      qrEl.alt = 'Quét để chuyển ' + pkg.priceLabel;
+    }
 
     var phoneEl = document.getElementById('adPaymentZaloPhone');
     if (phoneEl) {
