@@ -123,12 +123,6 @@ function speak(text) {
   } catch (e) {}
 }
 
-function adSpeakReadingIfEnabled(word) {
-  if (!_soundEnabled || !word) return;
-  const text = String(word.reading || '').trim() || String(word.primary || '').trim();
-  if (text) speak(text);
-}
-
 var _pronRecognition = null;
 var _pronCurrentIdx = -1;
 var _pronInited = false;

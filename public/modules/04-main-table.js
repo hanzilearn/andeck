@@ -718,11 +718,7 @@ function check(idx, input, type) {
     ic.classList.add('pop');
   }
 
-  if (correct) {
-    if (typeof adSpeakReadingIfEnabled === 'function') adSpeakReadingIfEnabled(w);
-  } else if (typeof playWrongSound === 'function') {
-    playWrongSound();
-  }
+  if (typeof playFeedbackSound === 'function') playFeedbackSound(correct);
 
   adRevealAnswerReading(row, w);
 
