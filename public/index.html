@@ -635,30 +635,33 @@
         <label class="iw-label" for="importDeckNameInput">Tên deck</label>
         <input type="text" id="importDeckNameInput" class="iw-name-input" maxlength="50" placeholder="Để trống = tự động (Import ngày-tháng-năm)" autocomplete="off">
       </div>
-      <ol class="iw-steps">
-        <li class="iw-step">
-          <span class="iw-step-num">1</span>
-          <div class="iw-step-content">
-            <strong>Copy prompt bên dưới</strong>
-            <span>Prompt hướng dẫn AI hiểu đúng định dạng Andeck</span>
-          </div>
-        </li>
-        <li class="iw-step">
-          <span class="iw-step-num">2</span>
-          <div class="iw-step-content">
-            <strong>Dán vào ChatGPT hoặc Claude</strong>
-            <span>Dán nội dung Excel/Sheet hoặc đính kèm ảnh bảng từ (JPG, PNG…) rồi gửi đi</span>
-          </div>
-        </li>
-        <li class="iw-step">
-          <span class="iw-step-num">3</span>
-          <div class="iw-step-content">
-            <strong>Copy kết quả JSON → dán vào ô bên dưới</strong>
-            <span>Web sẽ kiểm tra và thêm từ tự động</span>
-          </div>
-        </li>
-      </ol>
-      <div class="iw-notice" role="note">⚠️ Kiểm tra giới hạn từ trước khi tải lên file</div>
+      <div class="iw-guide-panel">
+        <h3 class="iw-guide-title">Hướng Dẫn</h3>
+        <ol class="iw-steps">
+          <li class="iw-step">
+            <span class="iw-step-num">1</span>
+            <div class="iw-step-content">
+              <strong>Copy prompt bên dưới</strong>
+              <span>Prompt hướng dẫn AI hiểu đúng định dạng Andeck</span>
+            </div>
+          </li>
+          <li class="iw-step">
+            <span class="iw-step-num">2</span>
+            <div class="iw-step-content">
+              <strong>Dán vào ChatGPT hoặc Claude</strong>
+              <span>Dán nội dung Excel/Sheet hoặc đính kèm ảnh bảng từ (JPG, PNG…) rồi gửi đi</span>
+            </div>
+          </li>
+          <li class="iw-step">
+            <span class="iw-step-num">3</span>
+            <div class="iw-step-content">
+              <strong>Copy kết quả JSON → dán vào ô bên dưới</strong>
+              <span>Web sẽ kiểm tra và thêm từ tự động</span>
+            </div>
+          </li>
+        </ol>
+        <div class="iw-notice" role="note">⚠️ Kiểm tra giới hạn từ trước khi tải lên file</div>
+      </div>
       <div class="iw-block">
         <div class="iw-block-head">
           <label class="iw-label" for="importPromptPreview">Prompt mẫu</label>

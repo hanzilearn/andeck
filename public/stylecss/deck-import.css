@@ -80,6 +80,34 @@
   min-height: 0;
 }
 
+.iw-guide-panel {
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  margin-bottom: 16px;
+  background: rgba(90, 158, 122, 0.09);
+  border: 1px solid rgba(90, 158, 122, 0.22);
+}
+
+.iw-guide-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #22c55e;
+  text-shadow:
+    0 0 6px rgba(34, 197, 94, 0.55),
+    0 0 14px rgba(34, 197, 94, 0.35),
+    0 0 22px rgba(34, 197, 94, 0.2);
+}
+
+.iw-guide-panel .iw-steps {
+  margin-bottom: 12px;
+}
+
+.iw-guide-panel .iw-notice {
+  margin-bottom: 0;
+}
+
 .iw-steps {
   list-style: none;
   margin: 0 0 14px;
@@ -330,6 +358,11 @@
 
 [data-theme="dark"] .iw-step-content strong {
   color: var(--ink);
+}
+
+[data-theme="dark"] .iw-guide-panel {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] .iw-step-num {
